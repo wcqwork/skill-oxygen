@@ -1,8 +1,30 @@
-# Dynamic Module Converter Skill (v3 - Marker Injection)
+# Dynamic Module Converter Skill (v4 - Automated Pipeline)
 
-静态 HTML → 动态 FreeMarker 模块自动转换。在克隆的静态 HTML 上注入编辑器标记，使其成为可配置数据源的动态组件，同时 **100% 保留原始 HTML 结构和样式**。
+静态 HTML → 动态 FreeMarker 模块自动转换。三层检测算法自动识别动态区域，注入编辑器标记，关联 FreeMarker 模板，同时 **100% 保留原始 HTML 结构和样式**。
 
-**Command**: `/convert-dynamic [inject-to-editor.js]`
+**Command**: `/convert-dynamic [--input <file>] [--output <file>] [--auto]`
+
+## Quick Start
+
+```bash
+# 安装依赖
+npm install
+
+# 一键转换 + 验证
+npm test
+
+# 单独转换
+npm run convert
+
+# 单独验证
+npm run verify
+
+# 自定义输入/输出
+node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs \
+  --input src/preview.html \
+  --output src/dynamic_preview.html \
+  --auto
+```
 
 ## When to Use
 
@@ -242,7 +264,10 @@ For each converted section:
 
 ```
 .claude/skills/dynamic-module-converter/
-  SKILL.md                           -- Skill entry point
+  SKILL.md                           -- Skill entry point (this file)
+  scripts/
+    convert-dynamic.mjs              -- Main conversion script (Phase 1-4)
+    verify-output.mjs                -- Output verification (73-point checklist)
   references/
     dom-structure.md                 -- Marker injection mechanism + export flow
     pattern-rules.md                 -- Three-layer detection algorithm
@@ -250,10 +275,32 @@ For each converted section:
     workflow.md                      -- Per-phase I/O/actor/verification specs
   templates/
     fetched/                         -- Auto-fetched from platform (via template-fetcher)
-      *.ftl                          -- FreeMarker template files
+      *.ftl                          -- FreeMarker template files (40+)
       _registry.json                 -- Machine-readable index
-    phoenix_blocks_prodlist.ftl      -- Product list (user provided)
-    phoenix_blocks_gallery.ftl       -- Gallery (legacy, reference only)
+```
+
+## Scripts
+
+### `convert-dynamic.mjs`
+
+Main conversion script. Accepts any static HTML and outputs a dynamic version with FreeMarker module markers.
+
+| Arg | Default | Description |
+|-----|---------|-------------|
+| `--input` | `src/preview.html` | Input HTML file |
+| `--output` | `src/dynamic_preview.html` | Output HTML file |
+| `--auto` | off | Skip user confirmation, auto-apply all detections |
+
+Outputs:
+- `dynamic_preview.html` — Converted HTML with dynamic module markers
+- `dynamic_preview_report.json` — Detection + injection + validation report
+
+### `verify-output.mjs`
+
+73-point verification checklist covering DOM hierarchy, attributes, templates, static preservation, scripts, and CSS.
+
+```bash
+node verify-output.mjs <dynamic_file> <original_file>
 ```
 
 ## Integration with clone-website
@@ -281,10 +328,30 @@ Templates need to be fetched before conversion:
 /convert-dynamic                 →  Uses templates for marker injection
 ```
 
+## Detection Intelligence (v4 Improvements)
+
+The three-layer detection has been enhanced with:
+
+- **Deep container search** (up to 5 levels deep) to find repeating patterns inside nested structures like `.carousel-track > .product-card`
+- **CSS class name semantic analysis** — detects `product-card`, `article-card`, etc. as strong type signals
+- **Static section exclusion** — automatically filters out `about-us`, `why-choose`, `solutions`, `cta-section`, `hero-banner`, `footer`, `header`, `contact-us` and similar sections that have repeating sub-elements but are clearly not dynamic data lists
+- **Product list vs category distinction** — `prodList` (flat item list) vs `groupProduct` (category navigation) based on item count and link diversity
+- **Date format detection** — supports "25 December 2025", ISO dates, `<time>` tags, and `.date` class patterns
+
 ## Risk Assessment
 
 - **Original HTML visible in editor but FreeMarker used for export (mismatch)**: Low severity. By design — same as how the editor normally works. Status: **Accepted**
-- **Missing `freemakerHtml` on model**: Medium severity. Always verify model property after injection. Status: **Mitigated**
+- **Missing `freemakerHtml` on model**: Medium severity. Always verify model property after injection. Status: **Mitigated via data-freemaker-html-available attribute + model setup script**
 - **`developer-node-component` init breaks with unknown inner HTML**: Low severity. Tested: `init()` only cares about parent lookup and attribute binding. Status: **Verified safe**
-- **Detection false positives/negatives**: Medium severity. Mandatory user confirmation for every section. Status: **Mitigated**
-- **`data-new-auto-uuid` not set**: Medium severity. `initComponentDataView()` reads this from attributes. Must include in marker injection or let editor generate. Status: **Requires attention**
+- **Detection false positives/negatives**: Medium severity. Three-layer scoring + static exclusion patterns mitigate most cases. Status: **Mitigated**
+- **`data-new-auto-uuid` not set**: Resolved. Now always set to match `data-block-uuid`. Status: **Fixed**
+
+## Verification Results (v4)
+
+Last run against `src/preview.html` → `src/dynamic_preview.html`:
+
+- **73/73 checks passed** (100%)
+- 3 dynamic modules injected: `groupProduct_new`, `prodlist`, `Articlelist`
+- 9 static sections verified unchanged
+- All original JS scripts preserved (Hero/Product Carousel, Counter Animation, Fade-in)
+- All CSS styles preserved including responsive rules

@@ -1,0 +1,19 @@
+{
+  "name": "skill-oxygen",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "convert": "node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs --input src/preview.html --output src/dynamic_preview.html --auto",
+    "verify": "node .claude/skills/dynamic-module-converter/scripts/verify-output.mjs src/dynamic_preview.html src/preview.html",
+    "convert:verify": "npm run convert && npm run verify",
+    "test": "npm run convert:verify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "uuid": "^13.0.0"
+  }
+}

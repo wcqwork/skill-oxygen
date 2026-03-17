@@ -1,0 +1,312 @@
+{
+  "timestamp": "2026-03-17T06:58:45.068Z",
+  "inputFile": "src/preview.html",
+  "outputFile": "src/dynamic_preview.html",
+  "totalSections": 12,
+  "dynamicSections": 3,
+  "staticSections": 9,
+  "detections": [
+    {
+      "sectionIndex": 0,
+      "sectionDescription": "R&D And Manufacture Of Personal Protective Equipment",
+      "detectedType": null,
+      "confidence": 0.1411764705882353,
+      "scores": {
+        "structural": 0,
+        "urlPattern": 0,
+        "contentHeuristic": 12,
+        "total": 12
+      },
+      "evidence": [
+        "内容启发: 检测到 articleList 特征 (12/20)"
+      ],
+      "itemCount": 2,
+      "isDynamic": false
+    },
+    {
+      "sectionIndex": 1,
+      "sectionDescription": "Full Range Products",
+      "detectedType": null,
+      "confidence": 0,
+      "scores": {
+        "structural": 0,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "total": 0
+      },
+      "evidence": [],
+      "itemCount": 0,
+      "isDynamic": false
+    },
+    {
+      "sectionIndex": 2,
+      "sectionDescription": "Body Protection",
+      "detectedType": "groupProduct",
+      "confidence": 0.29411764705882354,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "total": 25
+      },
+      "evidence": [
+        "结构检测: 4 个重复子元素 (25/40)"
+      ],
+      "itemCount": 4,
+      "isDynamic": true
+    },
+    {
+      "sectionIndex": 3,
+      "sectionDescription": "Hot Products",
+      "detectedType": "prodList",
+      "confidence": 0.6823529411764706,
+      "scores": {
+        "structural": 40,
+        "urlPattern": 0,
+        "contentHeuristic": 18,
+        "total": 58
+      },
+      "evidence": [
+        "结构检测: 10 个重复子元素 (40/40)",
+        "内容启发: 检测到 prodList 特征 (18/20)"
+      ],
+      "itemCount": 10,
+      "isDynamic": true
+    },
+    {
+      "sectionIndex": 4,
+      "sectionDescription": "about-us",
+      "detectedType": null,
+      "confidence": 0.29411764705882354,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "total": 25
+      },
+      "evidence": [
+        "结构检测: 4 个重复子元素 (25/40)"
+      ],
+      "itemCount": 4,
+      "isDynamic": false
+    },
+    {
+      "sectionIndex": 5,
+      "sectionDescription": "Laan Protection Technology",
+      "detectedType": null,
+      "confidence": 0,
+      "scores": {
+        "structural": 0,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "total": 0
+      },
+      "evidence": [],
+      "itemCount": 0,
+      "isDynamic": false
+    },
+    {
+      "sectionIndex": 6,
+      "sectionDescription": "Petrochemical Protection",
+      "detectedType": null,
+      "confidence": 0.29411764705882354,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "total": 25
+      },
+      "evidence": [
+        "结构检测: 3 个重复子元素 (25/40)"
+      ],
+      "itemCount": 3,
+      "isDynamic": false
+    },
+    {
+      "sectionIndex": 7,
+      "sectionDescription": "Laan Protection Technology",
+      "detectedType": null,
+      "confidence": 0.29411764705882354,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "total": 25
+      },
+      "evidence": [
+        "结构检测: 4 个重复子元素 (25/40)"
+      ],
+      "itemCount": 4,
+      "isDynamic": false
+    },
+    {
+      "sectionIndex": 8,
+      "sectionDescription": "news-images",
+      "detectedType": null,
+      "confidence": 0,
+      "scores": {
+        "structural": 0,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "total": 0
+      },
+      "evidence": [],
+      "itemCount": 0,
+      "isDynamic": false
+    },
+    {
+      "sectionIndex": 9,
+      "sectionDescription": "Laan Protection Technology",
+      "detectedType": null,
+      "confidence": 0,
+      "scores": {
+        "structural": 0,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "total": 0
+      },
+      "evidence": [],
+      "itemCount": 2,
+      "isDynamic": false
+    },
+    {
+      "sectionIndex": 10,
+      "sectionDescription": "Laan Protection Technology",
+      "detectedType": null,
+      "confidence": 0,
+      "scores": {
+        "structural": 0,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "total": 0
+      },
+      "evidence": [],
+      "itemCount": 0,
+      "isDynamic": false
+    },
+    {
+      "sectionIndex": 11,
+      "sectionDescription": "1",
+      "detectedType": "articleList",
+      "confidence": 0.5058823529411764,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 18,
+        "total": 43
+      },
+      "evidence": [
+        "结构检测: 3 个重复子元素 (25/40)",
+        "内容启发: 检测到 articleList 特征 (18/20)"
+      ],
+      "itemCount": 3,
+      "isDynamic": true
+    }
+  ],
+  "injections": [
+    {
+      "success": true,
+      "blockType": "phoenix_blocks_groupProduct_new",
+      "uuid": "2513fe23458d",
+      "appId": "WWKAfpUNoOfE",
+      "templateFile": "phoenix_blocks_groupProduct_new.ftl",
+      "freemakerHtmlLength": 12261
+    },
+    {
+      "success": true,
+      "blockType": "phoenix_blocks_prodlist",
+      "uuid": "a16c5c08f7d6",
+      "appId": "lIUfpKACmdJh",
+      "templateFile": "phoenix_blocks_prodlist.ftl",
+      "freemakerHtmlLength": 13819
+    },
+    {
+      "success": true,
+      "blockType": "phoenix_blocks_Articlelist",
+      "uuid": "df208c77f43f",
+      "appId": "VBAUKpfWweAr",
+      "templateFile": "phoenix_blocks_Articlelist.ftl",
+      "freemakerHtmlLength": 10475
+    }
+  ],
+  "validations": [
+    {
+      "uuid": "2513fe23458d",
+      "blockType": "phoenix_blocks_groupProduct_new",
+      "checks": [
+        {
+          "name": "DOM层级",
+          "pass": true,
+          "detail": "developer-component > developer-node-component > 原始HTML ✓"
+        },
+        {
+          "name": "属性完整性",
+          "pass": true,
+          "detail": "block-type:true gjs-type:true auto-uuid:true"
+        },
+        {
+          "name": "FreeMarker标记",
+          "pass": true,
+          "detail": "freemakerHtml 标记已设置 ✓"
+        },
+        {
+          "name": "原始内容保留",
+          "pass": true,
+          "detail": "内容完整 (2450 chars) ✓"
+        }
+      ]
+    },
+    {
+      "uuid": "a16c5c08f7d6",
+      "blockType": "phoenix_blocks_prodlist",
+      "checks": [
+        {
+          "name": "DOM层级",
+          "pass": true,
+          "detail": "developer-component > developer-node-component > 原始HTML ✓"
+        },
+        {
+          "name": "属性完整性",
+          "pass": true,
+          "detail": "block-type:true gjs-type:true auto-uuid:true"
+        },
+        {
+          "name": "FreeMarker标记",
+          "pass": true,
+          "detail": "freemakerHtml 标记已设置 ✓"
+        },
+        {
+          "name": "原始内容保留",
+          "pass": true,
+          "detail": "内容完整 (3092 chars) ✓"
+        }
+      ]
+    },
+    {
+      "uuid": "df208c77f43f",
+      "blockType": "phoenix_blocks_Articlelist",
+      "checks": [
+        {
+          "name": "DOM层级",
+          "pass": true,
+          "detail": "developer-component > developer-node-component > 原始HTML ✓"
+        },
+        {
+          "name": "属性完整性",
+          "pass": true,
+          "detail": "block-type:true gjs-type:true auto-uuid:true"
+        },
+        {
+          "name": "FreeMarker标记",
+          "pass": true,
+          "detail": "freemakerHtml 标记已设置 ✓"
+        },
+        {
+          "name": "原始内容保留",
+          "pass": true,
+          "detail": "内容完整 (1204 chars) ✓"
+        }
+      ]
+    }
+  ]
+}

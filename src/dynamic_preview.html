@@ -1,0 +1,1515 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laan Protection Technology - R&amp;D And Manufacture Of Personal Protective Equipment</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat','Noto Sans SC',Arial,Helvetica,sans-serif;color:#333;background:#fff;overflow-x:hidden;line-height:1.6}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+h2{font-family:'Montserrat',sans-serif;font-size:40px;font-weight:700;line-height:64px;color:rgb(8,20,78)}
+.container{max-width:1440px;margin:0 auto;padding:0 40px}
+.placeholder-img{width:100%;height:100%;object-fit:cover;background:#e0e0e0}
+
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;background:rgb(224,113,67);color:#fff;border:none;border-radius:50px;padding:0 55px;height:45px;line-height:45px;font-size:16px;font-family:'Montserrat',sans-serif;cursor:pointer;transition:all .3s ease-in-out}
+.btn-primary:hover{background:rgb(34,34,34);color:#fff}
+
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* ===== SECTION 0: HERO BANNER ===== */
+.hero-banner{position:relative;width:100%;height:clamp(400px,47vw,893px);overflow:hidden;background:#1a1a2e}
+.hero-slides{position:relative;width:100%;height:100%}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease-in-out;display:flex;align-items:center}
+.hero-slide.active{opacity:1;z-index:1}
+.hero-slide-bg{position:absolute;inset:0;z-index:0}
+.hero-slide-bg img{width:100%;height:100%;object-fit:cover}
+.hero-slide-content{position:relative;z-index:2;max-width:55%;min-width:600px;padding:0 80px}
+.hero-slide:nth-child(2) .hero-slide-content{width:100%;max-width:100%;text-align:center;padding:0 120px;display:flex;flex-direction:column;align-items:center}
+.hero-slide-content h1{font-family:'Montserrat',sans-serif;font-size:clamp(28px,3.5vw,52px);font-weight:700;color:#e07143;line-height:1.4;margin-bottom:16px}
+.hero-slide-content p{font-family:'Montserrat',sans-serif;font-size:clamp(14px,1.2vw,18px);color:#000;line-height:1.6;margin-bottom:28px;max-width:600px}
+.hero-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:0 0 6px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s;border:none;font-size:18px;color:#666}
+.hero-nav:hover{background:#e07143;color:#fff}
+.hero-nav--prev{left:20px}
+.hero-nav--next{right:20px}
+.hero-timer{position:absolute;bottom:22px;right:28px;z-index:10;width:56px;height:56px}
+.hero-timer svg{width:100%;height:100%;transform:rotate(-90deg)}
+.hero-timer circle{fill:none;stroke-width:3}
+.hero-timer .bg{stroke:#ddd}
+.hero-timer .progress{stroke:#e07143;stroke-dasharray:157;stroke-dashoffset:157;transition:stroke-dashoffset .1s linear}
+
+/* ===== SECTION 1: FULL RANGE PRODUCTS HEADER ===== */
+.full-range-products{background:#f5f5f5;padding:60px 0 30px}
+.full-range-products .section-inner{text-align:center}
+.full-range-products h2{margin-bottom:16px}
+.full-range-products .desc{font-size:16px;color:#555;max-width:900px;margin:0 auto;line-height:1.8}
+
+/* ===== SECTION 2: PRODUCT CATEGORIES ===== */
+.product-categories{background:#f5f5f5;padding:20px 0 60px}
+.product-categories .grid{display:flex;gap:16px}
+.product-categories .main-card{flex:0 0 33.333%;position:relative;border-radius:12px;overflow:hidden;aspect-ratio:787/1210}
+.product-categories .main-card img{width:100%;height:100%;object-fit:cover}
+.product-categories .main-card .overlay{position:absolute;top:0;left:0;right:0;padding:30px;color:#fff;z-index:2}
+.product-categories .main-card .overlay .brand-label{font-size:12px;opacity:.8;margin-bottom:4px}
+.product-categories .main-card .overlay h3{font-size:28px;font-weight:700;margin-bottom:4px}
+.product-categories .main-card .overlay h3 span{color:#e07143}
+.product-categories .main-card .overlay .sub{font-weight:700;font-size:18px;margin-bottom:12px}
+.product-categories .main-card .overlay .card-desc{font-size:13px;line-height:1.5;max-width:250px;margin-bottom:16px;opacity:.9}
+.product-categories .main-card .overlay .view-link{color:#e07143;font-weight:700;font-size:14px}
+.product-categories .side-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:16px}
+.product-categories .side-card{position:relative;border-radius:12px;overflow:hidden}
+.product-categories .side-card img{width:100%;height:100%;object-fit:cover}
+.product-categories .side-card .overlay{position:absolute;top:0;left:0;right:0;padding:20px;color:#fff;z-index:2}
+.product-categories .side-card .overlay .brand-label{font-size:10px;opacity:.8;margin-bottom:2px}
+.product-categories .side-card .overlay h3{font-size:20px;font-weight:700}
+.product-categories .side-card .overlay h3 span{color:#e07143}
+.product-categories .side-card .overlay .sub{font-weight:700;font-size:14px;margin-bottom:8px}
+.product-categories .side-card .overlay .view-link{color:#e07143;font-weight:700;font-size:13px}
+
+/* ===== SECTION 3: HOT PRODUCTS CAROUSEL ===== */
+.hot-products{padding:60px 0 40px;background:#fff}
+.hot-products .section-header{text-align:center;margin-bottom:30px}
+.hot-products .section-header h2{margin-bottom:8px}
+.hot-products .section-header .subtitle{color:#555;font-size:16px}
+.hot-products .carousel-track-wrapper{overflow:hidden;position:relative}
+.hot-products .carousel-track{display:flex;transition:transform .5s ease;gap:10px}
+.hot-products .product-card{flex:0 0 calc(20% - 8px);min-width:0;text-align:center;cursor:pointer;padding:8px;border-radius:8px;transition:box-shadow .3s,transform .3s}
+.hot-products .product-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.1);transform:translateY(-4px)}
+.hot-products .product-card .img-wrap{width:100%;aspect-ratio:1;border-radius:8px;overflow:hidden;margin-bottom:12px;background:#f9f9f9}
+.hot-products .product-card .img-wrap img{width:100%;height:100%;object-fit:contain}
+.hot-products .product-card .name{font-size:14px;font-weight:600;color:#333;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ===== SECTION 4: ABOUT US ===== */
+.about-us{position:relative;border-radius:50px 50px 0 0;overflow:hidden;padding:60px 0 50px}
+.about-us::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(238,238,238,.78) 0%,rgba(238,238,238,.92) 100%);z-index:0}
+.about-us-bg{position:absolute;inset:0;z-index:-1}
+.about-us-bg img{width:100%;height:100%;object-fit:cover}
+.about-us .container{position:relative;z-index:1;max-width:1350px}
+.about-us .company-subtitle{font-size:16px;color:#666;margin-bottom:8px}
+.about-us .tagline{font-size:24px;font-weight:600;margin-bottom:4px}
+.about-us .tagline .highlight{color:#e07143}
+.about-us .about-badge{display:inline-block;margin-bottom:20px}
+.about-us .about-badge img{height:60px;width:auto}
+.about-us .top-row{display:flex;gap:40px;align-items:flex-start;margin-bottom:30px}
+.about-us .top-row .text-col{flex:3}
+.about-us .top-row .badge-col{flex:1;text-align:right}
+.about-us .about-desc{font-size:15px;color:#444;line-height:1.8;margin-bottom:20px;max-width:480px}
+.about-us .bottom-row{display:flex;gap:30px;align-items:stretch;margin-top:10px}
+.about-us .factory-img{flex:2;border-radius:12px;overflow:hidden}
+.about-us .factory-img img{width:100%;height:100%;object-fit:cover}
+.about-us .counters{flex:1;display:flex;flex-direction:column;justify-content:center;gap:30px}
+.about-us .counter-item .number{font-size:40px;font-weight:700;color:#fff}
+.about-us .counter-item .number .suffix{font-size:24px}
+.about-us .counter-item .label{font-size:16px;color:#fff;opacity:.85;margin-top:4px}
+
+/* ===== SECTION 6-7: SOLUTIONS ===== */
+.solutions-header{padding:68px 0 20px}
+.solutions-header .inner{display:flex;justify-content:space-between;align-items:flex-end}
+.solutions-header .left h2{margin-bottom:4px}
+.solutions-header .left .subtitle{font-size:18px;color:#555}
+.solutions-cards{padding:0 0 40px}
+.solutions-cards .grid{display:flex;gap:20px}
+.solutions-cards .card{flex:1;background:#f8f8f8;border-radius:30px;padding:30px;position:relative;overflow:hidden;transition:box-shadow .3s,transform .3s}
+.solutions-cards .card:hover{box-shadow:0 8px 30px rgba(0,0,0,.08);transform:translateY(-4px)}
+.solutions-cards .card .icon-area{width:60px;height:60px;margin-bottom:16px;background:#e07143;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.solutions-cards .card .icon-area svg{width:30px;height:30px;fill:#fff}
+.solutions-cards .card h2{font-size:22px;margin-bottom:12px;line-height:1.3}
+.solutions-cards .card .card-desc{font-size:14px;color:#666;line-height:1.7;margin-bottom:16px}
+.solutions-cards .card .card-img{border-radius:12px;overflow:hidden;aspect-ratio:16/10}
+.solutions-cards .card .card-img img{width:100%;height:100%;object-fit:cover}
+
+/* ===== SECTION 9: WHY CHOOSE US ===== */
+.why-choose{padding:0 0 40px}
+.why-choose .inner{display:flex;gap:30px;align-items:stretch;min-height:540px}
+.why-choose .left{flex:5;position:relative;border-radius:16px;overflow:hidden}
+.why-choose .left img{width:100%;height:100%;object-fit:cover}
+.why-choose .left .text-overlay{position:absolute;bottom:0;left:0;right:0;padding:40px;background:linear-gradient(transparent,rgba(0,0,0,.7));color:#fff}
+.why-choose .left .text-overlay h2{font-size:28px;color:#fff;margin-bottom:12px;line-height:1.3}
+.why-choose .left .text-overlay p{font-size:14px;line-height:1.6;opacity:.9}
+.why-choose .right{flex:7;display:flex;flex-direction:column;gap:16px}
+.why-choose .right .top-text{margin-bottom:8px}
+.why-choose .right .top-text h2{font-size:28px;margin-bottom:8px;line-height:1.3}
+.why-choose .right .top-text .sub{font-size:16px;color:#555;line-height:1.6}
+.why-choose .right .top-text p{font-size:14px;color:#666;line-height:1.7;margin-top:8px}
+.why-choose .features{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1}
+.why-choose .feature-item{background:#f8f8f8;border-radius:16px;padding:24px;display:flex;align-items:center;gap:16px;transition:box-shadow .3s}
+.why-choose .feature-item:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.why-choose .feature-item .icon{width:48px;height:48px;background:#e07143;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.why-choose .feature-item .icon svg{width:24px;height:24px;fill:#fff}
+.why-choose .feature-item .text{font-size:15px;font-weight:600;color:#333}
+
+/* ===== SECTION 11: NEWS IMAGES ===== */
+.news-images{padding:0 0 0}
+.news-images .grid{display:flex;gap:20px}
+.news-images .img-card{flex:1;border-radius:12px;overflow:hidden;min-height:490px}
+.news-images .img-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.news-images .img-card:hover img{transform:scale(1.03)}
+
+/* ===== SECTION 13: CTA ===== */
+.cta-section{position:relative;min-height:685px;display:flex;align-items:center;overflow:hidden}
+.cta-section .bg{position:absolute;inset:0;z-index:0}
+.cta-section .bg img{width:100%;height:100%;object-fit:cover}
+.cta-section .container{position:relative;z-index:1;max-width:1440px;padding:0 40px;width:100%}
+.cta-section .cta-row{display:flex;flex-direction:row;align-items:center;gap:40px}
+.cta-section .cta-left{flex:1;max-width:600px}
+.cta-section .cta-right{flex:1}
+.cta-section .cta-left h2{margin-bottom:8px}
+.cta-section .cta-left .subtitle{font-size:18px;color:#555;margin-bottom:12px}
+.cta-section .cta-left .subtitle .highlight{color:#e07143;font-weight:600}
+.cta-section .cta-left p{font-size:15px;color:#666;line-height:1.8;margin-bottom:28px}
+
+/* ===== SECTION 14-15: NEWS & EVENTS ===== */
+.news-events-header{padding:72px 0 30px;text-align:center}
+.news-events-header h2{margin-bottom:4px}
+.news-events-header .subtitle{font-size:18px;color:#555}
+.news-articles{padding:0 0 80px}
+.news-articles .grid{display:flex;gap:24px}
+.news-articles .article-card{flex:1;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:box-shadow .3s,transform .3s}
+.news-articles .article-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);transform:translateY(-4px)}
+.news-articles .article-card .thumb{aspect-ratio:16/10;overflow:hidden;background:#f0f0f0;display:flex;align-items:center;justify-content:center}
+.news-articles .article-card .thumb img{width:100%;height:100%;object-fit:cover}
+.news-articles .article-card .info{padding:20px}
+.news-articles .article-card .info h3{font-size:18px;font-weight:600;margin-bottom:8px;color:#333}
+.news-articles .article-card .info .date{font-size:14px;color:#999}
+.news-articles .article-card .arrow{display:flex;align-items:center;justify-content:flex-end;padding:0 20px 16px}
+.news-articles .article-card .arrow span{width:36px;height:36px;border-radius:50%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:18px;color:#999;transition:background .3s,color .3s}
+.news-articles .article-card:hover .arrow span{background:#e07143;color:#fff}
+
+/* ===== SPACER ===== */
+.spacer{height:60px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  h2{font-size:32px}
+  .container{padding:0 24px}
+  .product-categories .grid{flex-direction:column}
+  .product-categories .main-card{flex:none;aspect-ratio:16/9}
+  .product-categories .side-grid{grid-template-columns:1fr 1fr}
+  .hot-products .product-card{flex:0 0 calc(33.333% - 7px)}
+  .solutions-cards .grid{flex-direction:column}
+  .why-choose .inner{flex-direction:column}
+  .why-choose .left{min-height:300px}
+  .about-us .bottom-row{flex-direction:column}
+  .about-us .top-row{flex-direction:column}
+  .news-images .grid{flex-direction:column}
+  .cta-section{min-height:450px}
+  .cta-section .cta-row{flex-direction:column}
+  .cta-section .cta-left{max-width:100%}
+  .cta-section .cta-right{display:none}
+}
+@media(max-width:768px){
+  h2{font-size:26px;line-height:1.3}
+  .container{padding:0 16px}
+  .hero-banner{height:clamp(300px,60vw,500px)}
+  .hero-slide-content{padding:0 24px}
+  .hero-slide-content h1{font-size:24px}
+  .hero-slide-content p{font-size:14px}
+  .hero-nav{width:32px;height:32px;font-size:14px}
+  .hero-timer{width:36px;height:36px;bottom:10px;right:10px}
+  .full-range-products{padding:40px 0 20px}
+  .product-categories .side-grid{grid-template-columns:1fr}
+  .hot-products .product-card{flex:0 0 calc(50% - 5px)}
+  .solutions-header .inner{flex-direction:column;gap:12px}
+  .why-choose .features{grid-template-columns:1fr}
+  .news-articles .grid{flex-direction:column}
+  .cta-section .cta-left{padding:40px 0}
+  .about-us{border-radius:30px 30px 0 0}
+}
+@media(max-width:480px){
+  h2{font-size:22px}
+  .hero-banner{height:280px}
+  .hero-slide:nth-child(2) .hero-slide-content{padding:0 20px}
+  .btn-primary{padding:0 30px;height:40px;line-height:40px;font-size:14px}
+  .about-us .counter-item .number{font-size:30px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SECTION 0: HERO BANNER ===== -->
+<section class="hero-banner" id="hero-banner">
+  <div class="hero-slides" id="heroSlides">
+    <div class="hero-slide active">
+      <div class="hero-slide-bg"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Hero slide 1"></div>
+      <div class="hero-slide-content">
+        <h1>R&amp;D And Manufacture Of Personal Protective Equipment</h1>
+        <p>Products cover eight categories—head protection, respiratory protection, eye and face protection, hearing protection, body protection, hand protection, foot protection, and fall protection.</p>
+        <a href="#" class="btn-primary">VIEW MORE</a>
+      </div>
+    </div>
+    <div class="hero-slide">
+      <div class="hero-slide-bg"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Hero slide 2"></div>
+      <div class="hero-slide-content">
+        <h1>R&amp;D And Manufacture Of Personal Protective Equipment</h1>
+        <p>Products cover eight categories—head protection, respiratory protection, eye and face protection, hearing protection, body protection, hand protection, foot protection, and fall protection.</p>
+        <a href="#" class="btn-primary">VIEW MORE</a>
+      </div>
+    </div>
+  </div>
+  <button class="hero-nav hero-nav--prev" id="heroPrev" aria-label="Previous slide">❮</button>
+  <button class="hero-nav hero-nav--next" id="heroNext" aria-label="Next slide">❯</button>
+  <div class="hero-timer" id="heroTimer">
+    <svg viewBox="0 0 54 54"><circle class="bg" cx="27" cy="27" r="25"></circle><circle class="progress" id="heroTimerProgress" cx="27" cy="27" r="25"></circle></svg>
+  </div>
+</section>
+
+<!-- ===== SECTION 1: FULL RANGE PRODUCTS HEADER ===== -->
+<section class="full-range-products fade-in" id="full-range-products">
+  <div class="container section-inner">
+    <h2>Full Range Products</h2>
+    <div class="desc">It is devoted to the research, development, production and sales of occupational health and personal protective equipment, offering head-to-toe protection products and total solutions for customers in construction, chemicals, power, mining, food processing, electronics manufacturing and many other industries.</div>
+  </div>
+</section>
+
+<!-- ===== SECTION 2: PRODUCT CATEGORIES ===== -->
+<div class="developer-component" data-gjs-type="developer-component"><div class="backstage-blocksEditor-wrap developer-node-component developer-component-newedit block_2513fe23458d" data-gjs-type="developer-node-component" data-block-type="phoenix_blocks_groupProduct_new" data-block-uuid="2513fe23458d" data-new-auto-uuid="2513fe23458d" data-app-id="WWKAfpUNoOfE" data-freemaker-html-available="true"><section class="product-categories fade-in" id="product-categories">
+  <div class="container">
+    <div class="grid">
+      <div class="main-card">
+        <img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Body Protection">
+        <div class="overlay">
+          <div class="brand-label">Laan Protection Technology</div>
+          <h3><span>Body Protection</span></h3>
+          <div class="sub">Chemical Protective Suits</div>
+          <div class="card-desc">It is devoted to the research, development, production and sales of occupational health and personal protective equipment.</div>
+          <a href="#" class="view-link">View More</a>
+        </div>
+      </div>
+      <div class="side-grid">
+        <div class="side-card">
+          <img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Head Protection">
+          <div class="overlay">
+            <div class="brand-label">Laan Protection Technology</div>
+            <h3><span>Head</span></h3>
+            <div class="sub">Protection</div>
+            <a href="#" class="view-link">View More</a>
+          </div>
+        </div>
+        <div class="side-card">
+          <img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Respiratory Protection">
+          <div class="overlay">
+            <div class="brand-label">Laan Protection Technology</div>
+            <h3><span>Respiratory</span></h3>
+            <div class="sub">Protection</div>
+            <a href="#" class="view-link">View More</a>
+          </div>
+        </div>
+        <div class="side-card">
+          <img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Hand Protection">
+          <div class="overlay">
+            <div class="brand-label">Laan Protection Technology</div>
+            <h3><span>Hand</span></h3>
+            <div class="sub">Protection</div>
+            <a href="#" class="view-link">View More</a>
+          </div>
+        </div>
+        <div class="side-card">
+          <img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Foot Protection">
+          <div class="overlay">
+            <div class="brand-label">Laan Protection Technology</div>
+            <h3><span>Foot</span></h3>
+            <div class="sub">Protection</div>
+            <a href="#" class="view-link">View More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section></div></div>
+
+<!-- ===== SECTION 3: HOT PRODUCTS CAROUSEL ===== -->
+<div class="developer-component" data-gjs-type="developer-component"><div class="backstage-blocksEditor-wrap developer-node-component developer-component-newedit block_a16c5c08f7d6" data-gjs-type="developer-node-component" data-block-type="phoenix_blocks_prodlist" data-block-uuid="a16c5c08f7d6" data-new-auto-uuid="a16c5c08f7d6" data-app-id="lIUfpKACmdJh" data-freemaker-html-available="true"><section class="hot-products fade-in" id="hot-products">
+  <div class="container">
+    <div class="section-header">
+      <h2>Hot Products</h2>
+      <div class="subtitle">To provide reliable personal protective equipment for workers on an ongoing basis.</div>
+    </div>
+    <div class="carousel-track-wrapper" id="productCarouselWrapper">
+      <div class="carousel-track" id="productCarousel">
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-CR05 Aramid Cut Level 5 Glove"></div>
+          <div class="name">LA-CR05 Aramid Cut Level 5 Glove</div>
+        </div>
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-DF02 KN95 Fold-flat Dust Mask"></div>
+          <div class="name">LA-DF02 KN95 Fold-flat Dust Mask</div>
+        </div>
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-SH01 HDPE Safety Helmet"></div>
+          <div class="name">LA-SH01 HDPE Safety Helmet</div>
+        </div>
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-CR05 Aramid Cut Level 5 Glove"></div>
+          <div class="name">LA-CR05 Aramid Cut Level 5 Glove</div>
+        </div>
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-SH01 HDPE Safety Helmet"></div>
+          <div class="name">LA-SH01 HDPE Safety Helmet</div>
+        </div>
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-CR05 Aramid Cut Level 5 Glove"></div>
+          <div class="name">LA-CR05 Aramid Cut Level 5 Glove</div>
+        </div>
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-DF02 KN95 Fold-flat Dust Mask"></div>
+          <div class="name">LA-DF02 KN95 Fold-flat Dust Mask</div>
+        </div>
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-SH01 HDPE Safety Helmet"></div>
+          <div class="name">LA-SH01 HDPE Safety Helmet</div>
+        </div>
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-CR05 Aramid Cut Level 5 Glove"></div>
+          <div class="name">LA-CR05 Aramid Cut Level 5 Glove</div>
+        </div>
+        <div class="product-card">
+          <div class="img-wrap"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="LA-SH01 HDPE Safety Helmet"></div>
+          <div class="name">LA-SH01 HDPE Safety Helmet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section></div></div>
+
+<!-- ===== SECTION 4: ABOUT US ===== -->
+<section class="about-us fade-in" id="about-us">
+  <div class="about-us-bg"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Background"></div>
+  <div class="container">
+    <div style="height:40px"></div>
+    <div class="company-subtitle">—— Laan Protection Technology Co., Ltd.</div>
+    <div class="top-row">
+      <div class="text-col">
+        <div class="tagline">Reliable personal protective equipment<br><span class="highlight">For workers on an ongoing basis</span></div>
+      </div>
+      <div class="badge-col">
+        <div class="about-badge"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="ABOUT" style="height:80px;width:auto;opacity:.6"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:30px;margin-bottom:20px">
+      <div style="flex:1">
+        <div class="about-desc">Headquartered in the Jinshan Industrial Zone of Shanghai, the company covers an area of 30 mu and has a built-up area of 22,000 m².</div>
+      </div>
+      <div style="flex:2">
+        <div class="about-desc">It is devoted to the research, development, production and sales of occupational health and personal protective equipment, offering head-to-toe protection products and total solutions for customers in construction, chemicals, power, mining, food processing, electronics manufacturing and many other industries.</div>
+      </div>
+    </div>
+    <div style="margin-bottom:24px"><a href="#" class="btn-primary">View More</a></div>
+    <div style="height:10px"></div>
+    <div class="bottom-row">
+      <div class="factory-img"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Factory" style="min-height:300px"></div>
+      <div class="counters" id="countersSection">
+        <div class="counter-item">
+          <div class="number"><span class="counter-number" data-target="530.4">0</span><span class="suffix">+</span></div>
+          <div class="label">Research And Development Expenditure</div>
+        </div>
+        <div class="counter-item">
+          <div class="number"><span class="counter-number" data-target="530.4">0</span><span class="suffix">+</span></div>
+          <div class="label">Research And Development Expenditure</div>
+        </div>
+        <div class="counter-item">
+          <div class="number"><span class="counter-number" data-target="530.4">0</span><span class="suffix">+</span></div>
+          <div class="label">Research And Development Expenditure</div>
+        </div>
+      </div>
+    </div>
+    <div style="height:49px"></div>
+  </div>
+</section>
+
+<!-- ===== SPACER ===== -->
+<div class="spacer"></div>
+
+<!-- ===== SECTION 6: SOLUTIONS HEADER ===== -->
+<section class="solutions-header fade-in" id="solutions-header">
+  <div class="container">
+    <div class="inner">
+      <div class="left">
+        <h2>Laan Protection Technology</h2>
+        <div class="subtitle">Industry-wide Solutions</div>
+      </div>
+      <div class="right">
+        <a href="#" class="btn-primary">View More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 7: SOLUTIONS CARDS ===== -->
+<section class="solutions-cards fade-in" id="solutions-cards">
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <div class="icon-area">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg>
+        </div>
+        <h2>Petrochemical Protection</h2>
+        <div class="card-desc">Designed for chemical splash and static-accumulation hazards, the selection uses chemical-resistant and anti-static materials together with filtered respiratory devices.</div>
+        <div class="card-img"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Petrochemical Protection"></div>
+      </div>
+      <div class="card">
+        <div class="icon-area">
+          <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"></path></svg>
+        </div>
+        <h2>Power Operation &amp; Maintenance</h2>
+        <div class="card-desc">Based on arc-energy levels, insulation and fall-protection items are combined to reduce electrical-shock and height-related risks during maintenance.</div>
+        <div class="card-img"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Power Operation"></div>
+      </div>
+      <div class="card">
+        <div class="icon-area">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"></path></svg>
+        </div>
+        <h2>Underground Mining</h2>
+        <div class="card-desc">Considering dust and mechanical hazards, dust-filter masks and puncture-resistant footwear are specified to allow movement in confined spaces.</div>
+        <div class="card-img"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Underground Mining"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SPACER ===== -->
+<div class="spacer" style="height:54px"></div>
+
+<!-- ===== SECTION 9: WHY CHOOSE US ===== -->
+<section class="why-choose fade-in" id="why-choose">
+  <div class="container">
+    <div class="inner">
+      <div class="left">
+        <img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Protective Suit">
+      </div>
+      <div class="right">
+        <div class="top-text">
+          <h2>Laan Protection Technology</h2>
+          <div class="sub">The Reasons Why Choose<br>Laan Protection Technology</div>
+          <p>Laan Protection Technology Co., Ltd. was founded in 2008 with a registered capital of RMB 50 million. Headquartered in the Jinshan Industrial Zone of Shanghai, the company covers an area of 30 mu and has a built-up area of 22,000 m².</p>
+        </div>
+        <div class="features">
+          <div class="feature-item">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"></path></svg>
+            </div>
+            <div class="text">R&amp;D platform</div>
+          </div>
+          <div class="feature-item">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path></svg>
+            </div>
+            <div class="text">R&amp;D and manufacture</div>
+          </div>
+          <div class="feature-item">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"></path></svg>
+            </div>
+            <div class="text">Technical services</div>
+          </div>
+          <div class="feature-item">
+            <div class="icon">
+              <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"></path></svg>
+            </div>
+            <div class="text">Valid patents</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SPACER ===== -->
+<div class="spacer" style="height:54px"></div>
+
+<!-- ===== SECTION 11: NEWS IMAGES ===== -->
+<section class="news-images fade-in" id="news-images">
+  <div class="container">
+    <div class="grid">
+      <div class="img-card"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="News image 1"></div>
+      <div class="img-card"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="News image 2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SPACER ===== -->
+<div class="spacer" style="height:59px"></div>
+
+<!-- ===== SECTION 13: CTA ===== -->
+<section class="cta-section fade-in" id="cta-section">
+  <div class="bg"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="CTA Background"></div>
+  <div class="container">
+    <div class="cta-row">
+      <div class="cta-left">
+        <div style="height:62px"></div>
+        <h2>Laan Protection Technology</h2>
+        <div class="subtitle">We look forward to working with you and providing you with the <span class="highlight">best solutions</span></div>
+        <p>For construction, petrochemicals, power, mining, machinery manufacturing, food processing, electronics cleanrooms, and other scenarios, we provide product matching, technical consulting, and training services.</p>
+        <a href="#" class="btn-primary">View More</a>
+      </div>
+      <div class="cta-right"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 14: NEWS EVENTS HEADER ===== -->
+<section class="news-events-header fade-in" id="news-events-header">
+  <div class="container">
+    <h2>Laan Protection Technology</h2>
+    <div class="subtitle">News And Events</div>
+  </div>
+</section>
+
+<!-- ===== SECTION 15: NEWS ARTICLES ===== -->
+<div class="developer-component" data-gjs-type="developer-component"><div class="backstage-blocksEditor-wrap developer-node-component developer-component-newedit block_df208c77f43f" data-gjs-type="developer-node-component" data-block-type="phoenix_blocks_Articlelist" data-block-uuid="df208c77f43f" data-new-auto-uuid="df208c77f43f" data-app-id="VBAUKpfWweAr" data-freemaker-html-available="true"><section class="news-articles fade-in" id="news-articles">
+  <div class="container">
+    <div class="grid">
+      <div class="article-card">
+        <a href="#" class="thumb"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Article 1"></a>
+        <div class="info">
+          <h3><a href="#">1</a></h3>
+          <div class="date">25 December 2025</div>
+        </div>
+        <div class="arrow"><span>❯</span></div>
+      </div>
+      <div class="article-card">
+        <a href="#" class="thumb"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Article 2"></a>
+        <div class="info">
+          <h3><a href="#">hh</a></h3>
+          <div class="date">18 December 2025</div>
+        </div>
+        <div class="arrow"><span>❯</span></div>
+      </div>
+      <div class="article-card">
+        <a href="#" class="thumb"><img src="//g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Article 3"></a>
+        <div class="info">
+          <h3><a href="#">liu2</a></h3>
+          <div class="date">17 December 2025</div>
+        </div>
+        <div class="arrow"><span>❯</span></div>
+      </div>
+    </div>
+  </div>
+</section></div></div>
+
+<div style="height:80px"></div>
+
+<script>
+(function(){
+  // ===== HERO CAROUSEL =====
+  var slides = document.querySelectorAll('.hero-slide');
+  var cur = 0;
+  var total = slides.length;
+  var interval = 5000;
+  var timer = null;
+  var progressEl = document.getElementById('heroTimerProgress');
+  var circumference = 2 * Math.PI * 25;
+  var startTime = 0;
+  var rafId = null;
+
+  function showSlide(idx){
+    slides.forEach(function(s){ s.classList.remove('active'); });
+    slides[idx].classList.add('active');
+    cur = idx;
+    startTime = Date.now();
+  }
+
+  function nextSlide(){ showSlide((cur + 1) % total); resetTimer(); }
+  function prevSlide(){ showSlide((cur - 1 + total) % total); resetTimer(); }
+
+  function updateProgress(){
+    var elapsed = Date.now() - startTime;
+    var pct = Math.min(elapsed / interval, 1);
+    if(progressEl) progressEl.style.strokeDashoffset = circumference * (1 - pct);
+    if(pct < 1) rafId = requestAnimationFrame(updateProgress);
+  }
+
+  function resetTimer(){
+    clearTimeout(timer);
+    cancelAnimationFrame(rafId);
+    startTime = Date.now();
+    updateProgress();
+    timer = setTimeout(nextSlide, interval);
+  }
+
+  document.getElementById('heroNext').addEventListener('click', nextSlide);
+  document.getElementById('heroPrev').addEventListener('click', prevSlide);
+  resetTimer();
+
+  // ===== PRODUCT CAROUSEL (infinite loop) =====
+  var track = document.getElementById('productCarousel');
+  var wrapper = document.getElementById('productCarouselWrapper');
+  if(track && wrapper){
+    var cards = track.querySelectorAll('.product-card');
+    var cardCount = cards.length;
+    var pos = 0;
+    var dragging = false;
+    var startX = 0;
+    var scrollStart = 0;
+
+    function getVisibleCount(){
+      var w = window.innerWidth;
+      if(w <= 480) return 2;
+      if(w <= 768) return 3;
+      return 5;
+    }
+
+    function getCardWidth(){
+      var vis = getVisibleCount();
+      var wrapW = wrapper.offsetWidth;
+      var gap = 10;
+      return (wrapW - gap * (vis - 1)) / vis;
+    }
+
+    function updateCarousel(animate){
+      var cw = getCardWidth();
+      var gap = 10;
+      cards.forEach(function(c){ c.style.flex = '0 0 ' + cw + 'px'; c.style.minWidth = cw + 'px'; });
+      var offset = pos * (cw + gap);
+      track.style.transition = animate ? 'transform .5s ease' : 'none';
+      track.style.transform = 'translateX(' + (-offset) + 'px)';
+    }
+
+    function autoScroll(){
+      pos++;
+      var vis = getVisibleCount();
+      if(pos > cardCount - vis) pos = 0;
+      updateCarousel(true);
+    }
+
+    updateCarousel(false);
+    var prodTimer = setInterval(autoScroll, 3500);
+
+    wrapper.addEventListener('mousedown', function(e){ dragging = true; startX = e.clientX; scrollStart = pos; e.preventDefault(); });
+    window.addEventListener('mousemove', function(e){
+      if(!dragging) return;
+      var diff = startX - e.clientX;
+      var cw = getCardWidth() + 10;
+      pos = scrollStart + Math.round(diff / cw);
+      var vis = getVisibleCount();
+      pos = Math.max(0, Math.min(pos, cardCount - vis));
+      updateCarousel(false);
+    });
+    window.addEventListener('mouseup', function(){
+      if(!dragging) return;
+      dragging = false;
+      updateCarousel(true);
+    });
+
+    var touchStartX = 0;
+    wrapper.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; scrollStart = pos; clearInterval(prodTimer); }, {passive:true});
+    wrapper.addEventListener('touchmove', function(e){
+      var diff = touchStartX - e.touches[0].clientX;
+      var cw = getCardWidth() + 10;
+      pos = scrollStart + Math.round(diff / cw);
+      var vis = getVisibleCount();
+      pos = Math.max(0, Math.min(pos, cardCount - vis));
+      updateCarousel(false);
+    }, {passive:true});
+    wrapper.addEventListener('touchend', function(){
+      updateCarousel(true);
+      prodTimer = setInterval(autoScroll, 3500);
+    });
+
+    window.addEventListener('resize', function(){ updateCarousel(false); });
+  }
+
+  // ===== COUNTER ANIMATION =====
+  var countersAnimated = false;
+  var countersSection = document.getElementById('countersSection');
+  if(countersSection){
+    var counterObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting && !countersAnimated){
+          countersAnimated = true;
+          var nums = countersSection.querySelectorAll('.counter-number');
+          nums.forEach(function(el){
+            var target = parseFloat(el.getAttribute('data-target'));
+            var duration = 2000;
+            var st = performance.now();
+            function animate(now){
+              var elapsed = now - st;
+              var pct = Math.min(elapsed / duration, 1);
+              var eased = 1 - Math.pow(1 - pct, 3);
+              var val = (target * eased).toFixed(1);
+              el.textContent = val;
+              if(pct < 1) requestAnimationFrame(animate);
+              else el.textContent = target;
+            }
+            requestAnimationFrame(animate);
+          });
+        }
+      });
+    }, {threshold:0.3});
+    counterObserver.observe(countersSection);
+  }
+
+  // ===== SCROLL FADE-IN =====
+  var fadeEls = document.querySelectorAll('.fade-in');
+  var fadeObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.1});
+  fadeEls.forEach(function(el){ fadeObserver.observe(el); });
+
+})();
+</script>
+
+
+
+<!-- Dynamic Module Model Setup Script -->
+<script>
+(function() {
+  var FREEMAKER_TEMPLATES = {};
+  FREEMAKER_TEMPLATES["2513fe23458d"] = `<div class="backstage-blocksEditor-wrap wra block-39404 block-common-group-list_container" data-block-uuid="groupProduct"  data-gjs-type="developer-node-component" data-show-helperel="1" data-dynamic-toolbar="1" data-block-type="phoenix_blocks_groupProduct_new" data-component-type="tree" data-default-setting={"selectGroupIds":[],"jumpMethod":"1","expandIds":{"showField":{"draggable":false,"data":[{"fieldName":"分类名称","checked":true,"fieldType":"0","value":"2","fieldId":"groupName"},{"fieldName":"分类图片","checked":false,"fieldType":"0","value":"1","fieldId":"groupPhotoUrlList"}],"key":"showField"}},"layoutStyle":"0","translationEntry":[]}>
+		[#assign pcDefaultStyle = 'allExpand']
+		[#assign padDefaultStyle = 'allExpand']
+		[#assign phoneDefaultStyle = 'allExpand']
+		[#assign closeWay = 'open']
+		[#assign expandIconClass = 'iconfont_phoenix icon-angle-up']
+		[#assign collapseIconClass = 'iconfont_phoenix icon-angle-down']
+		[#assign htmlClass_firstFont = '']
+		[#assign htmlClass_secondFont = '']
+		[#assign addBlockKeyClass = '']
+
+
+		[#if componentSetting?? && componentSetting != ""]
+            [#assign componentSettingJSON=componentSetting?eval /]
+			[#if componentSettingJSON?? && componentSettingJSON.dynamicFontTab??]
+				[#list componentSettingJSON.dynamicFontTab as item]
+					[#list item.saveData as saveDataItem]
+						[#if saveDataItem.styleKey?? && saveDataItem.styleKey == 'currentFontStyleClass']
+							[#if item.value?? && item.value == 'groupNameFont']
+								[#assign htmlClass_firstFont = saveDataItem.defaultFont /]                            
+							[/#if] 
+							[#if item.value?? && item.value == 'groupSecondFont']
+								[#assign htmlClass_secondFont = saveDataItem.defaultFont /]                            
+							[/#if] 
+						[/#if]
+						[#if saveDataItem.styleKey?? && saveDataItem.styleKey == 'addBlockKeyClass']
+							[#if saveDataItem.defaultFont?? &&  saveDataItem.defaultFont != '']
+								[#assign addBlockKeyClass = saveDataItem.defaultFont /]                            
+							[/#if] 
+						[/#if]
+					[/#list]
+				[/#list]
+			[/#if]
+
+
+            [#if componentSettingJSON?? && componentSettingJSON.prodDynamicSetting??]
+                [#if componentSettingJSON.prodDynamicSetting[0].blockSetting??]
+					[#if componentSettingJSON.prodDynamicSetting[0].blockSetting.defaultStyleObj.desktop??]
+						[#assign pcDefaultStyle = componentSettingJSON.prodDynamicSetting[0].blockSetting.defaultStyleObj.desktop]
+						[#assign padDefaultStyle = 'pad_' + componentSettingJSON.prodDynamicSetting[0].blockSetting.defaultStyleObj.desktop]
+						[#assign phoneDefaultStyle = 'phone_' + componentSettingJSON.prodDynamicSetting[0].blockSetting.defaultStyleObj.desktop]
+
+						[#if componentSettingJSON.prodDynamicSetting[0].blockSetting.defaultStyleObj.tablet??]
+							[#assign padDefaultStyle = 'pad_' + componentSettingJSON.prodDynamicSetting[0].blockSetting.defaultStyleObj.tablet]
+							[#assign phoneDefaultStyle = 'phone_' + componentSettingJSON.prodDynamicSetting[0].blockSetting.defaultStyleObj.tablet]
+						[/#if]
+						[#if componentSettingJSON.prodDynamicSetting[0].blockSetting.defaultStyleObj.mobilePortrait??]
+							[#assign phoneDefaultStyle = 'phone_' + componentSettingJSON.prodDynamicSetting[0].blockSetting.defaultStyleObj.mobilePortrait]
+						[/#if]
+					[/#if]
+
+					[#if componentSettingJSON.prodDynamicSetting[0].blockSetting.itemIconClass??]
+						[#assign itemIconClass = componentSettingJSON.prodDynamicSetting[0].blockSetting.itemIconClass]
+					[/#if]
+
+					[#if componentSettingJSON.prodDynamicSetting[0].blockSetting.closeWay??]
+						[#assign closeWay = componentSettingJSON.prodDynamicSetting[0].blockSetting.closeWay]
+					[/#if]
+				[/#if]
+
+				[#if componentSettingJSON.prodDynamicSetting[1].blockSetting??]
+					[#if componentSettingJSON.prodDynamicSetting[1].blockSetting.expandIconClass != '']
+						[#assign expandIconClass = componentSettingJSON.prodDynamicSetting[1].blockSetting.expandIconClass]
+					[/#if]
+					[#if componentSettingJSON.prodDynamicSetting[1].blockSetting.collapseIconClass != '']
+						[#assign collapseIconClass = componentSettingJSON.prodDynamicSetting[1].blockSetting.collapseIconClass]
+					[/#if]
+				[/#if]
+            [/#if]
+        [/#if]
+
+		[@api method="post" url="/phoenix2/composite/graphql" jumpMethod="\${jumpMethod!'0'}"
+			selectGroupIds="\${selectGroupIds!''}"
+			expandIds="\${expandIds!''}"
+			query='{
+				 productGroupList(selectGroupIds: \$selectGroupIds, optionsParam: \$optionsParam) {
+					encodeId
+					groupName
+					groupUrl
+					parentGroupId
+					subGroups
+					showFieldList
+				}
+			}']
+		
+
+			[#assign isGroupName = '1' /]
+			[#if expandIds?? && expandIds != ""]
+					[#assign expandIdsJSON=expandIds?eval /]
+					[#list expandIdsJSON.showField.data as group]
+						[#if group.fieldId == 'groupName' && group.checked]
+							[#assign isGroupName = '1' /]
+						[/#if]
+					[/#list]
+			[/#if]
+			
+		<ul class="block-product-group-list block-common-group-list \${pcDefaultStyle} \${padDefaultStyle} \${phoneDefaultStyle} \${addBlockKeyClass} 22222222222222" data-closeway="\${closeWay}">
+			<!-- 特殊标识 用于后台保存样式 -->
+			<div class="group-item-li current" style="display: none;">
+				<input type="hidden" class="classify-flex" />
+			</div>
+			[#if data?? && data.productGroupList?? && (data.productGroupList?size > 0)]
+				[#list data.productGroupList as group]
+				[#if isGroupName == '1']
+					<li class="group-item-li grouplist-li-first [#if productGroupId?? && productGroupId == group.prodGroupId]current[/#if]" data-pid="\${group.encodeId}">
+						<div class="classify-flex [#if group.subGroups??]hasChild[/#if] group_classify_\${htmlClass_firstFont!''}">
+							<span class="classify-flex-span">
+								<a class="groupName \${htmlClass_firstFont!''}" href="\${group.groupUrl!''}" target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]" title="\${group.groupName!?html}">\${group.groupName!?html}</a>
+							</span>
+							[#if group.subGroups??]
+								<span class="drop-down">
+									<i class="expand_icon \${expandIconClass!'iconfont_phoenix icon-angle-up'}"></i>
+									<i class="collapse_icon \${collapseIconClass!'iconfont_phoenix icon-angle-down'}"></i>
+								</span>
+							[/#if]
+						</div>
+						<div class="group-item-divider"></div>
+						[#-- 二级菜单 --]
+						[#if group.subGroups?? && group.subGroups?has_content]
+							<ul class="two-classify classify-item">
+							[#list group.subGroups as secondGroup]
+								<li class="grouplist-li-two group-item-li grouplist-li-other [#if productGroupId?? && productGroupId == secondGroup.prodGroupId ]current[/#if]">
+									<div class="classify-flex [#if secondGroup.subGroups??]hasChild[/#if]  group_classify_\${htmlClass_secondFont!''}">
+										<span class="classify-flex-span">
+											[#if itemIconClass?? && itemIconClass != '']
+												<span><i class="\${itemIconClass}"></i></span>
+											[/#if]
+											<a class="groupName \${htmlClass_secondFont!''}" href="\${secondGroup.groupUrl!''}" title="\${secondGroup.groupName!?html}" target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]" >\${secondGroup.groupName!?html}</a>
+										</span>
+										[#if secondGroup.subGroups??]
+											<span class="drop-down">
+												<i class="expand_icon \${expandIconClass!'iconfont_phoenix icon-angle-up'}"></i>
+												<i class="collapse_icon \${collapseIconClass!'iconfont_phoenix icon-angle-down'}"></i>
+											</span>
+										[/#if]
+									</div>
+									<div class="group-item-divider"></div>									
+									[#-- 三级菜单 --]
+									[#if secondGroup.subGroups??]	
+										<ul class="three-classify classify-item">
+											[#list secondGroup.subGroups as thirdGroup]
+												<li class="grouplist-li-three group-item-li grouplist-li-other [#if productGroupId?? && productGroupId == thirdGroup.prodGroupId ]current[/#if]">
+													<div class="classify-flex [#if thirdGroup.subGroups??]hasChild[/#if] group_classify_\${htmlClass_secondFont!''}">
+														<span class="classify-flex-span">
+															[#if itemIconClass?? && itemIconClass != '']
+																<span><i class="\${itemIconClass}"></i></span>
+															[/#if]
+															<a class="groupName \${htmlClass_secondFont!''} " href="\${thirdGroup.groupUrl!''}" title="\${thirdGroup.groupName!?html}" target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]">\${thirdGroup.groupName!?html}</a>
+														</span>
+														[#if thirdGroup.subGroups??]
+															<span class="drop-down">
+																<i class="expand_icon \${expandIconClass!'iconfont_phoenix icon-angle-up'}"></i>
+																<i class="collapse_icon \${collapseIconClass!'iconfont_phoenix icon-angle-down'}"></i>
+															</span>
+														[/#if]
+													</div>
+													<div class="group-item-divider"></div>									
+													[#-- 四级菜单 --]
+													[#if thirdGroup.subGroups??]	
+														<ul class="four-classify classify-item">
+															[#list thirdGroup.subGroups as forthGroup]
+																<li class="grouplist-li-four group-item-li grouplist-li-other [#if productGroupId?? && productGroupId == forthGroup.prodGroupId ]current[/#if]">
+																	<div class="classify-flex [#if forthGroup.subGroups??]hasChild[/#if]  group_classify_\${htmlClass_secondFont!''}">
+																		<span class="classify-flex-span">
+																			[#if itemIconClass?? && itemIconClass != '']
+																				<span><i class="\${itemIconClass}"></i></span>
+																			[/#if]
+																			<a class="groupName \${htmlClass_secondFont!''} " href="\${forthGroup.groupUrl!''}" title="\${forthGroup.groupName!?html}" target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]">\${forthGroup.groupName!?html}</a>
+																		</span>
+																		[#if forthGroup.subGroups??]
+																			<span class="drop-down">
+																				<i class="expand_icon \${expandIconClass!'iconfont_phoenix icon-angle-up'}"></i>
+																				<i class="collapse_icon \${collapseIconClass!'iconfont_phoenix icon-angle-down'}"></i>
+																			</span>
+																		[/#if]
+																	</div>
+																	<div class="group-item-divider"></div>		
+																	[#-- 五级菜单 --]
+																	[#if forthGroup.subGroups??]	
+																		<ul class="five-classify classify-item">
+																			[#list forthGroup.subGroups as fifthGroup]
+																				<li class="grouplist-li-five group-item-li grouplist-li-other [#if productGroupId?? && productGroupId == fifthGroup.prodGroupId ]current[/#if]">
+																					<div class="classify-flex group_classify_\${htmlClass_secondFont!''}">
+																						<span class="classify-flex-span">
+																							[#if itemIconClass?? && itemIconClass != '']
+																								<span><i class="\${itemIconClass}"></i></span>
+																							[/#if]
+																							<a class="groupName \${htmlClass_secondFont!''}" href="\${fifthGroup.groupUrl!''}" title="\${fifthGroup.groupName!?html}" target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]">\${fifthGroup.groupName!?html}</a>
+																						</span>
+																					</div>
+																					<div class="group-item-divider"></div>				
+																				</li>
+																			[/#list]
+																		</ul>
+																	[/#if]
+																</li>
+															[/#list]
+														</ul>
+													[/#if]
+												</li>
+											[/#list]
+										</ul>
+									[/#if]
+								</li>
+							[/#list]
+							</ul>
+						[/#if]
+					</li>
+				[/#if]
+				[/#list]
+			[#else]
+				<div class="templist-no-data">[@s.m "phoenix_no_content" /]</div>
+			[/#if]
+		</ul>
+		<script>
+			\$(function(){
+				window._block_namespaces_['prodlist_group39404'].init({'relationId':'\${relationId}','relationType':'\${relationType}','pageId':'\${pageId}','nodeId':'groupProduct_\${nodeId!""}', 'appId': '\${appId!}', 'appIsDev': '\${appIsDev!"0"}','appVersion':'\${appVersion}'});
+
+			});
+		</script>
+		
+	[/@api]
+		
+	</div>`;
+  FREEMAKER_TEMPLATES["a16c5c08f7d6"] = `<div class="backstage-blocksEditor-wrap wra block_77334" data-block-uuid="aaa" data-gjs-type="developer-node-component"  data-block-type="phoenix_blocks_prodlist">
+		[@api method="post" url="/phoenix2/composite/graphql" page="\${pageNum!1}" limit="\${pageSize!'10'}"  dataIds = "\${dataIds!''}" dataGroupId = "\${dataGroupId!''}" productGroupId = "\${productGroupId!'-1'}"
+		 dataType="\${dataType!'0'}" jumpMethod="\${jumpMethod!'0'}"
+		  layoutStyle="\${layoutStyle!'0'}" orderBy="\${orderBy!'0'}"
+		  expandIds="\${expandIds!''}" productId="\${productId!-1}" currentPageIdForRelated="\${pageId!-1}"
+		  articleRelatedId="\${infoId!-1}"
+			query='{
+			productList(
+				conditionDto:{
+				searchGroupIds: \$dataGroupId
+				searchProdIds: \$dataIds
+				prodType: "\$dataType"
+				page: \$page
+				limit: \$limit
+				orderBy: "\$orderBy"
+				optionsParam: \$optionsParam
+				prodRelatedId: "\$productId"
+				prodCateIdByPage: "\$productGroupId"
+				articleRelatedId: "\$articleRelatedId"
+				currentPageIdForRelated: "\$currentPageIdForRelated"
+				}) {
+				totalRow
+				pageSize
+				pageNumber
+				extraData{
+					coinSymbol
+					isB2cPlan
+					prodStructureData
+					summaryRichTextFlag
+				}
+				list {
+					encodeId
+					prodName 
+					prodPrice
+					prodBrief
+					commentStar
+					prodMaxPrice
+					prodMinPrice
+					prodDiscountPrice
+					prodUrl
+					photoUrlList
+					enabledTrade
+					isSkuProd
+					showFieldList
+					customFieldList
+					\$showField
+					phoenixProductSubVo{
+						hasProdVideo
+					}
+				}
+			}
+		}']
+		<div class="block-prodlist-container-replace">
+		<ul class="block-prodlist-lead-container block-prodlist-lead-container-77334 [#if layoutStyle == '1']columns-4[/#if]">
+			[#if data?? && data.productList?? && data.productList.list?? && (data.productList.list?size > 0)]
+			[#list data.productList.list as product]
+			<li class="prodlist-site-block" data-pid="\${product.encodeId}">
+				<div class="top">
+					<div class="prodlist-site-block-image labelfather">
+						[#if product.photoUrlList?? && product.photoUrlList[0]??]
+						<a class="product-image" href="\${product.prodUrl!'#'}" title="\${product.prodName!?html}" target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]">
+						<picture>
+							<source media="(min-width: 450px)" srcset="\${product.photoUrlList[0]!}" />
+							<source media="(max-width: 449px)" srcset="\${product.photoUrlList[0]!}" />
+							<img class="normal-image" loading="lazy" src="\${product.photoUrlList[0]!}" alt="\${product.prodName!?html}"/>
+						</picture>
+
+
+						</a>
+						[/#if]
+						<!-- 是否有视频标签 -->
+						[#if product.phoenixProductSubVo.hasProdVideo?? && product.phoenixProductSubVo.hasProdVideo == 'true']
+							<div class="hasVideo">
+								<a  class="paragraph1" href="\${product.prodUrl!'#'}" title="\${product.prodName!?html}" target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]">
+									
+									<i class="iconfont iconfont_phoenix icon-icon-bofang1"></i>
+									[@s.m "PHENIX2_VIDEO" /]
+								</a>
+							</div>
+						[/#if]
+					</div>
+					<!-- 标题 -->
+					<div class="prodlist-site-block-name">
+						<a class="titleLabel" href="\${product.prodUrl!'#'}" target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]">
+						<span class="heading5">\${product.prodName!?html}</span>
+						</a>
+					</div>			
+					<!-- 显示字段 -->
+					<div class="prodlist-site-block-attribute">
+
+						[#if product.showFieldList??]
+							[#list product.showFieldList as field]
+								[#if field.fieldType = '0' || field.fieldType = '4' || field.fieldType = '8' ]
+									<div class="prodlist-site-attrs paragraph1">
+										<div class="prodlist-site-attrlabel">
+											[#if field.fieldId == 'prodBrand']
+												[@s.m "PHENIX2_BRAND" /]:
+											[#elseif field.fieldId == 'prodModel']
+												[@s.m "PHENIX2_MODEL" /]:
+											[#elseif field.fieldId == 'prodCode']
+												[@s.m "PHENIX2_CODE" /]:
+											[#else]
+												\${field.fieldName!''}:
+											[/#if]
+										</div>
+										<div class="prodlist-site-attrvalue">
+											[#if field.fieldType = '4']
+												[#if field.fieldValue??]
+												<span class="inlineblock h20 w20" style="background-color:\${field.fieldValue!}"></span>
+												[/#if]
+											[#else]
+												[#if field.fieldValue??]
+												<span class="prodlist-site-value">
+													\${field.fieldValue!}
+												</span>
+												[/#if]
+											[/#if]	
+										</div>
+									</div> 
+										
+								[#elseif field.fieldType = '1' || field.fieldType = '2' || field.fieldType = '3']
+									<div class="prodlist-site-attrs paragraph1">
+										<div class="prodlist-site-attrlabel">
+											[#if field.fieldId == 'prodBrand']
+												[@s.m "PHENIX2_BRAND" /]:
+											[#elseif field.fieldId == 'prodModel']
+												[@s.m "PHENIX2_MODEL" /]:
+											[#elseif field.fieldId == 'prodCode']
+												[@s.m "PHENIX2_CODE" /]:
+											[#else]
+												\${field.fieldName!''}:
+											[/#if]
+										</div>
+										<div class="prodlist-site-attrvalue">
+											[#if field.fieldValue??]
+												[#list field.fieldValue as values]
+													\${values!''}&nbsp;
+												[/#list]
+											[/#if]
+										</div>
+									</div> 
+								[#elseif field.fieldType = '5']
+									<div class="prodlist-site-attrs paragraph1">
+										<div class="prodlist-site-attrlabel">
+											[#if field.fieldId == 'prodBrand']
+												[@s.m "PHENIX2_BRAND" /]:
+											[#elseif field.fieldId == 'prodModel']
+												[@s.m "PHENIX2_MODEL" /]:
+											[#elseif field.fieldId == 'prodCode']
+												[@s.m "PHENIX2_CODE" /]:
+											[#else]
+												\${field.fieldName!''}:
+											[/#if]
+										</div>
+										<div class="prodlist-site-attrvalue">
+											[#if field.fieldId??]
+											<a href="javascript:void(0);" class="getFileDownload" data-downloadFildId="\${field.fieldId}">\${field.fieldValue!}</a>
+											[#else]
+											<a href="\${field.downloadUrl!}" target="_blank">\${field.fieldValue!}</a>
+											[/#if]
+										</div>
+									</div> 	
+
+								[#elseif field.fieldType = '101']
+									<!-- 简介 -->
+									[#if product.prodBrief??]
+										<div class="product-introduction paragraph1">
+											[#if data.productList.extraData.summaryRichTextFlag =='1']
+												\${product.prodBrief!}
+											[#else]
+												\${product.prodBrief?html}
+											[/#if]
+										</div>
+									[/#if]
+								[#elseif field.fieldType = '100']
+										<!-- 星级评价 -->
+										<div class="prodlist-site-rate">
+											<!-- <div class="prodlist-rate-normal" star-id="\${product.commentStar!'5'}" id="prodlist-site-rate_\${product_index}">
+											</div> -->
+											  [#assign comentStrNums = product.commentStar!5]
+											  [#if comentStrNums <= 0]
+											  	[#assign comentStrNums = 5]
+											  [/#if]
+											  
+											  [#assign fullStars = comentStrNums?floor]
+											  [#assign hasHalfStar = (comentStrNums - fullStars) > 0]
+											  [#assign emptyStars = 5 - fullStars - (hasHalfStar?then(1,0))]
+											  
+											  [#list 1..fullStars as itemNum]
+											  	<span class="icon \${commentStar_icon_class!'iconfont_phoenix icon-pingjia-fill'}" data-commentStar="\${comentStrNums}"></span>
+											  [/#list]
+											  
+											  [#if hasHalfStar]
+											  	<span class="icon \${commentStar_icon_class!'iconfont_phoenix icon-star-half'}" data-commentStar="\${comentStrNums}"></span>
+											  [/#if]
+											  
+											  [#if emptyStars > 0]
+											  	[#list 1..emptyStars as itemNum]
+											  	<span class="icon \${commentStar_icon_class!'iconfont_phoenix icon-kongxingxing'}" data-commentStar="\${comentStrNums}"></span>
+											  	[/#list]
+											  [/#if]
+										</div>
+								[/#if]
+
+							[/#list]
+						[/#if]
+					</div>
+
+					
+					<!-- 价格 -->
+					[#if product.enabledTrade?? && product.enabledTrade == 'true']
+						<div class="prodlist-site-block-price">
+							[#if product.isSkuProd?? && product.isSkuProd == 'true']
+								[#if product.prodMinPrice != product.prodMaxPrice]
+									<div class="prodlist-discountprice paragraph1">
+										[#if data.productList.extraData??]
+											<span class="currencySymbol">\${data.productList.extraData.coinSymbol!'\$'}</span>
+										[/#if]
+										<span class="needExchangeValue">\${product.prodMinPrice?string["0.00"]}</span>
+									</div>
+									<div class="prodlist-price paragraph1">
+										[#if data.productList.extraData??]
+											<span class="currencySymbol">\${data.productList.extraData.coinSymbol!'\$'}</span>
+										[/#if]
+										<span class="needExchangeMaxValue">\${product.prodMaxPrice?string["0.00"]}</span>
+									</div>
+								[#else]
+									<div class="prodlist-discountprice paragraph1">
+										[#if data.productList.extraData??]
+											<span class="currencySymbol">\${data.productList.extraData.coinSymbol!'\$'}</span>
+										[/#if]
+										<span class="needExchangeValue">\${product.prodMinPrice?string["0.00"]}</span>
+									</div>
+								[/#if]
+							[#else]
+								<div class="prodlist-discountprice paragraph1">
+									[#if data.productList.extraData??]
+										<span class="currencySymbol">\${data.productList.extraData.coinSymbol!'\$'}</span>
+									[/#if]
+									<span class="needExchangeValue">\${product.prodPrice?string["0.00"]}</span>
+								</div>
+							[/#if]	
+						</div>
+					[/#if]
+				</div>
+				<!-- 功能按钮 -->
+				<div class="prodlist-site-buttons-container margin-rl">
+					[#if expandIds?? && expandIds != ""]
+					[#assign expandIdsJSON=expandIds?eval /]
+
+					[#if expandIdsJSON?? && expandIdsJSON.functionBtn?? && expandIdsJSON.functionBtn.data??]
+						[#list expandIdsJSON.functionBtn.data as functionBtn]
+							<!-- 询盘 -->
+							[#if data.productList.extraData?? && data.productList.extraData.isB2cPlan == false]
+								[#if functionBtn.checked == true && functionBtn.key == 'inquiry']
+									<div class="prodlist-site-buttons block-editor-inquire" prodId="\${product.encodeId}">
+										<a href="javascript:;" target="_self" class="paragraph1">
+											<span class="text-wrap buy-wrap">
+
+												<i class="iconfont iconfont_phoenix icon-youxiang" style="font-size:12px"></i>
+												[@s.m "phoenix_product_inquire" /] 
+											</span>
+										</a>
+										<form id="prodInquire" action="/phoenix/admin/prod/inquire" method="post" novalidate="">
+											<input type="hidden" name="inquireParams">
+										</form>
+									</div>
+								[/#if]
+								[#if functionBtn.checked == true && functionBtn.key == 'addInquiry']
+									<!-- 加入询盘栏 -->
+									<div class="prodlist-site-buttons add-basket" prodId="\${product.encodeId}" prodName="\${product.prodName!?html}" prodphotourl="\${product.photoUrlList[0]!}">
+										<a href="javascript:;" target="_self" class="paragraph1">
+											<span class="text-wrap buy-wrap">[@s.m "phoenix_product_add_inquire" /]</span>
+										</a>
+									</div>
+								[/#if]
+							[/#if]
+							[#if data.productList.extraData?? && data.productList.extraData.isB2cPlan == true]
+								[#if functionBtn.checked == true && functionBtn.key == 'buyNow']
+									<!-- 购买跳转详情 -->
+									<div class="prodlist-site-buttons block-editor-buy" prodId="\${product.encodeId}">
+										<a href="\${product.prodUrl}" target="_self">
+											<span class="text-wrap buy-wrap">[@s.m "phoenix_product_place_order" /] </span>
+										</a>
+									</div>
+								[/#if]
+								[#if functionBtn.checked == true && functionBtn.key == 'addBasket']
+									<!-- 加入购物车 -->
+									<div id="prodAddCart" class="prodlist-site-buttons editor-prodlist-addcart" prodId="\${product.encodeId}">
+										<a href="javascript:;" target="_self">
+											<span class="text-wrap buy-wrap">[@s.m "phoenix_product_add_cart" /] </span>
+										</a>
+									</div>
+								[/#if]
+							[/#if]	
+						[/#list]
+					[/#if]
+				[/#if]
+				</div>
+			
+			</li>
+			[/#list]
+			[#else]
+				<div class="templist-no-data">[@s.m "phoenix_no_content" /]</div>
+			[/#if]
+		</ul>
+		<input type="hidden" name="totalRow" value="\${data.productList.totalRow!'0'}"> 
+		<input type="hidden" name="pageNumber" value="\${data.productList.pageNumber!'1'}">
+		<input type="hidden" name="pageSize" value="\${data.productList.pageSize!'20'}">
+		<input type="hidden" name="layoutStyle" value="\${layoutStyle!'0'}">
+		<input type="hidden" name="jumpMethod" value="\${jumpMethod!'0'}">
+		<input type="hidden" name="productId" value="\${productId!'-1'}">
+		<input type="hidden" name="dataType" value="\${dataType!'0'}">
+		<input type="hidden" name="infoId" value="\${infoId!'-1'}">
+
+		</div>
+		[#if (!loadMethod?? || loadMethod == '0')]
+			
+			<div class="prodlist-site-pagination-77334 paragraph1 [#if data.productList.pageSize?? && data.productList.totalRow?? && data.productList.totalRow <=  data.productList.pageSize]hide[/#if]">
+				<div class="prodlist-laypage-normal" id='prodlist-laypage-normal'></div>
+			</div>
+		[/#if]
+		<script> 
+			\$(function(){
+				window._block_namespaces_['prodlist_editor13'].init({'relationId':'\${relationId}','relationType':'\${relationType}','pageId':'\${pageId}','nodeId':'aaa_\${nodeId!""}', 'appId': '\${appId!}', 'appIsDev': '\${appIsDev!"0"}','appVersion':'\${appVersion}', 'productGroupId':'\${productGroupId!}'});
+			});
+		</script>
+		<script type="application/ld+json">
+			\${data.productList.extraData.prodStructureData!""}
+    	</script>
+	[/@api]
+	
+
+	</div>`;
+  FREEMAKER_TEMPLATES["df208c77f43f"] = `[#assign isAlaBolanguageStr = '' ]
+[#assign specialLanCode = ["3", "45", "42", "32", "29"] ]
+[#if __current_site_lanCode__?? && specialLanCode?seq_contains(__current_site_lanCode__)]
+    [#assign isAlaBolanguage = 'alaboyulanguage' ]
+[/#if]
+<div class="backstage-blocksEditor-wrap wra block_27472 \${isAlaBolanguage}" data-block-uuid="aaa" data-dynamic-type="articleList"  data-dynamic-toolbar="1"  data-gjs-type="developer-node-component"  data-block-type="phoenix_blocks_Articlelist" data-default-setting={"pageSize":10,"page":1,"dataType":"0","dataIds":[],"dataGroupId":[],"orderBy":"0","loadMethod":"0","jumpMethod":"0","expandIds":{"showField":{"label":"显示字段","key":"showField","draggable":false,"data":[{"fieldName":"文章标题","fieldId":"articleTitle","fieldType":"0","value":"1","checked":true},{"fieldName":"文章简介","fieldId":"articleSummary","fieldType":"0","value":"2","checked":true},{"fieldName":"日期","fieldId":"publishTime","fieldType":"0","value":"3","checked":true},{"fieldName":"文章分类","fieldId":"cateName","fieldType":"0","value":"4","checked":true}]}},"expandSort":["showField"],"layoutStyle":"0"}>
+        [#if componentSetting?? && componentSetting != ""]
+            [#assign componentSettingJSON=componentSetting?eval /]
+            [#if componentSettingJSON?? && componentSettingJSON.dynamicFontTab??]
+                [#list componentSettingJSON.dynamicFontTab as item]
+                    [#list item.saveData as saveDataItem]
+                        [#if saveDataItem.styleKey?? && saveDataItem.styleKey == 'currentFontStyleClass']
+                            [#if item.value?? && item.value == 'articleTitleFont']
+                                [#assign htmlClass_articleTitleFont = saveDataItem.defaultFont /]                            
+                            [/#if]
+                            [#if item.value?? && item.value == 'articleDecFont']
+                                [#assign htmlClass_articleDecFont = saveDataItem.defaultFont /]                            
+                            [/#if]
+                            [#if item.value?? && item.value == 'articleDateFont']
+                                [#assign htmlClass_articleDateFont = saveDataItem.defaultFont /]                            
+                            [/#if]
+                            [#if item.value?? && item.value == 'articleCateFont']
+                                [#assign htmlClass_articleCateFont = saveDataItem.defaultFont /]                            
+                            [/#if]
+                        [/#if]
+                        [#if saveDataItem.styleKey?? && saveDataItem.styleKey == 'currentFontName']
+                            [#assign fontMap = {
+                                'H1': 'h1',
+                                'H2': 'h2',
+                                'H3': 'h3',
+                                'H4': 'h4',
+                                'H5': 'h5',
+                                'H6': 'h6',
+                                'DIV': 'div',
+                                'P': 'p',
+                                'P1': 'p',
+                                'P2': 'p',
+                                'P3': 'p'
+                            } /]
+                            [#if item.value?? && item.value == 'articleTitleFont']                           
+                                [#assign htmlTarget_articleTitleFont = fontMap[saveDataItem.defaultFont?upper_case]! 'div' /]
+                            [/#if]
+
+                        [/#if]
+                    [/#list]
+                [/#list]
+                
+            [/#if]
+        [/#if]
+
+        [@api method="post" url="/phoenix2/composite/graphql" page="\${pageNum!1}" limit="\${pageSize!'10'}"
+            selectArticleCateType="\${dataType!'0'}" selectCateIds="\${dataGroupId!''}" selectArticleIds="\${dataIds!''}" currentPageIdForRelated="\${pageId!-1}"
+            orderBy="\${orderBy!'0'}" expandIds="\${expandIds!''}" articleId="\${infoId!-1}" articlePageId="\${infoGroupId!-1}"
+            prodRelatedId="\${productId!-1}"
+			query='{
+				articleList(
+                    conditionDto:{
+                    page: \$page
+                    limit: \$limit
+                    optionsParam: \$optionsParam
+                    selectCateIds: \$selectCateIds
+                    selectArticleIds: \$selectArticleIds
+                    selectArticleCateType: "\$selectArticleCateType"
+                    orderBy: "\$orderBy"
+                    articleRelatedId: "\$articleId"
+                    articlePageId: "\$articlePageId"
+                    articleStatus: "1"
+                    prodRelatedId: "\$prodRelatedId"
+                    currentPageIdForRelated: "\$currentPageIdForRelated"
+                    }) {
+                    totalRow
+                    pageSize
+                    pageNumber
+                    extraData{
+                        articleStructureData
+                        articleSummaryRichTextFlag
+                    }
+                    list{
+                        encodeId
+                        articleTitle
+                        publishTime
+                        articleUrl
+                        articleSummary
+                        topFlag
+                        photoUrlNormal
+                        photoUrlDefine
+                        cateName
+                        cateUrl
+                        showFieldList
+                        \$showField
+                    }
+                }
+			}']
+            <div class="block-article-container-replace">
+                <ul class="block-article-container container-4-3 [#if layoutStyle == '1']columns-4[/#if]">
+                    [#if data?? && data.articleList?? && data.articleList.list?? && (data.articleList.list?size > 0)]
+                        [#list data.articleList.list as article]
+                            <li>
+                                <div>
+                                    <a class="img-container" href="\${article.articleUrl!''}"  target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]">
+                                        <img loading="lazy" title="\${article.articleTitle!''}"  alt="\${article.articleTitle!''}" src="\${article.photoUrlNormal!''}">
+                                    </a>
+                                    [#if article.showFieldList?? && article.showFieldList?size > 0]
+                                        <div class="content-container">
+                                            [#list article.showFieldList as field]
+                                                [#if field.fieldId?? && field.fieldId == "articleTitle"]
+                                                 <\${htmlTarget_articleTitleFont!'div'} class="title \${htmlClass_articleTitleFont!'heading5'}"> <a class="position" href="\${article.articleUrl!''}" target="[#if !jumpMethod?? || jumpMethod != '1']_blank[/#if]">\${article.articleTitle!''}</a></\${htmlTarget_articleTitleFont!'div'}>
+                                                [/#if]
+                                                [#if field.fieldId?? && field.fieldId == "articleSummary"]   
+                                                    <div class="brief position  \${htmlClass_articleDecFont!'paragraph1'}">
+                                                        [#if data.articleList.extraData.articleSummaryRichTextFlag == '1']
+                                                            \${article.articleSummary!}
+                                                        [#else]
+                                                            \${article.articleSummary?html}
+                                                        [/#if]
+                                                    </div>
+                                                [/#if]
+                                                [#if field.fieldId?? && field.fieldId == "cateName"]  
+                                                    <div class="classify position  \${htmlClass_articleCateFont!'paragraph1'}">\${article.cateName!''}</div>
+                                                [/#if]
+                                                [#if field.fieldId?? && field.fieldId == "publishTime"]  
+                                                <time class="time position  \${htmlClass_articleDateFont!'paragraph2'}">\${article.publishTime!''}</time>
+                                                [/#if]
+                                            [/#list]
+                                        </div>
+                                    [/#if]
+                                </div>
+                            </li>
+                        [/#list]
+                    [#else]
+                        <div class="templist-no-data">[@s.m "phoenix_no_content" /]</div>
+                    [/#if]
+                </ul>
+                <input type="hidden" name="totalRow" value="\${data.articleList.totalRow!'0'}"> 
+                <input type="hidden" name="pageNumber" value="\${data.articleList.pageNumber!'1'}">
+                <input type="hidden" name="pageSize" value="\${data.articleList.pageSize!'10'}">
+                <input type="hidden" name="productId" value="\${productId!'-1'}">
+                <input type="hidden" name="dataType" value="\${dataType!'0'}">
+                <input type="hidden" name="infoId" value="\${infoId!'-1'}">
+            </div>
+            [#if (!loadMethod?? || loadMethod == '0')]
+                <div class="artclelist-site-pagination-27472 paragraph1 [#if data.articleList.pageSize?? && data.articleList.totalRow?? && data.articleList.totalRow <=  data.articleList.pageSize]hide[/#if]">
+                    <div class="artclelist-laypage-normal" id='artclelist-laypage-normal'></div>
+                </div>
+            [/#if]
+        	<script>
+                \$(function(){
+                    window._block_namespaces_['articleList_27472'].init({'relationId':'\${relationId}','relationType':'\${relationType}','pageId':'\${pageId}','nodeId':'aaa_\${nodeId!""}', 'appId': '\${appId!}', 'appIsDev': '\${appIsDev!"0"}','appVersion':'\${appVersion}','articlePageId':"\${infoGroupId!}"});
+                });
+            </script>
+             <script type="application/ld+json">
+                 \${data.articleList.extraData.articleStructureData!""}
+            </script>
+	[/@api]
+        
+</div>`;
+
+  window.__DYNAMIC_MODULES__ = {
+    templates: FREEMAKER_TEMPLATES,
+    modules: [
+      {
+        uuid: "2513fe23458d",
+        blockType: "phoenix_blocks_groupProduct_new",
+        appId: "WWKAfpUNoOfE",
+        templateFile: "phoenix_blocks_groupProduct_new.ftl",
+      },
+      {
+        uuid: "a16c5c08f7d6",
+        blockType: "phoenix_blocks_prodlist",
+        appId: "lIUfpKACmdJh",
+        templateFile: "phoenix_blocks_prodlist.ftl",
+      },
+      {
+        uuid: "df208c77f43f",
+        blockType: "phoenix_blocks_Articlelist",
+        appId: "VBAUKpfWweAr",
+        templateFile: "phoenix_blocks_Articlelist.ftl",
+      },
+    ],
+    inject: function(editor) {
+      if (!editor) return;
+      this.modules.forEach(function(mod) {
+        var nodeEls = editor.DomComponents.getWrapper().find('[data-block-uuid="' + mod.uuid + '"]');
+        if (nodeEls.length > 0) {
+          var nodeModel = nodeEls[0];
+          nodeModel.set('freemakerHtml', FREEMAKER_TEMPLATES[mod.uuid] || '');
+          nodeModel.set('appId', mod.appId);
+          nodeModel.set('appIsDev', true);
+        }
+      });
+    }
+  };
+})();
+</script>
+</body></html>
