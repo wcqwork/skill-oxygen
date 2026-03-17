@@ -165,13 +165,13 @@ function matchApp(app, args) {
   if (args.appIds) {
     return args.appIds.includes(app.encodePkId);
   }
-  if (args.keyword && !app.name.includes(args.keyword)) {
+  if (args.keyword && !app.appName.includes(args.keyword)) {
     return false;
   }
   if (args.types) {
     return args.types.includes(String(app.appType));
   }
-  return app.supportNewEditor === 1 || NEW_EDITOR_TYPES.has(String(app.appType));
+  return app.supportNewEditor === '1' || app.supportNewEditor === 1 || NEW_EDITOR_TYPES.has(String(app.appType));
 }
 
 async function fetchFileList(page, appId) {
@@ -275,7 +275,7 @@ async function main() {
       console.log('\nMatched apps:');
       for (const app of allApps) {
         const label = TYPE_LABELS[app.appType] || `type=${app.appType}`;
-        console.log(`  [${app.encodePkId}] ${app.name} (${label})`);
+        console.log(`  [${app.encodePkId}] ${app.appName} (${label})`);
       }
       return;
     }
@@ -283,7 +283,7 @@ async function main() {
     if (args.dryRun) {
       console.log('\n[DRY RUN] Would download templates for:');
       for (const app of allApps) {
-        console.log(`  ${app.name} (${app.encodePkId})`);
+        console.log(`  ${app.appName} (${app.encodePkId})`);
       }
       return;
     }
@@ -309,7 +309,7 @@ async function main() {
         continue;
       }
 
-      process.stdout.write(`\r[${i + 1}/${allApps.length}] Fetching: ${app.name}...`);
+      process.stdout.write(`\r[${i + 1}/${allApps.length}] Fetching: ${app.appName}...`);
 
       try {
         const files = await fetchFileList(page, appId);
@@ -320,7 +320,7 @@ async function main() {
         }
 
         const viewFile = files[0];
-        const fileId = viewFile.encodePkId.slice(0, -2);
+        const fileId = viewFile.encodePkId;
         const content = await fetchFileContent(page, fileId);
 
         if (!content) {
@@ -339,7 +339,7 @@ async function main() {
         const entry = {
           appId,
           numericId: viewFile.renderId,
-          name: app.name,
+          name: app.appName,
           appType: String(app.appType),
           appTypeLabel: TYPE_LABELS[app.appType] || `未知(${app.appType})`,
           blockType: blockType || 'unknown',
