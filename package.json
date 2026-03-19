@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "convert": "node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs --input src/preview.html --output src/dynamic_preview.html --auto",
-    "verify": "node .claude/skills/dynamic-module-converter/scripts/verify-output.mjs src/dynamic_preview.html src/preview.html",
-    "verify:js": "node .claude/skills/dynamic-module-converter/scripts/verify-js-syntax.mjs src/dynamic_preview.html",
+    "convert": "node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs --input src/page.html --output src/dynamic_page.html --auto",
+    "verify": "node .claude/skills/dynamic-module-converter/scripts/verify-output.mjs src/dynamic_page.html src/page.html",
+    "verify:js": "node .claude/skills/dynamic-module-converter/scripts/verify-js-syntax.mjs src/dynamic_page.html",
     "verify:visual": "node .claude/skills/dynamic-module-converter/scripts/verify-visual.mjs",
     "verify:export": "node .claude/skills/dynamic-module-converter/scripts/verify-export-path.mjs",
     "verify:edge": "node .claude/skills/dynamic-module-converter/scripts/test-edge-cases.mjs",

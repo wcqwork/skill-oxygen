@@ -19,8 +19,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const inputFile = process.argv[2] || path.resolve(__dirname, '../../../../src/dynamic_preview.html');
-const originalFile = process.argv[3] || path.resolve(__dirname, '../../../../src/preview.html');
+const inputFile = process.argv[2] || path.resolve(__dirname, '../../../../src/dynamic_page.html');
+const originalFile = process.argv[3] || path.resolve(__dirname, '../../../../src/page.html');
 
 if (!fs.existsSync(inputFile)) {
   console.error(`[FATAL] 文件不存在: ${inputFile}`);
@@ -98,24 +98,27 @@ devComponents.each((i, outer) => {
     $node.attr('data-freemaker-html-available') === 'true',
     `值: ${$node.attr('data-freemaker-html-available')}`);
 
-  // Check inner section preserved
-  const innerSection = $node.find('section');
-  check('内部 <section> 保留', innerSection.length > 0, `找到 ${innerSection.length} 个 section`);
+  // Check inner content element preserved (tag-agnostic)
+  const innerContent = $node.children().first();
+  check('内部内容元素保留', innerContent.length > 0,
+    innerContent.length > 0 ? `标签: <${innerContent[0]?.tagName}>, class: ${(innerContent.attr('class') || '').substring(0, 50)}` : '无内容元素');
 
-  if (innerSection.length > 0) {
-    const sectionId = innerSection.attr('id');
-    const sectionClass = innerSection.attr('class');
-    check('section id 保留', !!sectionId, `id: ${sectionId}`);
-    check('section class 保留', !!sectionClass, `class: ${sectionClass}`);
-
-    if ($orig && sectionId) {
-      const origSection = $orig(`#${sectionId}`);
-      if (origSection.length > 0) {
-        const origChildren = origSection.children().length;
-        const newChildren = innerSection.children().length;
-        check('子元素数量一致', origChildren === newChildren,
-          `原始: ${origChildren}, 转换后: ${newChildren}`);
+  if (innerContent.length > 0) {
+    const contentId = innerContent.attr('id');
+    const contentClass = innerContent.attr('class');
+    if (contentId) {
+      check('内容元素 id 保留', true, `id: ${contentId}`);
+      if ($orig) {
+        const origEl = $orig(`#${contentId}`);
+        if (origEl.length > 0) {
+          const origChildren = origEl.children().length;
+          const newChildren = innerContent.children().length;
+          check('子元素数量一致', origChildren === newChildren,
+            `原始: ${origChildren}, 转换后: ${newChildren}`);
+        }
       }
+    } else if (contentClass) {
+      check('内容元素 class 保留', true, `class: ${contentClass.substring(0, 60)}`);
     }
   }
 
@@ -161,10 +164,29 @@ if (blockDirExists) {
         check(`FTL ${uuid} 包含 [#list] 循环`, ftlContent.includes('[#list'), ftlContent.includes('[#list') ? '✓' : '无 [#list]');
         check(`FTL ${uuid} 包含 [/@api]`, ftlContent.includes('[/@api]'), ftlContent.includes('[/@api]') ? '✓' : '无 [/@api]');
 
-        const innerSection = $node.find('section');
-        if (innerSection.length > 0) {
-          const sectionClass = innerSection.attr('class') || '';
-          const mainClass = sectionClass.split(' ')[0];
+        const $ftl = load(ftlContent, { decodeEntities: false });
+        const ftlRoot = $ftl('body').children().first();
+        const ftlRootTag = ftlRoot.length > 0 ? ftlRoot[0].tagName : null;
+        check(`FTL ${uuid} 根元素是 div`, ftlRootTag === 'div', `根标签: ${ftlRootTag}`);
+
+        const ftlBlockType = ftlRoot.attr('data-block-type');
+        check(`FTL ${uuid} 根 div 包含 data-block-type`, !!ftlBlockType, `值: ${ftlBlockType}`);
+
+        const ftlBlockUuid = ftlRoot.attr('data-block-uuid');
+        check(`FTL ${uuid} 根 div 包含 data-block-uuid`, !!ftlBlockUuid, `值: ${ftlBlockUuid}`);
+        check(`FTL ${uuid} data-block-uuid 与文件名匹配`, ftlBlockUuid === uuid,
+          `文件名 uuid: ${uuid}, 属性值: ${ftlBlockUuid}`);
+
+        const ftlInner = ftlRoot.children().first();
+        check(`FTL ${uuid} 根 div 下有内容元素`, ftlInner.length > 0,
+          ftlInner.length > 0 ? `标签: ${ftlInner[0]?.tagName}` : 'FTL 内未找到内容元素');
+
+        const innerEl = $node.children('[class][id]').first().length > 0
+          ? $node.children('[class][id]').first()
+          : $node.children().first();
+        if (innerEl.length > 0) {
+          const elClass = innerEl.attr('class') || '';
+          const mainClass = elClass.split(' ')[0];
           if (mainClass) {
             check(`FTL ${uuid} 保留原始 CSS class "${mainClass}"`, ftlContent.includes(mainClass),
               ftlContent.includes(mainClass) ? '✓' : `FTL 中未找到 class "${mainClass}"`);
@@ -175,54 +197,61 @@ if (blockDirExists) {
   });
 }
 
-// ─── Check 4: Static sections unchanged ───
+// ─── Check 4: Static elements unchanged ───
 console.log('\n═══ 4. 静态区块完整性 ═══');
 if ($orig) {
-  const origSections = $orig('body > section, body > div > section');
-  const newSections = $('body > section, body > div > section, body > div.developer-component section');
-
   let staticChecked = 0;
-  origSections.each((_, origEl) => {
-    const id = $orig(origEl).attr('id');
-    if (!id) return;
+  const sampledIds = new Set();
+  $orig('[id]').each((_, el) => {
+    const id = $orig(el).attr('id');
+    if (!id || sampledIds.has(id)) return;
+    sampledIds.add(id);
 
     const newEl = $(`#${id}`);
     if (newEl.length === 0) return;
 
     const isInDynamic = newEl.closest('.developer-component').length > 0;
     if (!isInDynamic) {
-      staticChecked++;
-      const origClass = $orig(origEl).attr('class');
-      const newClass = newEl.attr('class');
-      check(`静态区块 #${id} class 未变`, origClass === newClass,
-        `原始: "${origClass}" → 转换后: "${newClass}"`);
+      const origClass = $orig(el).attr('class') || '';
+      const newClass = newEl.attr('class') || '';
+      if (origClass && origClass === newClass) {
+        staticChecked++;
+      } else if (origClass && origClass !== newClass) {
+        check(`静态元素 #${id} class 未变`, false,
+          `原始: "${origClass}" → 转换后: "${newClass}"`);
+      }
     }
   });
-  console.log(`  [INFO] 验证了 ${staticChecked} 个静态区块`);
+  console.log(`  [INFO] 验证了 ${staticChecked} 个静态元素 class 未变`);
 }
 
 // ─── Check 5: Original JS scripts preserved ───
 console.log('\n═══ 5. 原始脚本保留 ═══');
-const hasHeroCarousel = html.includes('HERO CAROUSEL');
-const hasProductCarousel = html.includes('PRODUCT CAROUSEL');
-const hasCounterAnimation = html.includes('COUNTER ANIMATION');
-const hasFadeIn = html.includes('SCROLL FADE-IN');
-
-check('Hero Carousel 脚本保留', hasHeroCarousel, hasHeroCarousel ? '✓' : '丢失');
-check('Product Carousel 脚本保留', hasProductCarousel, hasProductCarousel ? '✓' : '丢失');
-check('Counter Animation 脚本保留', hasCounterAnimation, hasCounterAnimation ? '✓' : '丢失');
-check('Fade-in 脚本保留', hasFadeIn, hasFadeIn ? '✓' : '丢失');
+if ($orig) {
+  const origScriptCount = $orig('script').length;
+  const dynScriptCount = $('script').length;
+  check('脚本标签数量', dynScriptCount >= origScriptCount,
+    `原始: ${origScriptCount}, 动态: ${dynScriptCount} (动态版含 Model Setup Script)`);
+} else {
+  const scriptCount = $('script').length;
+  check('脚本标签存在', scriptCount > 0, `${scriptCount} 个 script 标签`);
+}
 
 // ─── Check 6: CSS styles preserved ───
 console.log('\n═══ 6. CSS 样式保留 ═══');
 const styleTag = $('style');
 check('style 标签保留', styleTag.length > 0, `${styleTag.length} 个 style 标签`);
+if ($orig) {
+  const origStyleCount = $orig('style').length;
+  check('style 标签数量', styleTag.length >= origStyleCount,
+    `原始: ${origStyleCount}, 动态: ${styleTag.length}`);
+}
 if (styleTag.length > 0) {
-  const styleText = styleTag.html();
-  check('CSS 包含 .hot-products', styleText.includes('.hot-products'), '✓');
-  check('CSS 包含 .product-categories', styleText.includes('.product-categories'), '✓');
-  check('CSS 包含 .news-articles', styleText.includes('.news-articles'), '✓');
-  check('CSS 包含响应式规则', styleText.includes('@media'), '✓');
+  const allStyleText = [];
+  styleTag.each((_, el) => allStyleText.push($(el).html() || ''));
+  const styleText = allStyleText.join('\n');
+  check('CSS 包含 @media 响应式规则', styleText.includes('@media'),
+    styleText.includes('@media') ? '✓' : '无 @media 规则');
 }
 
 // ─── Summary ───

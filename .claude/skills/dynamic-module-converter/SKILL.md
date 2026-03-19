@@ -1,8 +1,8 @@
-# Dynamic Module Converter Skill (v7 - FTL Synthesis)
+# Dynamic Module Converter Skill (v8 - Universal Detection)
 
-静态 HTML → 动态 FreeMarker 模块自动转换。三层检测算法自动识别动态区域，注入编辑器标记，**以原始 HTML 为骨架合成 FreeMarker 模板**，同时 **100% 保留原始 HTML 结构和样式**。
+静态 HTML → 动态 FreeMarker 模块自动转换。**通用的自底向上检测算法**自动识别动态区域（不依赖特定标签），注入编辑器标记，**以原始 HTML 为骨架合成 FreeMarker 模板**，同时 **100% 保留原始 HTML 结构和样式**。支持克隆静态页面和平台导出页面两种格式。
 
-**Command**: `/convert-dynamic [--input <file>] [--output <file>] [--auto]`
+**Command**: `/convert-dynamic --input <file.html> [--output <file.html>] [--auto]`
 
 ## Quick Start
 
@@ -13,8 +13,19 @@ npm install
 # 一键转换 + 全套验证 (150+ 检查项)
 npm test
 
-# 单独转换
+# 单独转换（使用 package.json 中预设路径）
 npm run convert
+
+# 指定任意 HTML 文件转换
+node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs \
+  --input src/page.html \
+  --auto
+
+# 指定输入和输出
+node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs \
+  --input src/my-page.html \
+  --output src/dynamic_my-page.html \
+  --auto
 
 # 验证套件 (可单独运行)
 npm run verify          # DOM结构验证 (73项)
@@ -23,17 +34,17 @@ npm run verify:visual   # 视觉结构对比 (25项)
 npm run verify:export   # Export路径模拟 (41项)
 npm run verify:edge     # 边界场景测试 (9项)
 npm run verify:all      # 全部验证
-
-# 自定义输入/输出
-node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs \
-  --input src/preview.html \
-  --output src/dynamic_preview.html \
-  --auto
 ```
+
+**参数说明**:
+- `--input` (必需) 输入的静态 HTML 文件路径
+- `--output` (可选) 输出文件路径，默认在同目录生成 `dynamic_<原文件名>.html`
+- `--auto` (可选) 自动模式，跳过确认
 
 ## When to Use
 
-- 克隆网站后需要将静态 section 转为动态模块
+- 将任意 HTML 页面中的动态区域转为 FreeMarker 模块
+- 支持克隆静态页面（`<section>` 结构）和平台导出页面（`sitewidget-*` 结构）
 - "转换动态", "动态模块", "convert dynamic", "inject markers"
 - "产品列表动态化", "文章列表动态化", "注入FreeMarker"
 - 搭配 `/clone-website` 使用：先克隆 → 再转换
@@ -51,27 +62,22 @@ For sections identified as dynamic modules:
 ## Architecture
 
 ```
-静态 HTML (preview.html / inject-to-editor.js)
+任意 HTML 文件（克隆静态页面 或 平台导出页面）
     │
     ▼
 ┌─────────────────────────────────────────────┐
-│  Phase 1: 动态区域识别 (pattern-detector)     │
-│  输入: 静态 HTML                              │
-│  分析: 语义 + 结构 + 内容特征                   │
-│  输出: dynamic-regions.json                   │
-│    [{                                        │
-│      sectionIndex: 3,                        │
-│      type: "prodList",                       │
-│      confidence: 0.95,                       │
-│      repeatingItemSelector: ".product-card", │
-│      fields: [...]                           │
-│    }]                                        │
+│  Phase 1: 通用动态区域识别 (底向上检测)       │
+│  1. 全局扫描: 找所有含 >=3 重复子元素的容器   │
+│  2. 向上回溯: 找到合适的区块边界（语义边界）  │
+│  3. 去重: 嵌套重复容器只保留外层              │
+│  4. 三层评分: 结构 + URL + 内容启发           │
+│  不依赖 <section> 标签，支持任意 HTML 结构    │
 └─────────────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────────────┐
 │  Phase 2: 用户确认 (mandatory confirmation)   │
-│  展示所有 section 让用户逐一确认              │
+│  展示所有发现的区块让用户逐一确认             │
 │  选项: 确认类型 / 修改类型 / 保持静态         │
 │  零自动转换 — 必须显式用户批准               │
 └─────────────────────────────────────────────┘
@@ -79,10 +85,10 @@ For sections identified as dynamic modules:
     ▼
 ┌─────────────────────────────────────────────┐
 │  Phase 3: 标记注入 (marker injection)         │
-│  对确认的动态 section:                        │
+│  对确认的动态区块:                            │
 │    1. 修改外层包装器类型和类名                │
 │    2. 添加 developer-node-component 内层      │
-│    3. 原始 <section> HTML 完全不变            │
+│    3. 原始 HTML 完全不变（标签无关）          │
 │    4. Model Setup Script 引用 .ftl 路径       │
 │  输入: templates/*.ftl (参考 @api 查询)       │
 │  输出: 注入标记的 HTML                        │
@@ -218,50 +224,57 @@ From `dynamicSourceData/hooks/index.ts`:
 
 ## Four-Phase Workflow
 
-### Phase 1: Three-Layer Detection
+### Phase 1: Universal Block Discovery + Three-Layer Detection
 
-**Layer 1 — Structural (tag-based, class-agnostic)** Score: 0-40
+**Step 1 — Bottom-up Block Discovery (tag-agnostic)**
 
-- Find sections with 3+ children sharing identical tag signatures (tag name, nesting depth, presence of img/link/heading)
-- Class names are ignored (often minified/hashed)
+Unlike previous versions that hardcoded `<section>` selectors, v8 uses a universal bottom-up approach:
+
+1. **Global scan**: Traverse entire DOM (excluding head/script/style/svg), find ALL containers with >=3 structurally identical children
+2. **Boundary trace**: From each repeating container, walk up the DOM tree to find the nearest "semantic boundary" — an element with an `id`, a semantic tag (`section`/`article`/`main`/`aside`), or a meaningful class (`container`/`wrapper`/`widget`/`component`/etc.)
+3. **Dedup**: If a repeating container is a descendant of another's, only keep the outermost one
+4. **Static exclusion**: Skip blocks matching known static patterns (header, footer, nav, placeholder, etc.)
+
+**Step 2 — Three-Layer Scoring** (applied to each discovered block)
+
+**Layer 1 — Structural** Score: 0-40
+- Count identical tag signatures among children (tag + img/link/heading presence + depth bucket)
+- >=9 items → 40, >=5 → 35, >=3 → 25
 
 **Layer 2 — URL Pattern Analysis** Score: 0-25
-
-Extract `<a href>` links from each section:
-
-- `/product/`, `/p/`, `/item/` patterns → product
-- `/blog/`, `/news/`, `/article/` patterns → article
-- `/gallery/`, `/photo/` patterns → gallery
-- `/faq/`, `/help/` patterns → FAQ
-- YouTube/Vimeo domains, `/video/` → video
+- `/product/`, `/p/`, `/item/` → product
+- `/blog/`, `/news/`, `/article/` → article
+- `/gallery/`, `/photo/` → gallery
+- `/faq/`, `/help/` → FAQ
+- YouTube/Vimeo/`/video/` → video
 
 **Layer 3 — Content Heuristics** Score: 0-20
-
-- Price regex (`$`, currency symbols) → product
-- Date patterns (`<time>`, ISO dates) → article
+- Price regex, currency symbols → product
+- CSS class patterns: `prodlist`, `articlelist`, `gallerylist`, etc. → corresponding type
+- Date patterns, `<time>` → article
 - `<iframe>` / `<video>` → video
 - Accordion pattern → FAQ
 
-**Threshold**: 50/100 for auto-suggestion. Phase 2 presents ALL sections regardless.
+**Threshold**: totalScore >= 50, or structural >= 25 with valid type
 
 ### Phase 2: Mandatory User Confirmation
 
-For EACH section in `inject-to-editor.js`:
+For EACH discovered block:
 
-- Show: section index, brief description, detected type or "static", confidence, evidence
+- Show: block index, brief description, detected type or "static", confidence, evidence
 - User options: **Confirm type** / **Change type** (dropdown) / **Keep static**
 - Zero automatic conversion — every dynamic conversion requires explicit user approval
 
 ### Phase 3: Marker Injection
 
-For each user-confirmed dynamic section:
+For each user-confirmed dynamic block:
 
-1. **Modify outer wrapper**: Change `data-gjs-type` from `developer-component-ai` to `developer-component`, add `class="developer-component"`
-2. **Add inner marker div**: Insert a `developer-node-component` div between the outer wrapper and the original `<section>`, with required `data-`* attributes
-3. **Original `<section>` HTML**: Completely unchanged — same tags, same classes, same styles
+1. **Wrap with developer-component**: Add outer `<div class="developer-component" data-gjs-type="developer-component">`
+2. **Add inner marker div**: Insert a `developer-node-component` div with `data-block-type`, `data-block-uuid`, and other required attributes
+3. **Original HTML**: Completely unchanged — same tags, same classes, same styles (tag-agnostic)
 4. **Model Setup Script**: References external .ftl file paths via `templatePaths` mapping; `inject()` uses `fetch()` to load content at runtime
 
-### Phase 3.5: FTL Template Synthesis (NEW in v7)
+### Phase 3.5: FTL Template Synthesis
 
 For each dynamic section, synthesize a FreeMarker template that preserves the original HTML:
 

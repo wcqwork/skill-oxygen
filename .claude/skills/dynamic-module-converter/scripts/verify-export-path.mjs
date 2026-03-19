@@ -14,11 +14,11 @@ import vm from 'vm';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const dynamicHtml = path.resolve(__dirname, '../../../../src/dynamic_preview.html');
+const dynamicHtml = path.resolve(__dirname, '../../../../src/dynamic_page.html');
 const dynamicBlockDir = path.resolve(__dirname, '../../../../src/dynamic_block');
 
 if (!fs.existsSync(dynamicHtml)) {
-  console.error('[ERROR] dynamic_preview.html 不存在，请先运行 npm run convert');
+  console.error('[ERROR] dynamic_page.html 不存在，请先运行 npm run convert');
   process.exit(1);
 }
 
@@ -135,11 +135,30 @@ for (const mod of (dynamicModules.modules || [])) {
       const hasApiClose = ftlContent.includes('[/@api]');
       check(`  ${mod.uuid}.ftl 包含 [/@api] 结束标签`, hasApiClose, hasApiClose ? '✓' : '无');
 
+      const $ftl = load(ftlContent, { decodeEntities: false });
+      const ftlRoot = $ftl('body').children().first();
+      const ftlRootTag = ftlRoot.length > 0 ? ftlRoot[0].tagName : null;
+      check(`  ${mod.uuid}.ftl 根元素是 div`, ftlRootTag === 'div', `根标签: ${ftlRootTag}`);
+
+      const ftlBlockType = ftlRoot.attr('data-block-type');
+      check(`  ${mod.uuid}.ftl 根 div 包含 data-block-type`, !!ftlBlockType, `值: ${ftlBlockType}`);
+
+      const ftlBlockUuid = ftlRoot.attr('data-block-uuid');
+      check(`  ${mod.uuid}.ftl 根 div 包含 data-block-uuid`, !!ftlBlockUuid, `值: ${ftlBlockUuid}`);
+      check(`  ${mod.uuid}.ftl data-block-uuid 与 uuid 匹配`, ftlBlockUuid === mod.uuid,
+        `模块 uuid: ${mod.uuid}, FTL 属性: ${ftlBlockUuid}`);
+
+      const ftlInner = ftlRoot.children().first();
+      check(`  ${mod.uuid}.ftl 根 div 下有内容元素`, ftlInner.length > 0,
+        ftlInner.length > 0 ? `标签: ${ftlInner[0]?.tagName}` : 'FTL 内未找到内容元素');
+
       const nodeEl = $(`[data-block-uuid="${mod.uuid}"]`);
-      const innerSection = nodeEl.find('section');
-      if (innerSection.length > 0) {
-        const sectionClass = innerSection.attr('class') || '';
-        const mainClass = sectionClass.split(' ')[0];
+      const innerEl = nodeEl.children('[class][id]').first().length > 0
+        ? nodeEl.children('[class][id]').first()
+        : nodeEl.children().first();
+      if (innerEl.length > 0) {
+        const elClass = innerEl.attr('class') || '';
+        const mainClass = elClass.split(' ')[0];
         if (mainClass) {
           check(`  ${mod.uuid}.ftl 保留原始 CSS class "${mainClass}"`, ftlContent.includes(mainClass),
             ftlContent.includes(mainClass) ? '✓' : `FTL 中未找到 "${mainClass}"`);

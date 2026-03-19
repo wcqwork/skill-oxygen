@@ -22,8 +22,25 @@ function getArg(name) {
   return idx !== -1 && args[idx + 1] ? args[idx + 1] : null;
 }
 const AUTO_MODE = args.includes('--auto');
-const inputFile = getArg('--input') || path.resolve(__dirname, '../../../../src/preview.html');
-const outputFile = getArg('--output') || inputFile.replace(/\.html$/, '').replace(/preview/, 'dynamic_preview') + '.html';
+
+if (args.includes('--help') || args.includes('-h')) {
+  console.log('Usage: node convert-dynamic.mjs --input <file.html> [--output <file.html>] [--auto]');
+  console.log('  --input   必需，输入的静态 HTML 文件路径');
+  console.log('  --output  可选，输出文件路径（默认在同目录生成 dynamic_<原文件名>.html）');
+  console.log('  --auto    可选，自动模式，跳过确认');
+  process.exit(0);
+}
+
+const inputArg = getArg('--input');
+if (!inputArg) {
+  console.error('[ERROR] 缺少必需参数 --input');
+  console.error('Usage: node convert-dynamic.mjs --input <file.html> [--output <file.html>] [--auto]');
+  process.exit(1);
+}
+const inputFile = path.resolve(inputArg);
+const outputFile = getArg('--output')
+  ? path.resolve(getArg('--output'))
+  : path.join(path.dirname(inputFile), 'dynamic_' + path.basename(inputFile));
 
 // ─── Template Registry ───
 const TEMPLATES_DIR = path.resolve(__dirname, '../templates/fetched');
@@ -60,7 +77,15 @@ const CONTENT_HEURISTICS = [
   { type: 'prodList',     score: 20, test: (text) => /add\s*to\s*cart|buy\s*now|shop\s*now|order\s*now/i.test(text) },
   { type: 'articleList',  score: 15, test: (text) => /\b\d{1,2}\s+(january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}\b/i.test(text) || /\d{4}-\d{2}-\d{2}/.test(text) },
   { type: 'articleList',  score: 10, test: (text) => /read\s*more|continue\s*reading|learn\s*more/i.test(text) },
-  { type: 'videoList',    score: 20, test: (_t, $el) => $el.find('iframe, video').length > 0 },
+  { type: 'videoList',    score: 20, test: (_t, $el) => {
+    const videos = $el.find('video').length;
+    const iframes = $el.find('iframe').filter((_, el) => {
+      const src = (el.attribs?.src || '').toLowerCase();
+      if (!src || src === 'about:blank') return false;
+      return /youtube|vimeo|youtu\.be|wistia|dailymotion|video/i.test(src);
+    }).length;
+    return (videos + iframes) > 0;
+  }},
   { type: 'FAQList',      score: 20, test: (text, $el) => {
     const hasQA = /\?\s*$/.test(text) || $el.find('[class*="accordion"], [class*="collapse"], [class*="faq"], details').length > 0;
     return hasQA;
@@ -81,6 +106,12 @@ const CONTENT_HEURISTICS = [
       return /product|prod/.test(cls) && !/production|productivity|produce/.test(cls);
     }).length >= 3;
   }},
+  { type: 'prodList',     score: 18, test: (_t, $el) => $el.find('[class*="prodlist"], [class*="prod-list"], [class*="product-list"], [class*="prodList"]').length > 0 },
+  { type: 'articleList',  score: 18, test: (_t, $el) => $el.find('[class*="articlelist"], [class*="article-list"], [class*="news-list"], [class*="articleList"]').length > 0 },
+  { type: 'galleryList',  score: 18, test: (_t, $el) => $el.find('[class*="gallerylist"], [class*="gallery-list"], [class*="galleryList"]').length > 0 },
+  { type: 'downloadList', score: 18, test: (_t, $el) => $el.find('[class*="downloadlist"], [class*="download-list"], [class*="downloadList"]').length > 0 },
+  { type: 'videoList',    score: 18, test: (_t, $el) => $el.find('[class*="videolist"], [class*="video-list"], [class*="videoList"]').length > 0 },
+  { type: 'FAQList',      score: 18, test: (_t, $el) => $el.find('[class*="faqlist"], [class*="faq-list"], [class*="faqList"]').length > 0 },
 ];
 
 const BLOCK_TYPE_MAP = {
@@ -113,6 +144,120 @@ const TYPE_LABELS = {
 //  PHASE 1: Three-Layer Detection
 // ═══════════════════════════════════════════════════════════
 
+// ─── Block Discovery (tag-agnostic) ───
+const EXCLUDED_TAGS = new Set(['head','script','style','noscript','link','meta','svg','iframe','br','hr']);
+
+function isDataList($, containerEl) {
+  const children = $(containerEl).children();
+  if (children.length < 3) return false;
+
+  const classattrs = new Set();
+  const names = new Set();
+  children.each((_, c) => {
+    const ca = $(c).attr('classattr') || $(c).attr('data-classattr') || '';
+    if (ca) classattrs.add(ca.replace(/-\d{14}$/, ''));
+    const nm = $(c).attr('name') || $(c).attr('data-alias') || '';
+    if (nm) names.add(nm);
+  });
+  if (classattrs.size > 1) return false;
+  if (names.size > 1) return false;
+
+  const classNames = [];
+  children.each((_, c) => classNames.push($(c).attr('class') || ''));
+  const uniqueBase = new Set(classNames.map(c => c.split(/\s+/).sort().join(' ')));
+  if (uniqueBase.size > Math.ceil(children.length * 0.5)) return false;
+
+  const arr = children.toArray();
+  const avgDepth = arr.reduce((sum, c) => sum + $(c).find('*').length, 0) / arr.length;
+
+  if (avgDepth < 2) {
+    return false;
+  }
+
+  if (avgDepth < 3) {
+    const hasRichContent = arr.some(c => {
+      const $c = $(c);
+      return ($c.find('img').length > 0 && $c.find('h1,h2,h3,h4,h5,h6,p,span').length > 0) ||
+             $c.find('a[href]').length > 0;
+    });
+    if (!hasRichContent) return false;
+  }
+
+  return true;
+}
+
+function discoverBlocks($) {
+  const repeatingContainers = [];
+
+  const SCAN_SKIP_TAGS = new Set(['body', 'html']);
+
+  function scanForRepeats(el, depth) {
+    if (depth > 15) return;
+    const tag = el.tagName?.toLowerCase();
+    if (!tag || EXCLUDED_TAGS.has(tag)) return;
+    const children = $(el).children();
+    if (children.length >= 3 && !SCAN_SKIP_TAGS.has(tag)) {
+      const sigs = {};
+      children.each((_, child) => {
+        const sig = getTagSignature($, child);
+        sigs[sig] = (sigs[sig] || 0) + 1;
+      });
+      const maxEntry = Object.entries(sigs).sort((a, b) => b[1] - a[1])[0];
+      if (maxEntry && maxEntry[1] >= 3 && isDataList($, el)) {
+        repeatingContainers.push({ el, count: maxEntry[1], sig: maxEntry[0] });
+      }
+    }
+    children.each((_, child) => scanForRepeats(child, depth + 1));
+  }
+  scanForRepeats($('body')[0], 0);
+
+  const visited = new Set();
+  const blocks = [];
+
+  repeatingContainers.sort((a, b) => b.count - a.count);
+
+  for (const rc of repeatingContainers) {
+    let boundary = rc.el;
+    const parent = $(boundary).parent();
+    if (parent.length && !parent.is('body') && !parent.is('html') && !parent.is('[document]')) {
+      const hasHeading = parent.children('h1,h2,h3,h4,h5,h6').length > 0 ||
+        parent.children('.sitewidget-hd').length > 0;
+      if (hasHeading) {
+        boundary = parent[0];
+      } else {
+        const gp = parent.parent();
+        if (gp.length && !gp.is('body') && !gp.is('html')) {
+          const gpHasHeading = gp.children('h1,h2,h3,h4,h5,h6').length > 0 ||
+            gp.children('.sitewidget-hd').length > 0;
+          if (gpHasHeading) boundary = gp[0];
+        }
+      }
+    }
+
+    if (visited.has(boundary)) {
+      const existing = blocks.find(b => b.el === boundary);
+      if (existing && rc.count > existing.repeatingContainer.count) {
+        existing.repeatingContainer = rc;
+      }
+      continue;
+    }
+    visited.add(boundary);
+    blocks.push({ el: boundary, $el: $(boundary), repeatingContainer: rc });
+  }
+
+  const filtered = blocks.filter((block) => {
+    for (const other of blocks) {
+      if (other === block) continue;
+      if ($.contains(other.repeatingContainer.el, block.repeatingContainer.el)) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  return filtered;
+}
+
 function getTagSignature($, el) {
   const tag = el.tagName;
   const children = $(el).children();
@@ -125,11 +270,12 @@ function getTagSignature($, el) {
 }
 
 function analyzeStructure($, $section) {
+  const noResult = { score: 0, itemCount: 0, repeatingSelector: null, repeatingContainer: null, repeatingItemTag: null, repeatingContainerEl: null };
   const container = findRepeatingContainer($, $section);
-  if (!container) return { score: 0, itemCount: 0, repeatingSelector: null, repeatingContainer: null, repeatingItemTag: null };
+  if (!container) return noResult;
 
   const children = $(container).children();
-  if (children.length < 3) return { score: 0, itemCount: 0, repeatingSelector: null, repeatingContainer: null, repeatingItemTag: null };
+  if (children.length < 3) return noResult;
 
   const sigs = {};
   children.each((_, child) => {
@@ -138,10 +284,10 @@ function analyzeStructure($, $section) {
   });
 
   const maxSig = Object.entries(sigs).sort((a, b) => b[1] - a[1])[0];
-  if (!maxSig) return { score: 0, itemCount: 0, repeatingSelector: null, repeatingContainer: null, repeatingItemTag: null };
+  if (!maxSig) return noResult;
 
   const count = maxSig[1];
-  if (count < 3) return { score: 0, itemCount: count, repeatingSelector: null, repeatingContainer: null, repeatingItemTag: null };
+  if (count < 3) return { ...noResult, itemCount: count };
 
   let score = 0;
   if (count >= 9) score = 40;
@@ -151,14 +297,14 @@ function analyzeStructure($, $section) {
   const containerClass = $(container).attr('class') || '';
   const containerTag = container.tagName;
 
-  return { score, itemCount: count, repeatingSelector: maxSig[0], repeatingContainer: containerClass || containerTag, repeatingItemTag: containerTag };
+  return { score, itemCount: count, repeatingSelector: maxSig[0], repeatingContainer: containerClass || containerTag, repeatingItemTag: containerTag, repeatingContainerEl: container };
 }
 
 function findRepeatingContainer($, $section) {
   const candidates = [];
 
   function collectCandidates(el, depth) {
-    if (depth > 5) return;
+    if (depth > 10) return;
     if ($(el).children().length >= 2) candidates.push(el);
     $(el).children().each((_, child) => collectCandidates(child, depth + 1));
   }
@@ -238,8 +384,11 @@ function analyzeContent($, $section) {
 
 function detectSection($, $section, index) {
   const structural = analyzeStructure($, $section);
-  const urlAnalysis = analyzeURLPatterns($, $section);
-  const contentAnalysis = analyzeContent($, $section);
+  const $scoreTarget = structural.repeatingContainerEl
+    ? $(structural.repeatingContainerEl)
+    : $section;
+  const urlAnalysis = analyzeURLPatterns($, $scoreTarget);
+  const contentAnalysis = analyzeContent($, $scoreTarget);
 
   const typeVotes = {};
   if (structural.score > 0 && urlAnalysis.type) {
@@ -257,9 +406,9 @@ function detectSection($, $section, index) {
   }
 
   if (structural.score > 0 && !detectedType) {
-    const text = $section.text().toLowerCase();
-    const className = ($section.attr('class') || '').toLowerCase();
-    const id = ($section.attr('id') || '').toLowerCase();
+    const text = $scoreTarget.text().toLowerCase();
+    const className = ($scoreTarget.attr('class') || '').toLowerCase();
+    const id = ($scoreTarget.attr('id') || '').toLowerCase();
     const combined = text + ' ' + className + ' ' + id;
 
     if (/product|prod|item|shop|goods|catalog/i.test(combined)) detectedType = 'prodList';
@@ -270,20 +419,22 @@ function detectSection($, $section, index) {
     else if (/faq|question|help|support/i.test(combined)) detectedType = 'FAQList';
   }
 
-  // Static section exclusion: sections whose semantic purpose is clearly non-dynamic data
   const className = ($section.attr('class') || '').toLowerCase();
   const sectionId = ($section.attr('id') || '').toLowerCase();
   const combinedIdClass = className + ' ' + sectionId;
   const STATIC_PATTERNS = [
     /about[-_\s]?us/i, /why[-_\s]?choose/i, /cta[-_\s]?section/i,
     /solution/i, /feature/i, /counter/i, /testimonial/i,
-    /hero[-_\s]?banner/i, /footer/i, /header/i, /nav/i,
+    /hero[-_\s]?banner/i, /footer/i, /header\d*/i, /\bnav\b/i,
     /contact[-_\s]?us/i, /spacer/i, /banner/i,
+    /placeholder/i, /onlineservice/i, /quicknav/i, /langbar/i,
+    /navbar/i, /navmenu/i, /nav[-_]?bar/i, /blocknavbar/i,
+    /navigation/i, /menu/i, /lang[-_]?switch/i, /switch[-_]?lang/i,
+    /follow/i, /social/i, /logo/i, /\bform\b/i, /subscribe/i,
+    /online[-_]?service/i, /copyright/i,
   ];
   let isStaticOverride = STATIC_PATTERNS.some(p => p.test(combinedIdClass));
 
-  // Also exclude if the section is clearly a "solutions" or "about" content block
-  // but has no real data-list semantics (no prices, dates, specific URLs)
   if (isStaticOverride && urlAnalysis.score === 0 && contentAnalysis.score <= 12) {
     detectedType = null;
   }
@@ -303,24 +454,22 @@ function detectSection($, $section, index) {
     evidence.push(`内容启发: 检测到 ${contentAnalysis.evidence.join(', ')} 特征 (${contentAnalysis.score}/20)`);
   }
 
-  // Refine: distinguish prodList vs groupProduct, articleList vs groupArticle
   if (detectedType === 'prodList' && structural.score > 0) {
     const hasCategory = /categor|classif|分类|group/i.test(combinedIdClass);
     const itemsHaveDistinctLinks = new Set();
-    $section.find('a[href]').each((_, el) => {
+    $scoreTarget.find('a[href]').each((_, el) => {
       const href = $(el).attr('href');
       if (href && href !== '#') itemsHaveDistinctLinks.add(href);
     });
-    // category pages typically have fewer repeated items (3-5), each linking to a category
     if (hasCategory || (structural.itemCount <= 5 && structural.itemCount >= 3 && itemsHaveDistinctLinks.size >= structural.itemCount * 0.5)) {
       if (hasCategory) detectedType = 'groupProduct';
     }
   }
 
   const isDynamic = detectedType !== null && (
-    totalScore >= 50 ||
-    (structural.score >= 25 && detectedType !== null && !isStaticOverride) ||
-    (structural.score >= 35 && detectedType !== null)
+    (structural.score >= 25 && urlAnalysis.score > 0) ||
+    (structural.score >= 25 && contentAnalysis.score >= 15) ||
+    (totalScore >= 60 && structural.score >= 25)
   );
 
   return {
@@ -357,7 +506,43 @@ function extractApiBlock(templateContent) {
   const initScriptMatch = templateContent.match(/<script>\s*\$\(function\(\)\{[\s\S]*?\}\);\s*<\/script>/);
   const initScript = initScriptMatch ? initScriptMatch[0] : '';
 
-  return { apiTag, queryStr, initScript };
+  const rootDataAttrs = extractRootDataAttrs(templateContent);
+
+  return { apiTag, queryStr, initScript, rootDataAttrs };
+}
+
+function extractRootDataAttrs(templateContent) {
+  const divMatch = templateContent.match(/<div\s[^>]*>/s);
+  if (!divMatch) return {};
+
+  const divTag = divMatch[0];
+  const attrs = {};
+
+  const simpleAttrRe = /data-(?!default-setting)([\w-]+)="([^"]*)"/g;
+  let m;
+  while ((m = simpleAttrRe.exec(divTag)) !== null) {
+    attrs[`data-${m[1]}`] = m[2];
+  }
+
+  const settingIdx = divTag.indexOf('data-default-setting=');
+  if (settingIdx !== -1) {
+    const valueStart = settingIdx + 'data-default-setting='.length;
+    const ch = divTag[valueStart];
+    if (ch === '{') {
+      let depth = 0;
+      let end = valueStart;
+      for (let i = valueStart; i < divTag.length; i++) {
+        if (divTag[i] === '{') depth++;
+        else if (divTag[i] === '}') { depth--; if (depth === 0) { end = i + 1; break; } }
+      }
+      attrs['data-default-setting'] = divTag.substring(valueStart, end);
+    } else if (ch === '"') {
+      const closeQuote = divTag.indexOf('"', valueStart + 1);
+      if (closeQuote !== -1) attrs['data-default-setting'] = divTag.substring(valueStart + 1, closeQuote);
+    }
+  }
+
+  return attrs;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -466,7 +651,7 @@ const FIELD_MAPPING = {
 //  FTL Synthesis: core function
 // ═══════════════════════════════════════════════════════════
 
-function synthesizeFtl($, $section, detection, templateData, uuid) {
+function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
   const mapping = FIELD_MAPPING[detection.detectedType];
   if (!mapping) return templateData.content;
 
@@ -525,13 +710,13 @@ function synthesizeFtl($, $section, detection, templateData, uuid) {
     : '';
   const hiddenInputsStr = mapping.hiddenInputs.length > 0 ? '\n' + mapping.hiddenInputs.join('\n') : '';
 
-  let finalHtml;
+  let sectionHtmlFinal;
   if (useContainerParentAsApiScope) {
     const cpOuterHtml = $local.html(containerParent);
     const cpIdx = sectionInnerHtml.indexOf(cpOuterHtml);
     const beforeCp = cpIdx >= 0 ? sectionInnerHtml.substring(0, cpIdx) : '';
     const afterCp = cpIdx >= 0 ? sectionInnerHtml.substring(cpIdx + cpOuterHtml.length) : '';
-    finalHtml =
+    sectionHtmlFinal =
       `<${sectionTag}${attrStr}>\n` +
       beforeCp +
       `\n${apiOpen}\n` +
@@ -542,7 +727,7 @@ function synthesizeFtl($, $section, detection, templateData, uuid) {
       afterCp +
       `</${sectionTag}>`;
   } else {
-    finalHtml =
+    sectionHtmlFinal =
       `<${sectionTag}${attrStr}>\n` +
       `${apiOpen}\n` +
       sectionInnerHtml +
@@ -551,8 +736,27 @@ function synthesizeFtl($, $section, detection, templateData, uuid) {
       `</${sectionTag}>`;
   }
 
-  finalHtml = unescapeFreeMarkerDirectives(finalHtml);
-  return finalHtml;
+  sectionHtmlFinal = unescapeFreeMarkerDirectives(sectionHtmlFinal);
+
+  const wrapperDiv = buildWrapperDiv(apiBlock.rootDataAttrs, uuid, blockType);
+  return `${wrapperDiv}\n${sectionHtmlFinal}\n</div>`;
+}
+
+function buildWrapperDiv(rootDataAttrs, uuid, blockType) {
+  const attrs = { ...rootDataAttrs };
+  attrs['data-block-uuid'] = uuid;
+  if (blockType) attrs['data-block-type'] = blockType;
+  if (!attrs['data-gjs-type']) attrs['data-gjs-type'] = 'developer-node-component';
+
+  let attrStr = '';
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'data-default-setting') {
+      attrStr += ` ${k}=${v}`;
+    } else {
+      attrStr += ` ${k}="${v}"`;
+    }
+  }
+  return `<div class="backstage-blocksEditor-wrap wra block_${uuid}"${attrStr}>`;
 }
 
 function unescapeFreeMarkerDirectives(html) {
@@ -666,7 +870,7 @@ function injectMarkers($, $section, detection) {
   const uuid = uuidv4().replace(/-/g, '').substring(0, 12);
   const appId = templateData.entry.appId || '';
 
-  const synthesizedFtl = synthesizeFtl($, $section, detection, templateData, uuid);
+  const synthesizedFtl = synthesizeFtl($, $section, detection, templateData, uuid, blockType);
 
   const originalHtml = $.html($section);
 
@@ -848,21 +1052,14 @@ async function main() {
   const html = fs.readFileSync(inputFile, 'utf-8');
   const $ = load(html);
 
-  // ─── Phase 1: Detection ───
+  // ─── Phase 1: Detection (tag-agnostic, bottom-up) ───
   console.log('═══ Phase 1: 动态区域检测 ═══');
-  const sections = [];
-  $('body > section, body > div > section').each((i, el) => {
-    sections.push({ el, $el: $(el), index: i });
-  });
-
-  if (sections.length === 0) {
-    $('body').children().each((i, el) => {
-      const tagName = el.tagName?.toLowerCase();
-      if (tagName === 'section' || (tagName === 'div' && $(el).attr('class'))) {
-        sections.push({ el, $el: $(el), index: i });
-      }
-    });
-  }
+  const discoveredBlocks = discoverBlocks($);
+  const sections = discoveredBlocks.map((b, i) => ({
+    el: b.el,
+    $el: b.$el,
+    index: i,
+  }));
 
   console.log(`[INFO] 找到 ${sections.length} 个可分析区块\n`);
 
