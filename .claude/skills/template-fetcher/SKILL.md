@@ -26,9 +26,13 @@ Management Platform (dev.leadong.com)
 ┌─────────────────────────────┐
 │   1. Login (Playwright)     │ → Session cookie
 ├─────────────────────────────┤
-│   2. Scan App List          │ → Paginated API: /app/faced/list
+│   2a. Scan App List (default)│ → Paginated API: /app/faced/list
 │      - Filter by appType    │   ?pageNum=N&manageFlag=1&appStatus=1
 │      - Filter by keyword    │   Client-side filter on appType field
+│  OR                         │
+│   2b. Load from JSON file   │ → --from-json ./path/to/apps.json
+│      - Read encodePkId/appNo│   Skip paginated scan entirely
+│      - Optional -k filter   │
 ├─────────────────────────────┤
 │   3. For each matched app:  │
 │      a. Get file list       │ → /app/faced/file/list?appId=X
@@ -73,6 +77,15 @@ node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -k 产品
 # Fetch specific app by ID
 node .claude/skills/template-fetcher/scripts/fetch-templates.mjs --app-ids auKUfpACdcBh
 
+# Fetch from local JSON file (skip paginated scan)
+node .claude/skills/template-fetcher/scripts/fetch-templates.mjs --from-json ./src/fetch_template/prod.json
+
+# Fetch from multiple JSON files
+node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -j ./src/fetch_template/prod.json,./src/fetch_template/article.json
+
+# JSON + keyword secondary filter
+node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -j ./src/fetch_template/prod.json -k 产品分类
+
 # Custom output directory
 node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -o ./my-templates
 ```
@@ -92,6 +105,7 @@ node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -o ./my-templat
 | `--list-apps` | | List matched apps without downloading | |
 | `--app-ids <ids>` | | Fetch specific app IDs only | |
 | `--keyword <text>` | `-k` | Filter by app name keyword | |
+| `--from-json <paths>` | `-j` | Load app list from local JSON file(s) (comma-separated), skip paginated scan. JSON needs `encodePkId` field; `appNo` optional for logging. | |
 | `--help` | `-h` | Show help | |
 
 ### Type Aliases
@@ -111,8 +125,8 @@ node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -o ./my-templat
 
 ### Files
 
-- `templates/fetched/{blockType}.ftl` — FreeMarker template files
-- `templates/fetched/{blockType}_{blockUuid}.ftl` — For `phoenix_element_dynamicComponents` variants
+- `templates/fetched/{blockType}_{appNo}.ftl` — FreeMarker template files (appNo ensures uniqueness)
+- `templates/fetched/{blockType}_{blockUuid}.ftl` — Fallback for apps without appNo (e.g. `phoenix_element_dynamicComponents`)
 - `templates/fetched/_registry.json` — Machine-readable index with all metadata
 
 ### Registry Schema
@@ -120,6 +134,7 @@ node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -o ./my-templat
 ```json
 {
   "appId": "auKUfpACdcBh",
+  "appNo": "35644",
   "numericId": 28712,
   "name": "N图册列表",
   "appType": "14",
@@ -170,6 +185,7 @@ inject-to-editor.js with dynamic markers
 When user requests `/fetch-templates`:
 
 1. Parse user intent for type/filter/scope
-2. Run `node .claude/skills/template-fetcher/scripts/fetch-templates.mjs [options]`
-3. Report results: count fetched, any failures
-4. If user wants to proceed with conversion, hand off to `/convert-dynamic`
+2. If user provides a JSON file path (e.g. `src/fetch_template/prod.json`), use `--from-json` mode
+3. Run `node .claude/skills/template-fetcher/scripts/fetch-templates.mjs [options]`
+4. Report results: count fetched, any failures
+5. If user wants to proceed with conversion, hand off to `/convert-dynamic`

@@ -70,6 +70,7 @@ function parseArgs(argv) {
     listApps: false,
     appIds: null,
     keyword: null,
+    fromJson: null,
     help: false,
   };
 
@@ -109,6 +110,9 @@ function parseArgs(argv) {
       case '-k': case '--keyword':
         args.keyword = argv[++i];
         break;
+      case '-j': case '--from-json':
+        args.fromJson = argv[++i];
+        break;
       case '-h': case '--help':
         args.help = true;
         break;
@@ -135,6 +139,8 @@ Options:
   --list-apps           List matched apps without downloading
   --app-ids <ids>       Fetch specific app IDs only (comma-separated)
   -k, --keyword <text>  Filter by app name keyword
+  -j, --from-json <paths>  Load app list from local JSON file(s) (comma-separated),
+                           skip paginated scan. Supports encodePkId and appNo fields.
   -h, --help            Show this help
 
 Type Aliases: dynamic=14, block=1, component=0, template=3,
@@ -202,8 +208,11 @@ function extractBlockType(htmlContent) {
   };
 }
 
-function getFileName(blockType, blockUuid) {
+function getFileName(blockType, blockUuid, appNo) {
   if (!blockType) return null;
+  if (appNo) {
+    return `${blockType}_${appNo}.ftl`;
+  }
   if (blockType === 'phoenix_element_dynamicComponents' && blockUuid) {
     return `${blockType}_${blockUuid}.ftl`;
   }
@@ -228,32 +237,50 @@ async function main() {
     await login(page);
 
     const allApps = [];
-    let pageNum = args.startPage;
-    let totalCount = Infinity;
 
-    console.log('Scanning app list...');
-
-    while (pageNum <= args.startPage + args.maxPages - 1) {
-      const result = await fetchAppList(page, pageNum, args.status);
-      totalCount = result.totalCount || 0;
-      const apps = result.pageApps || [];
-
-      if (apps.length === 0) break;
-
-      for (const app of apps) {
-        if (matchApp(app, args)) {
+    if (args.fromJson) {
+      const jsonPaths = args.fromJson.split(',');
+      for (const jp of jsonPaths) {
+        const resolved = path.resolve(jp.trim());
+        console.log(`Loading apps from JSON: ${resolved}`);
+        const raw = JSON.parse(fs.readFileSync(resolved, 'utf-8'));
+        const apps = Array.isArray(raw) ? raw : [raw];
+        for (const app of apps) {
+          if (args.keyword && !app.appName.includes(args.keyword)) continue;
           allApps.push(app);
         }
       }
+      console.log(`Loaded ${allApps.length} apps from JSON file(s)`);
+    } else {
+      let pageNum = args.startPage;
+      let totalCount = Infinity;
 
-      const scanned = pageNum * PAGE_SIZE;
-      process.stdout.write(`\rScanned page ${pageNum} (${Math.min(scanned, totalCount)}/${totalCount} apps, ${allApps.length} matched)`);
+      console.log('Scanning app list...');
 
-      if (scanned >= totalCount) break;
-      pageNum++;
+      while (pageNum <= args.startPage + args.maxPages - 1) {
+        const result = await fetchAppList(page, pageNum, args.status);
+        totalCount = result.totalCount || 0;
+        const apps = result.pageApps || [];
+
+        if (apps.length === 0) break;
+
+        for (const app of apps) {
+          if (matchApp(app, args)) {
+            allApps.push(app);
+          }
+        }
+
+        const scanned = pageNum * PAGE_SIZE;
+        process.stdout.write(`\rScanned page ${pageNum} (${Math.min(scanned, totalCount)}/${totalCount} apps, ${allApps.length} matched)`);
+
+        if (scanned >= totalCount) break;
+        pageNum++;
+      }
+
+      console.log(`\n`);
     }
 
-    console.log(`\n\nFound ${allApps.length} matching apps`);
+    console.log(`Found ${allApps.length} matching apps`);
 
     if (args.listTypes) {
       const typeCounts = {};
@@ -275,7 +302,8 @@ async function main() {
       console.log('\nMatched apps:');
       for (const app of allApps) {
         const label = TYPE_LABELS[app.appType] || `type=${app.appType}`;
-        console.log(`  [${app.encodePkId}] ${app.appName} (${label})`);
+        const noTag = app.appNo ? ` appNo:${app.appNo}` : '';
+        console.log(`  [${app.encodePkId}] ${app.appName} (${label}${noTag})`);
       }
       return;
     }
@@ -283,7 +311,8 @@ async function main() {
     if (args.dryRun) {
       console.log('\n[DRY RUN] Would download templates for:');
       for (const app of allApps) {
-        console.log(`  ${app.appName} (${app.encodePkId})`);
+        const noTag = app.appNo ? ` appNo:${app.appNo}` : '';
+        console.log(`  ${app.appName} (${app.encodePkId}${noTag})`);
       }
       return;
     }
@@ -309,7 +338,8 @@ async function main() {
         continue;
       }
 
-      process.stdout.write(`\r[${i + 1}/${allApps.length}] Fetching: ${app.appName}...`);
+      const appLabel = app.appNo ? `${app.appName} (appNo:${app.appNo})` : app.appName;
+      process.stdout.write(`\r[${i + 1}/${allApps.length}] Fetching: ${appLabel}...`);
 
       try {
         const files = await fetchFileList(page, appId);
@@ -330,7 +360,7 @@ async function main() {
         }
 
         const { blockType, blockUuid } = extractBlockType(content);
-        const fileName = getFileName(blockType, blockUuid) || `unknown_${appId}.ftl`;
+        const fileName = getFileName(blockType, blockUuid, app.appNo) || `unknown_${appId}.ftl`;
         const filePath = path.join(args.output, fileName);
 
         fs.writeFileSync(filePath, content, 'utf-8');
@@ -338,6 +368,7 @@ async function main() {
         const existingIdx = registry.findIndex(r => r.appId === appId);
         const entry = {
           appId,
+          appNo: app.appNo || null,
           numericId: viewFile.renderId,
           name: app.appName,
           appType: String(app.appType),
