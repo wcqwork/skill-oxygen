@@ -1,7 +1,8 @@
 {
-  "timestamp": "2026-03-17T06:58:45.068Z",
+  "timestamp": "2026-03-18T10:56:57.075Z",
   "inputFile": "src/preview.html",
   "outputFile": "src/dynamic_preview.html",
+  "dynamicBlockDir": "src\\dynamic_block",
   "totalSections": 12,
   "dynamicSections": 3,
   "staticSections": 9,
@@ -21,7 +22,9 @@
         "内容启发: 检测到 articleList 特征 (12/20)"
       ],
       "itemCount": 2,
-      "isDynamic": false
+      "isDynamic": false,
+      "repeatingContainer": null,
+      "repeatingItemTag": null
     },
     {
       "sectionIndex": 1,
@@ -36,7 +39,9 @@
       },
       "evidence": [],
       "itemCount": 0,
-      "isDynamic": false
+      "isDynamic": false,
+      "repeatingContainer": null,
+      "repeatingItemTag": null
     },
     {
       "sectionIndex": 2,
@@ -53,7 +58,9 @@
         "结构检测: 4 个重复子元素 (25/40)"
       ],
       "itemCount": 4,
-      "isDynamic": true
+      "isDynamic": true,
+      "repeatingContainer": "side-grid",
+      "repeatingItemTag": "div"
     },
     {
       "sectionIndex": 3,
@@ -71,7 +78,9 @@
         "内容启发: 检测到 prodList 特征 (18/20)"
       ],
       "itemCount": 10,
-      "isDynamic": true
+      "isDynamic": true,
+      "repeatingContainer": "carousel-track",
+      "repeatingItemTag": "div"
     },
     {
       "sectionIndex": 4,
@@ -88,7 +97,9 @@
         "结构检测: 4 个重复子元素 (25/40)"
       ],
       "itemCount": 4,
-      "isDynamic": false
+      "isDynamic": false,
+      "repeatingContainer": "container",
+      "repeatingItemTag": "div"
     },
     {
       "sectionIndex": 5,
@@ -103,7 +114,9 @@
       },
       "evidence": [],
       "itemCount": 0,
-      "isDynamic": false
+      "isDynamic": false,
+      "repeatingContainer": null,
+      "repeatingItemTag": null
     },
     {
       "sectionIndex": 6,
@@ -120,7 +133,9 @@
         "结构检测: 3 个重复子元素 (25/40)"
       ],
       "itemCount": 3,
-      "isDynamic": false
+      "isDynamic": false,
+      "repeatingContainer": "grid",
+      "repeatingItemTag": "div"
     },
     {
       "sectionIndex": 7,
@@ -137,7 +152,9 @@
         "结构检测: 4 个重复子元素 (25/40)"
       ],
       "itemCount": 4,
-      "isDynamic": false
+      "isDynamic": false,
+      "repeatingContainer": "features",
+      "repeatingItemTag": "div"
     },
     {
       "sectionIndex": 8,
@@ -152,7 +169,9 @@
       },
       "evidence": [],
       "itemCount": 0,
-      "isDynamic": false
+      "isDynamic": false,
+      "repeatingContainer": null,
+      "repeatingItemTag": null
     },
     {
       "sectionIndex": 9,
@@ -167,7 +186,9 @@
       },
       "evidence": [],
       "itemCount": 2,
-      "isDynamic": false
+      "isDynamic": false,
+      "repeatingContainer": null,
+      "repeatingItemTag": null
     },
     {
       "sectionIndex": 10,
@@ -182,7 +203,9 @@
       },
       "evidence": [],
       "itemCount": 0,
-      "isDynamic": false
+      "isDynamic": false,
+      "repeatingContainer": null,
+      "repeatingItemTag": null
     },
     {
       "sectionIndex": 11,
@@ -200,38 +223,43 @@
         "内容启发: 检测到 articleList 特征 (18/20)"
       ],
       "itemCount": 3,
-      "isDynamic": true
+      "isDynamic": true,
+      "repeatingContainer": "grid",
+      "repeatingItemTag": "div"
     }
   ],
   "injections": [
     {
       "success": true,
       "blockType": "phoenix_blocks_groupProduct_new",
-      "uuid": "2513fe23458d",
+      "uuid": "816412d19249",
       "appId": "WWKAfpUNoOfE",
       "templateFile": "phoenix_blocks_groupProduct_new.ftl",
-      "freemakerHtmlLength": 12261
+      "freemakerHtmlLength": 2117,
+      "ftlOutputPath": "src\\dynamic_block\\816412d19249.ftl"
     },
     {
       "success": true,
       "blockType": "phoenix_blocks_prodlist",
-      "uuid": "a16c5c08f7d6",
+      "uuid": "a4c786eed257",
       "appId": "lIUfpKACmdJh",
       "templateFile": "phoenix_blocks_prodlist.ftl",
-      "freemakerHtmlLength": 13819
+      "freemakerHtmlLength": 2929,
+      "ftlOutputPath": "src\\dynamic_block\\a4c786eed257.ftl"
     },
     {
       "success": true,
       "blockType": "phoenix_blocks_Articlelist",
-      "uuid": "df208c77f43f",
+      "uuid": "afb6df8bbb62",
       "appId": "VBAUKpfWweAr",
       "templateFile": "phoenix_blocks_Articlelist.ftl",
-      "freemakerHtmlLength": 10475
+      "freemakerHtmlLength": 3304,
+      "ftlOutputPath": "src\\dynamic_block\\afb6df8bbb62.ftl"
     }
   ],
   "validations": [
     {
-      "uuid": "2513fe23458d",
+      "uuid": "816412d19249",
       "blockType": "phoenix_blocks_groupProduct_new",
       "checks": [
         {
@@ -257,7 +285,7 @@
       ]
     },
     {
-      "uuid": "a16c5c08f7d6",
+      "uuid": "a4c786eed257",
       "blockType": "phoenix_blocks_prodlist",
       "checks": [
         {
@@ -283,7 +311,7 @@
       ]
     },
     {
-      "uuid": "df208c77f43f",
+      "uuid": "afb6df8bbb62",
       "blockType": "phoenix_blocks_Articlelist",
       "checks": [
         {

@@ -126,16 +126,54 @@ devComponents.each((i, outer) => {
   check('class 包含 developer-component-newedit', $node.hasClass('developer-component-newedit'), 'OK');
 });
 
-// ─── Check 3: Model Setup Script ───
-console.log('\n═══ 3. Model Setup Script 验证 ═══');
+// ─── Check 3: Model Setup Script + dynamic_block/ 验证 ═══
+console.log('\n═══ 3. Model Setup Script + FTL 文件验证 ═══');
 const modelScriptFound = html.includes('__DYNAMIC_MODULES__');
-const templateMatches = html.match(/FREEMAKER_TEMPLATES\["[^"]+"\]/g);
-const templatesInScript = templateMatches ? templateMatches.length : 0;
+const pathMatches = html.match(/TEMPLATE_PATHS\["[^"]+"\]/g);
+const pathsInScript = pathMatches ? pathMatches.length : 0;
 
 check('Model Setup Script 存在', modelScriptFound, modelScriptFound ? '已找到' : '未找到');
-check('模板数据嵌入', templatesInScript > 0, `${templatesInScript} 个模板`);
-check('模板数量匹配模块数量', templatesInScript === devComponents.length,
-  `模板: ${templatesInScript}, 模块: ${devComponents.length}`);
+check('templatePaths 映射存在', pathsInScript > 0, `${pathsInScript} 个路径映射`);
+check('路径数量匹配模块数量', pathsInScript === devComponents.length,
+  `路径映射: ${pathsInScript}, 模块: ${devComponents.length}`);
+
+const dynamicBlockDir = path.join(path.dirname(inputFile), 'dynamic_block');
+const blockDirExists = fs.existsSync(dynamicBlockDir);
+check('dynamic_block/ 目录存在', blockDirExists, dynamicBlockDir);
+
+if (blockDirExists) {
+  const ftlFiles = fs.readdirSync(dynamicBlockDir).filter(f => f.endsWith('.ftl'));
+  check('FTL 文件数量匹配模块数量', ftlFiles.length === devComponents.length,
+    `FTL 文件: ${ftlFiles.length}, 模块: ${devComponents.length}`);
+
+  devComponents.each((i, outer) => {
+    const $node = $(outer).find('[data-gjs-type="developer-node-component"]');
+    const uuid = $node.attr('data-block-uuid');
+    if (uuid) {
+      const ftlPath = path.join(dynamicBlockDir, `${uuid}.ftl`);
+      const ftlExists = fs.existsSync(ftlPath);
+      check(`FTL 文件 ${uuid}.ftl 存在`, ftlExists, ftlPath);
+      if (ftlExists) {
+        const ftlContent = fs.readFileSync(ftlPath, 'utf-8');
+        check(`FTL 文件 ${uuid}.ftl 内容非空`, ftlContent.length > 0, `${ftlContent.length} chars`);
+
+        check(`FTL ${uuid} 包含 [@api] 调用`, ftlContent.includes('[@api'), ftlContent.includes('[@api') ? '✓' : '无 @api');
+        check(`FTL ${uuid} 包含 [#list] 循环`, ftlContent.includes('[#list'), ftlContent.includes('[#list') ? '✓' : '无 [#list]');
+        check(`FTL ${uuid} 包含 [/@api]`, ftlContent.includes('[/@api]'), ftlContent.includes('[/@api]') ? '✓' : '无 [/@api]');
+
+        const innerSection = $node.find('section');
+        if (innerSection.length > 0) {
+          const sectionClass = innerSection.attr('class') || '';
+          const mainClass = sectionClass.split(' ')[0];
+          if (mainClass) {
+            check(`FTL ${uuid} 保留原始 CSS class "${mainClass}"`, ftlContent.includes(mainClass),
+              ftlContent.includes(mainClass) ? '✓' : `FTL 中未找到 class "${mainClass}"`);
+          }
+        }
+      }
+    }
+  });
+}
 
 // ─── Check 4: Static sections unchanged ───
 console.log('\n═══ 4. 静态区块完整性 ═══');

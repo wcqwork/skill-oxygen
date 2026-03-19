@@ -126,10 +126,10 @@ function getTagSignature($, el) {
 
 function analyzeStructure($, $section) {
   const container = findRepeatingContainer($, $section);
-  if (!container) return { score: 0, itemCount: 0, repeatingSelector: null };
+  if (!container) return { score: 0, itemCount: 0, repeatingSelector: null, repeatingContainer: null, repeatingItemTag: null };
 
   const children = $(container).children();
-  if (children.length < 3) return { score: 0, itemCount: 0, repeatingSelector: null };
+  if (children.length < 3) return { score: 0, itemCount: 0, repeatingSelector: null, repeatingContainer: null, repeatingItemTag: null };
 
   const sigs = {};
   children.each((_, child) => {
@@ -138,17 +138,20 @@ function analyzeStructure($, $section) {
   });
 
   const maxSig = Object.entries(sigs).sort((a, b) => b[1] - a[1])[0];
-  if (!maxSig) return { score: 0, itemCount: 0, repeatingSelector: null };
+  if (!maxSig) return { score: 0, itemCount: 0, repeatingSelector: null, repeatingContainer: null, repeatingItemTag: null };
 
   const count = maxSig[1];
-  if (count < 3) return { score: 0, itemCount: count, repeatingSelector: null };
+  if (count < 3) return { score: 0, itemCount: count, repeatingSelector: null, repeatingContainer: null, repeatingItemTag: null };
 
   let score = 0;
   if (count >= 9) score = 40;
   else if (count >= 5) score = 35;
   else score = 25;
 
-  return { score, itemCount: count, repeatingSelector: maxSig[0] };
+  const containerClass = $(container).attr('class') || '';
+  const containerTag = container.tagName;
+
+  return { score, itemCount: count, repeatingSelector: maxSig[0], repeatingContainer: containerClass || containerTag, repeatingItemTag: containerTag };
 }
 
 function findRepeatingContainer($, $section) {
@@ -334,7 +337,319 @@ function detectSection($, $section, index) {
     evidence,
     itemCount: structural.itemCount,
     isDynamic,
+    repeatingContainer: structural.repeatingContainer,
+    repeatingItemTag: structural.repeatingItemTag,
   };
+}
+
+// ═══════════════════════════════════════════════════════════
+//  FTL Synthesis: extract @api block from reference template
+// ═══════════════════════════════════════════════════════════
+
+function extractApiBlock(templateContent) {
+  const apiOpenMatch = templateContent.match(/\[@api\s[^\]]*\]/s);
+  if (!apiOpenMatch) return null;
+
+  const apiTag = apiOpenMatch[0];
+  const queryMatch = apiTag.match(/query\s*=\s*'(\{[\s\S]*?\})'\s*\]/);
+  const queryStr = queryMatch ? queryMatch[1] : '';
+
+  const initScriptMatch = templateContent.match(/<script>\s*\$\(function\(\)\{[\s\S]*?\}\);\s*<\/script>/);
+  const initScript = initScriptMatch ? initScriptMatch[0] : '';
+
+  return { apiTag, queryStr, initScript };
+}
+
+// ═══════════════════════════════════════════════════════════
+//  FTL Synthesis: field mapping config per dynamic type
+// ═══════════════════════════════════════════════════════════
+
+const FIELD_MAPPING = {
+  prodList: {
+    listExpr: 'data.productList.list',
+    itemVar: 'product',
+    nullCheck: 'data?? && data.productList?? && data.productList.list?? && (data.productList.list?size > 0)',
+    fields: {
+      img: '${product.photoUrlList[0]!}',
+      imgAlt: '${product.prodName!?html}',
+      title: '${product.prodName!?html}',
+      url: '${product.prodUrl!\'#\'}',
+      price: '${product.prodPrice!}',
+      desc: '${product.prodBrief!}',
+    },
+    hiddenInputs: [
+      '<input type="hidden" name="totalRow" value="${data.productList.totalRow!\'0\'}">',
+      '<input type="hidden" name="pageNumber" value="${data.productList.pageNumber!\'1\'}">',
+      '<input type="hidden" name="pageSize" value="${data.productList.pageSize!\'20\'}">',
+    ],
+  },
+  articleList: {
+    listExpr: 'data.articleList.list',
+    itemVar: 'article',
+    nullCheck: 'data?? && data.articleList?? && data.articleList.list?? && (data.articleList.list?size > 0)',
+    fields: {
+      img: '${article.photoUrlNormal!\'\'}',
+      imgAlt: '${article.articleTitle!\'\'}',
+      title: '${article.articleTitle!\'\'}',
+      url: '${article.articleUrl!\'\'}',
+      date: '${article.publishTime!\'\'}',
+      desc: '${article.articleSummary!\'\'}',
+    },
+    hiddenInputs: [
+      '<input type="hidden" name="totalRow" value="${data.articleList.totalRow!\'0\'}">',
+      '<input type="hidden" name="pageNumber" value="${data.articleList.pageNumber!\'1\'}">',
+      '<input type="hidden" name="pageSize" value="${data.articleList.pageSize!\'10\'}">',
+    ],
+  },
+  groupProduct: {
+    listExpr: 'data.productGroupList',
+    itemVar: 'group',
+    nullCheck: 'data?? && data.productGroupList?? && (data.productGroupList?size > 0)',
+    fields: {
+      img: '${group.groupPhotoUrlList[0]!}',
+      imgAlt: '${group.groupName!?html}',
+      title: '${group.groupName!?html}',
+      url: '${group.groupUrl!\'\'}',
+      desc: '',
+    },
+    hiddenInputs: [],
+  },
+  galleryList: {
+    listExpr: 'data.galleryList.list',
+    itemVar: 'gallery',
+    nullCheck: 'data?? && data.galleryList?? && data.galleryList.list?? && (data.galleryList.list?size > 0)',
+    fields: {
+      img: '${gallery.photoUrl!\'\'}',
+      imgAlt: '${gallery.galleryTitle!\'\'}',
+      title: '${gallery.galleryTitle!\'\'}',
+      url: '${gallery.galleryUrl!\'\'}',
+    },
+    hiddenInputs: [],
+  },
+  videoList: {
+    listExpr: 'data.videoList.list',
+    itemVar: 'video',
+    nullCheck: 'data?? && data.videoList?? && data.videoList.list?? && (data.videoList.list?size > 0)',
+    fields: {
+      img: '${video.videoCoverUrl!\'\'}',
+      imgAlt: '${video.videoTitle!\'\'}',
+      title: '${video.videoTitle!\'\'}',
+      url: '${video.videoUrl!\'\'}',
+    },
+    hiddenInputs: [],
+  },
+  FAQList: {
+    listExpr: 'data.faqList.list',
+    itemVar: 'faq',
+    nullCheck: 'data?? && data.faqList?? && data.faqList.list?? && (data.faqList.list?size > 0)',
+    fields: {
+      title: '${faq.faqQuestion!\'\'}',
+      desc: '${faq.faqAnswer!\'\'}',
+      url: '',
+    },
+    hiddenInputs: [],
+  },
+  downloadList: {
+    listExpr: 'data.downloadList.list',
+    itemVar: 'download',
+    nullCheck: 'data?? && data.downloadList?? && data.downloadList.list?? && (data.downloadList.list?size > 0)',
+    fields: {
+      title: '${download.downloadTitle!\'\'}',
+      url: '${download.downloadUrl!\'\'}',
+      desc: '${download.downloadBrief!\'\'}',
+    },
+    hiddenInputs: [],
+  },
+};
+
+// ═══════════════════════════════════════════════════════════
+//  FTL Synthesis: core function
+// ═══════════════════════════════════════════════════════════
+
+function synthesizeFtl($, $section, detection, templateData, uuid) {
+  const mapping = FIELD_MAPPING[detection.detectedType];
+  if (!mapping) return templateData.content;
+
+  const apiBlock = extractApiBlock(templateData.content);
+  if (!apiBlock) return templateData.content;
+
+  const sectionHtml = $.html($section);
+  const $local = load(sectionHtml, { decodeEntities: false, xmlMode: false });
+  const $body = $local('body');
+  const sectionEl = $body.children().first();
+  if (!sectionEl || sectionEl.length === 0) return templateData.content;
+
+  const container = findRepeatingContainer($local, sectionEl);
+  if (!container) return templateData.content;
+
+  const $container = $local(container);
+  const children = $container.children();
+  if (children.length < 2) return templateData.content;
+
+  const firstChild = children.first();
+  const repeatingTag = firstChild[0].tagName;
+
+  const sameTagChildren = [];
+  children.each((_, child) => {
+    if (child.tagName === repeatingTag) sameTagChildren.push(child);
+  });
+  if (sameTagChildren.length < 2) return templateData.content;
+
+  const dynamicItemHtml = applyFieldMapping($local, $local(sameTagChildren[0]), mapping);
+
+  for (let i = sameTagChildren.length - 1; i >= 1; i--) {
+    $local(sameTagChildren[i]).remove();
+  }
+
+  const listOpen = `[#if ${mapping.nullCheck}]\n[#list ${mapping.listExpr} as ${mapping.itemVar}]`;
+  const listClose = `[/#list]\n[#else]\n<div class="no-data">No content available</div>\n[/#if]`;
+
+  $local(sameTagChildren[0]).replaceWith(`\n${listOpen}\n${dynamicItemHtml}\n${listClose}\n`);
+
+  const containerParent = $container.parent();
+  const apiOpen = apiBlock.apiTag.replace(/data-block-uuid="[^"]*"/, `data-block-uuid="${uuid}"`);
+
+  const sectionTag = sectionEl[0].tagName;
+  const sectionAttrs = sectionEl[0].attribs;
+  let attrStr = '';
+  for (const [k, v] of Object.entries(sectionAttrs)) {
+    attrStr += ` ${k}="${v}"`;
+  }
+
+  const sectionInnerHtml = sectionEl.html();
+  const containerParentTag = containerParent[0]?.tagName;
+  const useContainerParentAsApiScope = containerParentTag && containerParentTag !== sectionTag;
+
+  const initScriptStr = apiBlock.initScript
+    ? apiBlock.initScript.replace(/\$\(function/, '\\$(function').replace(/<\/script/g, '<\\/script')
+    : '';
+  const hiddenInputsStr = mapping.hiddenInputs.length > 0 ? '\n' + mapping.hiddenInputs.join('\n') : '';
+
+  let finalHtml;
+  if (useContainerParentAsApiScope) {
+    const cpOuterHtml = $local.html(containerParent);
+    const cpIdx = sectionInnerHtml.indexOf(cpOuterHtml);
+    const beforeCp = cpIdx >= 0 ? sectionInnerHtml.substring(0, cpIdx) : '';
+    const afterCp = cpIdx >= 0 ? sectionInnerHtml.substring(cpIdx + cpOuterHtml.length) : '';
+    finalHtml =
+      `<${sectionTag}${attrStr}>\n` +
+      beforeCp +
+      `\n${apiOpen}\n` +
+      cpOuterHtml +
+      hiddenInputsStr + '\n' +
+      (initScriptStr ? initScriptStr + '\n' : '') +
+      `[/@api]\n` +
+      afterCp +
+      `</${sectionTag}>`;
+  } else {
+    finalHtml =
+      `<${sectionTag}${attrStr}>\n` +
+      `${apiOpen}\n` +
+      sectionInnerHtml +
+      hiddenInputsStr + '\n' +
+      `[/@api]\n` +
+      `</${sectionTag}>`;
+  }
+
+  finalHtml = unescapeFreeMarkerDirectives(finalHtml);
+  return finalHtml;
+}
+
+function unescapeFreeMarkerDirectives(html) {
+  return html
+    .replace(/&amp;&amp;/g, '&&')
+    .replace(/&gt;/g, '>')
+    .replace(/&lt;(\/?#)/g, '<$1')
+    .replace(/&lt;(\/?@)/g, '<$1');
+}
+
+function applyFieldMapping($local, $item, mapping) {
+  const innerHtml = $item.html();
+  const $frag = load(innerHtml, { decodeEntities: false });
+  const $root = $frag.root();
+
+  $root.find('img').each((_, img) => {
+    const $img = $frag(img);
+    if (mapping.fields.img) {
+      $img.attr('src', mapping.fields.img);
+    }
+    if (mapping.fields.imgAlt) {
+      $img.attr('alt', mapping.fields.imgAlt);
+    }
+  });
+
+  $root.find('a').each((_, a) => {
+    const $a = $frag(a);
+    const href = $a.attr('href');
+    if (href && mapping.fields.url) {
+      $a.attr('href', mapping.fields.url);
+    }
+    if ($a.find('img').length === 0) {
+      const text = $a.text().trim();
+      if (text && text.length > 0 && text.length < 200) {
+        if (mapping.fields.title) {
+          $a.html(mapping.fields.title);
+        }
+      }
+    }
+    if (mapping.fields.imgAlt && $a.attr('title')) {
+      $a.attr('title', mapping.fields.imgAlt);
+    }
+  });
+
+  const headings = $root.find('h1, h2, h3, h4, h5, h6');
+  headings.each((_, h) => {
+    const $h = $frag(h);
+    if ($h.find('a').length > 0) return;
+    if (mapping.fields.title) {
+      $h.html(mapping.fields.title);
+    }
+  });
+
+  $root.find('[class*="name"], [class*="title"]').each((_, el) => {
+    const $el = $frag(el);
+    const tag = el.tagName?.toLowerCase();
+    if (['h1','h2','h3','h4','h5','h6','a','img'].includes(tag)) return;
+    if ($el.find('a, img, h1, h2, h3, h4, h5, h6').length > 0) return;
+    const text = $el.text().trim();
+    if (text && text.length > 0 && mapping.fields.title) {
+      $el.html(mapping.fields.title);
+    }
+  });
+
+  const dateEls = $root.find('[class*="date"], [class*="time"], time');
+  dateEls.each((_, el) => {
+    const $el = $frag(el);
+    if (mapping.fields.date) {
+      $el.html(mapping.fields.date);
+    }
+  });
+
+  const priceEls = $root.find('[class*="price"]');
+  priceEls.each((_, el) => {
+    const $el = $frag(el);
+    if (mapping.fields.price) {
+      $el.html(mapping.fields.price);
+    }
+  });
+
+  const descEls = $root.find('[class*="desc"], [class*="brief"], [class*="summary"]');
+  descEls.each((_, el) => {
+    const $el = $frag(el);
+    if ($el.find('a, img').length > 0) return;
+    if (mapping.fields.desc) {
+      $el.html(mapping.fields.desc);
+    }
+  });
+
+  const outerTag = $item[0].tagName;
+  const outerAttrs = $item[0].attribs || {};
+  let outerAttrStr = '';
+  for (const [k, v] of Object.entries(outerAttrs)) {
+    outerAttrStr += ` ${k}="${v}"`;
+  }
+
+  return `<${outerTag}${outerAttrStr}>${$frag.html()}</${outerTag}>`;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -350,6 +665,8 @@ function injectMarkers($, $section, detection) {
 
   const uuid = uuidv4().replace(/-/g, '').substring(0, 12);
   const appId = templateData.entry.appId || '';
+
+  const synthesizedFtl = synthesizeFtl($, $section, detection, templateData, uuid);
 
   const originalHtml = $.html($section);
 
@@ -373,7 +690,8 @@ originalHtml +
     uuid,
     appId,
     templateFile: templateData.entry.fileName,
-    freemakerHtmlLength: templateData.content.length,
+    freemakerHtmlLength: synthesizedFtl.length,
+    freemakerContent: synthesizedFtl,
   };
 }
 
@@ -429,27 +747,22 @@ function validateInjection($, uuid) {
 //  Generate export script (model setup)
 // ═══════════════════════════════════════════════════════════
 
-function generateModelSetupScript(injections) {
+function generateModelSetupScript(injections, dynamicBlockDir) {
+  const relDir = path.basename(dynamicBlockDir);
   const scriptLines = [];
   scriptLines.push(`<!-- Dynamic Module Model Setup Script -->`);
   scriptLines.push(`<script>`);
   scriptLines.push(`(function() {`);
-  scriptLines.push(`  var FREEMAKER_TEMPLATES = {};`);
+  scriptLines.push(`  var TEMPLATE_PATHS = {};`);
 
   for (const inj of injections) {
     if (!inj.success) continue;
-    const template = loadTemplate(inj.blockType);
-    if (!template) continue;
-    const escaped = template.content
-      .replace(/\\/g, '\\\\')
-      .replace(/`/g, '\\`')
-      .replace(/\$/g, '\\$');
-    scriptLines.push(`  FREEMAKER_TEMPLATES["${inj.uuid}"] = \`${escaped}\`;`);
+    scriptLines.push(`  TEMPLATE_PATHS["${inj.uuid}"] = "${relDir}/${inj.uuid}.ftl";`);
   }
 
   scriptLines.push('');
   scriptLines.push(`  window.__DYNAMIC_MODULES__ = {`);
-  scriptLines.push(`    templates: FREEMAKER_TEMPLATES,`);
+  scriptLines.push(`    templatePaths: TEMPLATE_PATHS,`);
   scriptLines.push(`    modules: [`);
 
   for (const inj of injections) {
@@ -459,21 +772,25 @@ function generateModelSetupScript(injections) {
     scriptLines.push(`        blockType: "${inj.blockType}",`);
     scriptLines.push(`        appId: "${inj.appId}",`);
     scriptLines.push(`        templateFile: "${inj.templateFile}",`);
+    scriptLines.push(`        templatePath: "${relDir}/${inj.uuid}.ftl",`);
     scriptLines.push(`      },`);
   }
 
   scriptLines.push(`    ],`);
-  scriptLines.push(`    inject: function(editor) {`);
+  scriptLines.push(`    inject: async function(editor) {`);
   scriptLines.push(`      if (!editor) return;`);
-  scriptLines.push(`      this.modules.forEach(function(mod) {`);
+  scriptLines.push(`      for (var i = 0; i < this.modules.length; i++) {`);
+  scriptLines.push(`        var mod = this.modules[i];`);
   scriptLines.push(`        var nodeEls = editor.DomComponents.getWrapper().find('[data-block-uuid="' + mod.uuid + '"]');`);
   scriptLines.push(`        if (nodeEls.length > 0) {`);
+  scriptLines.push(`          var resp = await fetch(mod.templatePath);`);
+  scriptLines.push(`          var ftlContent = await resp.text();`);
   scriptLines.push(`          var nodeModel = nodeEls[0];`);
-  scriptLines.push(`          nodeModel.set('freemakerHtml', FREEMAKER_TEMPLATES[mod.uuid] || '');`);
+  scriptLines.push(`          nodeModel.set('freemakerHtml', ftlContent);`);
   scriptLines.push(`          nodeModel.set('appId', mod.appId);`);
   scriptLines.push(`          nodeModel.set('appIsDev', true);`);
   scriptLines.push(`        }`);
-  scriptLines.push(`      });`);
+  scriptLines.push(`      }`);
   scriptLines.push(`    }`);
   scriptLines.push(`  };`);
   scriptLines.push(`})();`);
@@ -486,16 +803,23 @@ function generateModelSetupScript(injections) {
 //  Generate separate JSON report
 // ═══════════════════════════════════════════════════════════
 
-function generateReport(allDetections, injections, validations) {
+function generateReport(allDetections, injections, validations, dynamicBlockDir) {
   return {
     timestamp: new Date().toISOString(),
     inputFile,
     outputFile,
+    dynamicBlockDir,
     totalSections: allDetections.length,
     dynamicSections: allDetections.filter(d => d.isDynamic).length,
     staticSections: allDetections.filter(d => !d.isDynamic).length,
     detections: allDetections,
-    injections,
+    injections: injections.map(inj => {
+      const { freemakerContent, ...rest } = inj;
+      if (rest.success) {
+        rest.ftlOutputPath = path.join(dynamicBlockDir, `${rest.uuid}.ftl`);
+      }
+      return rest;
+    }),
     validations,
   };
 }
@@ -614,8 +938,26 @@ async function main() {
 
   console.log('');
 
+  // ─── Write .ftl files to dynamic_block/ ───
+  const outputDir = path.dirname(outputFile);
+  const dynamicBlockDir = path.join(outputDir, 'dynamic_block');
+
+  if (fs.existsSync(dynamicBlockDir)) {
+    fs.rmSync(dynamicBlockDir, { recursive: true, force: true });
+  }
+  fs.mkdirSync(dynamicBlockDir, { recursive: true });
+
+  console.log('═══ FTL 文件输出 ═══');
+  for (const inj of injections) {
+    if (!inj.success || !inj.freemakerContent) continue;
+    const ftlPath = path.join(dynamicBlockDir, `${inj.uuid}.ftl`);
+    fs.writeFileSync(ftlPath, inj.freemakerContent, 'utf-8');
+    console.log(`   📄 ${inj.uuid}.ftl (${inj.freemakerContent.length} chars) → ${ftlPath}`);
+  }
+  console.log('');
+
   // ─── Generate model setup script ───
-  const modelScript = generateModelSetupScript(injections);
+  const modelScript = generateModelSetupScript(injections, dynamicBlockDir);
   const finalHtml = $.html();
   const bodyEnd = finalHtml.lastIndexOf('</body>');
   let outputHtml;
@@ -634,16 +976,19 @@ async function main() {
     detections.map(d => ({ ...d, el: undefined, $el: undefined })),
     injections,
     allValidations,
+    dynamicBlockDir,
   );
   fs.writeFileSync(reportFile, JSON.stringify(report, null, 2), 'utf-8');
   console.log(`[REPORT] 已生成: ${reportFile}`);
 
   // ─── Summary ───
+  const ftlCount = injections.filter(i => i.success && i.freemakerContent).length;
   console.log('\n╔════════════════════════════════════════════════════════╗');
   console.log('║  转换完成                                              ║');
   console.log('╠════════════════════════════════════════════════════════╣');
   console.log(`║  总区块数: ${String(detections.length).padEnd(5)} | 动态: ${String(dynamicDetections.length).padEnd(5)} | 静态: ${String(detections.length - dynamicDetections.length).padEnd(5)} ║`);
-  console.log(`║  成功注入: ${String(injections.filter(i => i.success).length).padEnd(5)} | 失败: ${String(injections.filter(i => !i.success).length).padEnd(5)}                  ║`);
+  console.log(`║  成功注入: ${String(injections.filter(i => i.success).length).padEnd(5)} | 失败: ${String(injections.filter(i => !i.success).length).padEnd(5)} | FTL文件: ${String(ftlCount).padEnd(5)} ║`);
+  console.log(`║  输出目录: dynamic_block/                              ║`);
   console.log('╚════════════════════════════════════════════════════════╝');
 }
 

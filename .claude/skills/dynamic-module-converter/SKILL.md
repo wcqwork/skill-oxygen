@@ -1,6 +1,6 @@
-# Dynamic Module Converter Skill (v4 - Automated Pipeline)
+# Dynamic Module Converter Skill (v7 - FTL Synthesis)
 
-静态 HTML → 动态 FreeMarker 模块自动转换。三层检测算法自动识别动态区域，注入编辑器标记，关联 FreeMarker 模板，同时 **100% 保留原始 HTML 结构和样式**。
+静态 HTML → 动态 FreeMarker 模块自动转换。三层检测算法自动识别动态区域，注入编辑器标记，**以原始 HTML 为骨架合成 FreeMarker 模板**，同时 **100% 保留原始 HTML 结构和样式**。
 
 **Command**: `/convert-dynamic [--input <file>] [--output <file>] [--auto]`
 
@@ -10,14 +10,19 @@
 # 安装依赖
 npm install
 
-# 一键转换 + 验证
+# 一键转换 + 全套验证 (150+ 检查项)
 npm test
 
 # 单独转换
 npm run convert
 
-# 单独验证
-npm run verify
+# 验证套件 (可单独运行)
+npm run verify          # DOM结构验证 (73项)
+npm run verify:js       # JS语法 + 运行时验证
+npm run verify:visual   # 视觉结构对比 (25项)
+npm run verify:export   # Export路径模拟 (41项)
+npm run verify:edge     # 边界场景测试 (9项)
+npm run verify:all      # 全部验证
 
 # 自定义输入/输出
 node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs \
@@ -39,8 +44,9 @@ For sections identified as dynamic modules:
 
 - **Keep** the original static HTML structure and styles 100% intact
 - **Add** editor-compatible attributes and classes so the editor recognizes them as dynamic components
-- **Store** FreeMarker source code on the GrapesJS model (not in DOM) for export
-- **Result**: Editor displays original cloned layout; export outputs FreeMarker template
+- **Synthesize** FreeMarker templates by combining original HTML skeleton with `@api` queries and `[#list]` directives from reference templates
+- **Store** synthesized FTL as independent .ftl files in `dynamic_block/`, loaded at runtime via `fetch()`
+- **Result**: Editor displays original cloned layout; export outputs FreeMarker template that preserves original CSS classes
 
 ## Architecture
 
@@ -77,8 +83,24 @@ For sections identified as dynamic modules:
 │    1. 修改外层包装器类型和类名                │
 │    2. 添加 developer-node-component 内层      │
 │    3. 原始 <section> HTML 完全不变            │
-│    4. 设置 model 属性 (freemakerHtml 等)      │
-│  输入: templates/*.ftl                       │
+│    4. Model Setup Script 引用 .ftl 路径       │
+│  输入: templates/*.ftl (参考 @api 查询)       │
+│  输出: 注入标记的 HTML                        │
+└─────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────┐
+│  Phase 3.5: FTL 模板合成 (template synthesis)│
+│  输入:                                       │
+│    1. 原始 section HTML (preview.html)       │
+│    2. 参考模板的 @api 查询块                  │
+│    3. 字段映射规则 (按类型)                   │
+│  处理:                                       │
+│    - 保留原始 HTML 结构和 CSS class          │
+│    - 提取重复项 → [#list] 循环              │
+│    - 静态文本 → FreeMarker 变量替换          │
+│    - 外层包上 [@api] 数据查询                │
+│  输出: dynamic_block/{uuid}.ftl              │
 └─────────────────────────────────────────────┘
     │
     ▼
@@ -86,9 +108,9 @@ For sections identified as dynamic modules:
 │  Phase 4: 渲染验证 (render-verify)            │
 │    1. DOM 层级正确                            │
 │    2. 属性完整                                │
-│    3. model 属性存在                          │
+│    3. .ftl 文件存在且内容有效                  │
 │    4. 视觉样式不变                            │
-│    5. 导出路径正确                            │
+│    5. 导出路径正确 (fetch .ftl → model)       │
 └─────────────────────────────────────────────┘
 ```
 
@@ -133,17 +155,26 @@ Changes summary:
 - New inner wrapper `div` added with `developer-node-component` markers
 - **All original HTML inside `<section>` is completely untouched**
 
-### Post-injection model setup
+### Post-injection model setup (via external .ftl files)
+
+FreeMarker 模板不再内联嵌入 HTML，而是作为独立 .ftl 文件存放在 `dynamic_block/` 目录中。Model Setup Script 通过 `fetch()` 异步加载：
 
 ```javascript
-var components = editor.addComponents(markedHtml);
-var outerModel = components[0];
-var nodeModel = outerModel.findType('developer-node-component')[0];
-
-nodeModel.set('freemakerHtml', FREEMARKER_TEMPLATE_SOURCE);
-nodeModel.set('appId', APP_ID);
-nodeModel.set('appIsDev', APP_IS_DEV);
-nodeModel.set('appVersion', APP_VERSION);
+// Model Setup Script 中的 inject() 方法
+window.__DYNAMIC_MODULES__.inject = async function(editor) {
+  for (var i = 0; i < this.modules.length; i++) {
+    var mod = this.modules[i];
+    var nodeEls = editor.DomComponents.getWrapper()
+      .find('[data-block-uuid="' + mod.uuid + '"]');
+    if (nodeEls.length > 0) {
+      var resp = await fetch(mod.templatePath);  // e.g. "dynamic_block/5ace9069b7fa.ftl"
+      var ftlContent = await resp.text();
+      nodeEls[0].set('freemakerHtml', ftlContent);
+      nodeEls[0].set('appId', mod.appId);
+      nodeEls[0].set('appIsDev', true);
+    }
+  }
+};
 ```
 
 ## Verified Technical Feasibility
@@ -171,7 +202,7 @@ No + no appId?        → isBadHtml = true (error)
 Final HTML contains FreeMarker template code
 ```
 
-Key: As long as `freemakerHtml` is set on the model, export will correctly output FreeMarker.
+Key: `inject()` loads .ftl content from `dynamic_block/{uuid}.ftl` via `fetch()` and sets it on the model. As long as `freemakerHtml` is set on the model, export will correctly output FreeMarker.
 
 ## Supported `data-block-type` Values (22+ types)
 
@@ -228,7 +259,20 @@ For each user-confirmed dynamic section:
 1. **Modify outer wrapper**: Change `data-gjs-type` from `developer-component-ai` to `developer-component`, add `class="developer-component"`
 2. **Add inner marker div**: Insert a `developer-node-component` div between the outer wrapper and the original `<section>`, with required `data-`* attributes
 3. **Original `<section>` HTML**: Completely unchanged — same tags, same classes, same styles
-4. **Set model properties**: After `editor.addComponents()`, set `freemakerHtml`, `appId`, `appIsDev` on the `developer-node-component` model
+4. **Model Setup Script**: References external .ftl file paths via `templatePaths` mapping; `inject()` uses `fetch()` to load content at runtime
+
+### Phase 3.5: FTL Template Synthesis (NEW in v7)
+
+For each dynamic section, synthesize a FreeMarker template that preserves the original HTML:
+
+1. **Extract `@api` block** from reference template (`templates/fetched/*.ftl`) — only the GraphQL query and API parameters
+2. **Identify repeating items** using the detection result's `repeatingContainer` — e.g. `.product-card` children inside `.carousel-track`
+3. **Apply field mapping** per dynamic type:
+   - `prodList`: `img src` → `${product.photoUrlList[0]!}`, text → `${product.prodName!?html}`, link → `${product.prodUrl!'#'}`
+   - `articleList`: `img src` → `${article.photoUrlNormal!''}`, title → `${article.articleTitle!''}`, date → `${article.publishTime!''}`
+   - `groupProduct`: link text → `${group.groupName!?html}`, link → `${group.groupUrl!''}`
+4. **Wrap in FreeMarker directives**: `[@api]...[#list]...[/#list]...[/@api]`
+5. **Output**: `dynamic_block/{uuid}.ftl` — original HTML structure + dynamic FreeMarker syntax
 
 ### Phase 4: Validation
 
@@ -236,9 +280,9 @@ For each converted section:
 
 - **DOM check**: `developer-component` > `developer-node-component` > original HTML
 - **Attribute check**: `data-block-type`, `data-block-uuid`, `data-gjs-type` all present
-- **Model check**: `freemakerHtml` is non-empty string
+- **FTL file check**: `dynamic_block/{uuid}.ftl` exists and contains valid FreeMarker with `@api` calls
 - **Visual check**: Original CSS classes and styles still render correctly
-- **Export check**: Simulate export path — `handleGeneralBlock()` would find `freemakerHtml` and replace
+- **Export check**: Simulate export path — `inject()` fetches .ftl, `handleGeneralBlock()` reads `freemakerHtml`
 
 ## Dynamic Type Detection Patterns
 
@@ -267,7 +311,11 @@ For each converted section:
   SKILL.md                           -- Skill entry point (this file)
   scripts/
     convert-dynamic.mjs              -- Main conversion script (Phase 1-4)
-    verify-output.mjs                -- Output verification (73-point checklist)
+    verify-output.mjs                -- DOM structure + FTL file verification
+    verify-js-syntax.mjs             -- JS syntax + runtime verification
+    verify-visual.mjs                -- Visual structure comparison (25 checks)
+    verify-export-path.mjs           -- GrapesJS export path simulation + FTL validation
+    test-edge-cases.mjs              -- Boundary scenario tests (9 cases)
   references/
     dom-structure.md                 -- Marker injection mechanism + export flow
     pattern-rules.md                 -- Three-layer detection algorithm
@@ -277,6 +325,12 @@ For each converted section:
     fetched/                         -- Auto-fetched from platform (via template-fetcher)
       *.ftl                          -- FreeMarker template files (40+)
       _registry.json                 -- Machine-readable index
+
+src/                                 -- Conversion output (generated)
+  dynamic_preview.html               -- Converted HTML with dynamic module markers
+  dynamic_preview_report.json        -- Detection + injection + validation report
+  dynamic_block/                     -- Independent FTL files per dynamic module
+    {uuid}.ftl                       -- FreeMarker template (one per module)
 ```
 
 ## Scripts
@@ -292,8 +346,9 @@ Main conversion script. Accepts any static HTML and outputs a dynamic version wi
 | `--auto` | off | Skip user confirmation, auto-apply all detections |
 
 Outputs:
-- `dynamic_preview.html` — Converted HTML with dynamic module markers
-- `dynamic_preview_report.json` — Detection + injection + validation report
+- `dynamic_preview.html` — Converted HTML with dynamic module markers (templates referenced, not inlined)
+- `dynamic_preview_report.json` — Detection + injection + validation report (includes ftlOutputPath)
+- `dynamic_block/{uuid}.ftl` — Independent FreeMarker template file per dynamic module
 
 ### `verify-output.mjs`
 
@@ -302,6 +357,22 @@ Outputs:
 ```bash
 node verify-output.mjs <dynamic_file> <original_file>
 ```
+
+### `verify-js-syntax.mjs`
+
+Validates JavaScript syntax and runtime execution of all embedded scripts, including the Model Setup Script. Detects premature `</script>` tag termination and FreeMarker-only blocks.
+
+### `verify-visual.mjs`
+
+Structural comparison between original and dynamic HTML: CSS integrity, static section content preservation, dynamic section inner HTML, top-level element count, inline styles, and image counts (25 checks).
+
+### `verify-export-path.mjs`
+
+Simulates the GrapesJS editor export flow: verifies `dynamic_block/` directory and .ftl files, executes Model Setup Script in VM sandbox with mock `fetch()`, verifies `__DYNAMIC_MODULES__` registration and `templatePaths` mapping, simulates `handleGeneralBlock()` for each component, and runs `inject(editor)` with mock editor.
+
+### `test-edge-cases.mjs`
+
+Tests 9 boundary scenarios: empty file, no sections, all static, pure product list, article list, mixed content, insufficient items, inline script with `$`, and 20-section stress test.
 
 ## Integration with clone-website
 
@@ -346,12 +417,17 @@ The three-layer detection has been enhanced with:
 - **Detection false positives/negatives**: Medium severity. Three-layer scoring + static exclusion patterns mitigate most cases. Status: **Mitigated**
 - **`data-new-auto-uuid` not set**: Resolved. Now always set to match `data-block-uuid`. Status: **Fixed**
 
-## Verification Results (v4)
+## Verification Results (v7)
 
-Last run against `src/preview.html` → `src/dynamic_preview.html`:
+Full test suite (`npm test`) against `src/preview.html` → `src/dynamic_preview.html` + `src/dynamic_block/*.ftl`:
 
-- **73/73 checks passed** (100%)
+Key verified facts:
 - 3 dynamic modules injected: `groupProduct_new`, `prodlist`, `Articlelist`
-- 9 static sections verified unchanged
+- 3 synthesized .ftl files output to `src/dynamic_block/` — preserving original CSS classes
+- FTL files contain original HTML structure (`.hot-products`, `.product-card`, `.article-card`, etc.)
+- FTL files contain `[@api]`, `[#list]`, FreeMarker variable interpolations
+- 9 static sections verified 100% unchanged
 - All original JS scripts preserved (Hero/Product Carousel, Counter Animation, Fade-in)
 - All CSS styles preserved including responsive rules
+- `inject(editor)` correctly loads .ftl via `fetch()` and sets `freemakerHtml`, `appId`, `appIsDev`
+- 9 edge cases handled: empty, no sections, all static, pure lists, mixed, few items, inline script, 20 sections
