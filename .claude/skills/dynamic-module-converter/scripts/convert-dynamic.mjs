@@ -224,7 +224,19 @@ function isDataList($, containerEl) {
 
   const classNames = [];
   children.each((_, c) => classNames.push($(c).attr('class') || ''));
-  const uniqueBase = new Set(classNames.map(c => c.split(/\s+/).sort().join(' ')));
+
+  const MODIFIER_PATTERNS = [
+    /\bfirst\b/, /\blast\b/, /\bactive\b/, /\bcurrent\b/, /\beven\b/, /\bodd\b/,
+    /\bpost-\d+\b/, /\bstatus-\w+\b/, /\binstock\b/, /\boutofstock\b/,
+    /\btype-\w+\b/, /\bdata-loop-\d+\b/,
+    /\bproduct_cat-[\w-]+\b/, /\bproduct_tag-[\w-]+\b/,
+    /\bcategory-[\w-]+\b/, /\btag-[\w-]+\b/,
+    /\bcol-\w+-\d+\b/, /\bcol-\d+\b/,
+  ];
+  function coreClasses(cls) {
+    return cls.split(/\s+/).filter(c => c && !MODIFIER_PATTERNS.some(p => p.test(c))).sort().join(' ');
+  }
+  const uniqueBase = new Set(classNames.map(c => coreClasses(c)));
   if (uniqueBase.size > Math.ceil(children.length * 0.5)) return false;
 
   const arr = children.toArray();
@@ -249,11 +261,25 @@ function discoverBlocks($) {
   const repeatingContainers = [];
 
   const SCAN_SKIP_TAGS = new Set(['body', 'html']);
+  const SKIP_ANCESTOR_TAGS = new Set(['header', 'nav', 'footer']);
+
+  function isInsideSkipAncestor($, el) {
+    let cur = el;
+    while (cur && cur.parent) {
+      cur = cur.parent;
+      if (cur.tagName && SKIP_ANCESTOR_TAGS.has(cur.tagName.toLowerCase())) return true;
+      if (cur.tagName === 'body' || cur.tagName === 'html') break;
+    }
+    return false;
+  }
 
   function scanForRepeats(el, depth) {
     if (depth > 15) return;
     const tag = el.tagName?.toLowerCase();
     if (!tag || EXCLUDED_TAGS.has(tag)) return;
+    if (SKIP_ANCESTOR_TAGS.has(tag)) {
+      return;
+    }
     const children = $(el).children();
     if (children.length >= 3 && !SCAN_SKIP_TAGS.has(tag)) {
       const sigs = {};
@@ -815,7 +841,8 @@ function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
 
   const sectionInnerHtml = sectionEl.html();
   const containerParentTag = containerParent[0]?.tagName;
-  const useContainerParentAsApiScope = containerParentTag && containerParentTag !== sectionTag;
+  const isBodyOrRoot = !containerParentTag || containerParentTag === 'body' || containerParentTag === 'html' || containerParentTag === '[document]';
+  const useContainerParentAsApiScope = !isBodyOrRoot && containerParentTag !== sectionTag;
 
   const initScriptStr = apiBlock.initScript
     ? apiBlock.initScript.replace(/\$\(function/, '\\$(function').replace(/<\/script/g, '<\\/script')

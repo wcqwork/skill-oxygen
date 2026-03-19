@@ -1,89 +1,49 @@
 {
-  "timestamp": "2026-03-19T11:51:47.580Z",
+  "timestamp": "2026-03-19T13:13:52.353Z",
   "inputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\page.html",
   "outputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\dynamic_page.html",
   "dynamicBlockDir": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\dynamic_block",
-  "totalSections": 3,
+  "totalSections": 1,
   "dynamicSections": 1,
-  "staticSections": 2,
+  "staticSections": 0,
   "detections": [
     {
       "sectionIndex": 0,
-      "sectionDescription": "fix",
+      "sectionDescription": "products",
       "detectedType": "prodList",
-      "confidence": 0.7545454545454545,
+      "confidence": 0.7181818181818181,
       "scores": {
         "structural": 40,
-        "urlPattern": 0,
-        "contentHeuristic": 18,
-        "classSignature": 25,
-        "total": 83
+        "urlPattern": 25,
+        "contentHeuristic": 14,
+        "classSignature": 0,
+        "total": 79
       },
       "evidence": [
-        "结构检测: 9 个重复子元素 (40/40)",
-        "内容启发: 检测到 prodList 特征 (18/20)",
-        "类名签名: 匹配 prodList 模板特征 (25/25)"
+        "结构检测: 12 个重复子元素 (40/40)",
+        "URL模式: 100% 链接匹配 prodList 模式 (25/25)",
+        "内容启发: 检测到 prodList 特征 (14/20)"
       ],
-      "itemCount": 9,
+      "itemCount": 12,
       "isDynamic": true,
-      "repeatingContainer": "fix grid-container",
-      "repeatingItemTag": "ul"
-    },
-    {
-      "sectionIndex": 1,
-      "sectionDescription": "Product Category",
-      "detectedType": null,
-      "confidence": 0.3181818181818182,
-      "scores": {
-        "structural": 35,
-        "urlPattern": 0,
-        "contentHeuristic": 0,
-        "classSignature": 0,
-        "total": 35
-      },
-      "evidence": [
-        "结构检测: 5 个重复子元素 (35/40)"
-      ],
-      "itemCount": 5,
-      "isDynamic": false,
-      "repeatingContainer": "allGroup-list",
-      "repeatingItemTag": "ul"
-    },
-    {
-      "sectionIndex": 2,
-      "sectionDescription": "blockNavBar",
-      "detectedType": null,
-      "confidence": 0.3181818181818182,
-      "scores": {
-        "structural": 35,
-        "urlPattern": 0,
-        "contentHeuristic": 0,
-        "classSignature": 0,
-        "total": 35
-      },
-      "evidence": [
-        "结构检测: 5 个重复子元素 (35/40)"
-      ],
-      "itemCount": 5,
-      "isDynamic": false,
-      "repeatingContainer": "nav02_ulSub",
-      "repeatingItemTag": "ul"
+      "repeatingContainer": "products elements-grid align-items-start woodmart-products-holder  woodmart-spacing-30 pagination-pagination row grid-columns-4",
+      "repeatingItemTag": "div"
     }
   ],
   "injections": [
     {
       "success": true,
       "blockType": "phoenix_blocks_prodlist",
-      "uuid": "bf976106b31d",
+      "uuid": "5421eed41b11",
       "appId": "eRKAfpUNFbOE",
       "templateFile": "phoenix_blocks_prodlist_35644.ftl",
-      "freemakerHtmlLength": 22350,
-      "ftlOutputPath": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\dynamic_block\\bf976106b31d.ftl"
+      "freemakerHtmlLength": 9949,
+      "ftlOutputPath": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\dynamic_block\\5421eed41b11.ftl"
     }
   ],
   "validations": [
     {
-      "uuid": "bf976106b31d",
+      "uuid": "5421eed41b11",
       "blockType": "phoenix_blocks_prodlist",
       "checks": [
         {
@@ -104,7 +64,7 @@
         {
           "name": "原始内容保留",
           "pass": true,
-          "detail": "内容完整 (153541 chars) ✓"
+          "detail": "内容完整 (52575 chars) ✓"
         }
       ]
     }
