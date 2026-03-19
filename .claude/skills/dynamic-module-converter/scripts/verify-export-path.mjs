@@ -140,17 +140,20 @@ for (const mod of (dynamicModules.modules || [])) {
       const ftlRootTag = ftlRoot.length > 0 ? ftlRoot[0].tagName : null;
       check(`  ${mod.uuid}.ftl 根元素是 div`, ftlRootTag === 'div', `根标签: ${ftlRootTag}`);
 
-      const ftlBlockType = ftlRoot.attr('data-block-type');
-      check(`  ${mod.uuid}.ftl 根 div 包含 data-block-type`, !!ftlBlockType, `值: ${ftlBlockType}`);
+      const ftlNodeDiv = ftlRoot.find('[data-gjs-type="developer-node-component"]').first();
+      const ftlBlockType = ftlNodeDiv.attr('data-block-type') || ftlRoot.attr('data-block-type');
+      check(`  ${mod.uuid}.ftl 包含 data-block-type`, !!ftlBlockType, `值: ${ftlBlockType}`);
 
-      const ftlBlockUuid = ftlRoot.attr('data-block-uuid');
-      check(`  ${mod.uuid}.ftl 根 div 包含 data-block-uuid`, !!ftlBlockUuid, `值: ${ftlBlockUuid}`);
+      const ftlBlockUuid = ftlNodeDiv.attr('data-block-uuid') || ftlRoot.attr('data-block-uuid');
+      check(`  ${mod.uuid}.ftl 包含 data-block-uuid`, !!ftlBlockUuid, `值: ${ftlBlockUuid}`);
       check(`  ${mod.uuid}.ftl data-block-uuid 与 uuid 匹配`, ftlBlockUuid === mod.uuid,
         `模块 uuid: ${mod.uuid}, FTL 属性: ${ftlBlockUuid}`);
 
-      const ftlInner = ftlRoot.children().first();
-      check(`  ${mod.uuid}.ftl 根 div 下有内容元素`, ftlInner.length > 0,
-        ftlInner.length > 0 ? `标签: ${ftlInner[0]?.tagName}` : 'FTL 内未找到内容元素');
+      const ftlInner = ftlNodeDiv.length > 0
+        ? ftlNodeDiv.children().filter((_, el) => el.tagName !== 'style')
+        : ftlRoot.children().first();
+      check(`  ${mod.uuid}.ftl 内层 div 下有内容元素`, ftlInner.length > 0,
+        ftlInner.length > 0 ? `标签: ${ftlInner.first()[0]?.tagName}` : 'FTL 内未找到内容元素');
 
       const nodeEl = $(`[data-block-uuid="${mod.uuid}"]`);
       const innerEl = nodeEl.children('[class][id]').first().length > 0

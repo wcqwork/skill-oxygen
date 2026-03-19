@@ -169,17 +169,33 @@ if (blockDirExists) {
         const ftlRootTag = ftlRoot.length > 0 ? ftlRoot[0].tagName : null;
         check(`FTL ${uuid} 根元素是 div`, ftlRootTag === 'div', `根标签: ${ftlRootTag}`);
 
-        const ftlBlockType = ftlRoot.attr('data-block-type');
-        check(`FTL ${uuid} 根 div 包含 data-block-type`, !!ftlBlockType, `值: ${ftlBlockType}`);
+        const isPhoenixContainer = ftlRoot.attr('data-gjs-type') === 'phoenix-container';
+        check(`FTL ${uuid} 外层是 phoenix-container`, isPhoenixContainer, `data-gjs-type: ${ftlRoot.attr('data-gjs-type')}`);
 
-        const ftlBlockUuid = ftlRoot.attr('data-block-uuid');
-        check(`FTL ${uuid} 根 div 包含 data-block-uuid`, !!ftlBlockUuid, `值: ${ftlBlockUuid}`);
+        const ftlNodeDiv = ftlRoot.find('[data-gjs-type="developer-node-component"]').first();
+        const hasNodeDiv = ftlNodeDiv.length > 0;
+        check(`FTL ${uuid} 包含 developer-node-component 内层`, hasNodeDiv, hasNodeDiv ? '✓' : '未找到内层 div');
+
+        const ftlBlockType = ftlNodeDiv.attr('data-block-type') || ftlRoot.attr('data-block-type');
+        check(`FTL ${uuid} 包含 data-block-type`, !!ftlBlockType, `值: ${ftlBlockType}`);
+
+        const ftlBlockUuid = ftlNodeDiv.attr('data-block-uuid') || ftlRoot.attr('data-block-uuid');
+        check(`FTL ${uuid} 包含 data-block-uuid`, !!ftlBlockUuid, `值: ${ftlBlockUuid}`);
         check(`FTL ${uuid} data-block-uuid 与文件名匹配`, ftlBlockUuid === uuid,
           `文件名 uuid: ${uuid}, 属性值: ${ftlBlockUuid}`);
 
-        const ftlInner = ftlRoot.children().first();
-        check(`FTL ${uuid} 根 div 下有内容元素`, ftlInner.length > 0,
-          ftlInner.length > 0 ? `标签: ${ftlInner[0]?.tagName}` : 'FTL 内未找到内容元素');
+        if (hasNodeDiv) {
+          const hasListSetting = !!ftlNodeDiv.attr('data-block-list-setting');
+          check(`FTL ${uuid} 内层有 data-block-list-setting`, hasListSetting,
+            hasListSetting ? `值: ${ftlNodeDiv.attr('data-block-list-setting')}` : '缺失');
+
+          const hasDefaultSetting = ftlContent.includes('data-default-setting=');
+          check(`FTL ${uuid} 内层有 data-default-setting`, hasDefaultSetting, hasDefaultSetting ? '✓' : '缺失');
+        }
+
+        const ftlInner = hasNodeDiv ? ftlNodeDiv.children().filter((_, el) => el.tagName !== 'style') : ftlRoot.children().first();
+        check(`FTL ${uuid} 内层 div 下有内容元素`, ftlInner.length > 0,
+          ftlInner.length > 0 ? `标签: ${ftlInner.first()[0]?.tagName}` : 'FTL 内未找到内容元素');
 
         const innerEl = $node.children('[class][id]').first().length > 0
           ? $node.children('[class][id]').first()

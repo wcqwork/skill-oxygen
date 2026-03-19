@@ -64,12 +64,12 @@ function loadTemplate(blockType) {
 
 // ─── Detection Configuration ───
 const URL_PATTERNS = {
-  prodList:     [/\/product\b/i, /\/p\//i, /\/item\b/i, /\/shop\b/i, /\/goods\b/i],
-  articleList:  [/\/blog\b/i, /\/news\b/i, /\/article\b/i, /\/post\b/i, /\/press\b/i],
-  galleryList:  [/\/gallery\b/i, /\/photo\b/i, /\/album\b/i, /\/image\b/i],
+  prodList:     [/\/product\b/i, /\/p\//i, /\/item\b/i, /\/shop\b/i, /\/goods\b/i, /\/catalog\b/i, /\/products\b/i],
+  articleList:  [/\/blog\b/i, /\/news\b/i, /\/article\b/i, /\/post\b/i, /\/press\b/i, /\/events?\b/i, /\/case\b/i],
+  galleryList:  [/\/gallery\b/i, /\/photo\b/i, /\/album\b/i, /\/image\b/i, /\/portfolio\b/i, /\/works\b/i],
   FAQList:      [/\/faq\b/i, /\/help\b/i, /\/support\b/i, /\/question\b/i],
   videoList:    [/youtube\.com/i, /vimeo\.com/i, /\/video\b/i, /youtu\.be/i],
-  downloadList: [/\/download\b/i, /\/resource\b/i, /\/file\b/i],
+  downloadList: [/\/download\b/i, /\/resource\b/i, /\/file\b/i, /\/docs\b/i, /\/resources\b/i],
 };
 
 const CONTENT_HEURISTICS = [
@@ -113,6 +113,66 @@ const CONTENT_HEURISTICS = [
   { type: 'videoList',    score: 18, test: (_t, $el) => $el.find('[class*="videolist"], [class*="video-list"], [class*="videoList"]').length > 0 },
   { type: 'FAQList',      score: 18, test: (_t, $el) => $el.find('[class*="faqlist"], [class*="faq-list"], [class*="faqList"]').length > 0 },
 ];
+
+const CLASS_SIGNATURES = {
+  prodList: [
+    /proshow-scroll-item/i, /proshow-custom-item/i, /proshow-image/i,
+    /proshow-caption/i, /proshow-title/i, /prodlist-discountprice/i,
+    /\bproList\b/, /proshow-container/i, /\bstar-goods\b/i,
+    /prodlist-box/i, /prodlist-inner/i,
+  ],
+  articleList: [
+    /ArticlePicList_Item/i, /Article_Container/i, /articalWrap/i,
+    /articleList-summary/i, /\bartime\b/i, /headlines-content-img/i,
+    /\bArtitem\b/i,
+  ],
+  groupProduct: [
+    /prodCategoty-container/i, /site-category-list/i, /\bcategory-item\b/i,
+    /goodsCate-list/i, /\br-tabs-nav\b/i, /\br-tabs-tab\b/i,
+    /prodTabList/i, /sitewidget-prodCatalog/i,
+  ],
+  prodDetail: [
+    /prodDetail_component/i, /blockDetail_container/i,
+    /lead_prodimg_container/i, /\blead_slick\b/i,
+  ],
+  videoList: [
+    /video-list/i, /\bvideoList\b/i, /video-grid/i, /video-card/i,
+  ],
+  galleryList: [
+    /gallery-list/i, /\bgalleryList\b/i, /gallery-grid/i, /\blightbox\b/i,
+  ],
+  downloadList: [
+    /download-list/i, /\bdownloadList\b/i, /download-item/i,
+  ],
+  FAQList: [
+    /faq-list/i, /\bfaqList\b/i, /faq-item/i, /\baccordion\b/i,
+  ],
+};
+
+function analyzeClassSignatures($, $section) {
+  const allClasses = [];
+  $section.find('*').each((_, el) => {
+    const cls = el.attribs?.class;
+    if (cls) allClasses.push(cls);
+  });
+  const joined = allClasses.join(' ');
+
+  let bestType = null;
+  let bestScore = 0;
+
+  for (const [type, patterns] of Object.entries(CLASS_SIGNATURES)) {
+    const hitCount = patterns.filter(p => p.test(joined)).length;
+    let score = 0;
+    if (hitCount >= 2) score = 25;
+    else if (hitCount >= 1) score = 15;
+    if (score > bestScore) {
+      bestScore = score;
+      bestType = type;
+    }
+  }
+
+  return { score: bestScore, type: bestType };
+}
 
 const BLOCK_TYPE_MAP = {
   prodList:          'phoenix_blocks_prodlist',
@@ -177,8 +237,7 @@ function isDataList($, containerEl) {
   if (avgDepth < 3) {
     const hasRichContent = arr.some(c => {
       const $c = $(c);
-      return ($c.find('img').length > 0 && $c.find('h1,h2,h3,h4,h5,h6,p,span').length > 0) ||
-             $c.find('a[href]').length > 0;
+      return $c.find('img').length > 0 && $c.find('h1,h2,h3,h4,h5,h6,p,span').length > 0;
     });
     if (!hasRichContent) return false;
   }
@@ -389,6 +448,7 @@ function detectSection($, $section, index) {
     : $section;
   const urlAnalysis = analyzeURLPatterns($, $scoreTarget);
   const contentAnalysis = analyzeContent($, $scoreTarget);
+  const classSignature = analyzeClassSignatures($, $scoreTarget);
 
   const typeVotes = {};
   if (structural.score > 0 && urlAnalysis.type) {
@@ -397,9 +457,12 @@ function detectSection($, $section, index) {
   if (contentAnalysis.type) {
     typeVotes[contentAnalysis.type] = (typeVotes[contentAnalysis.type] || 0) + contentAnalysis.score;
   }
+  if (classSignature.type) {
+    typeVotes[classSignature.type] = (typeVotes[classSignature.type] || 0) + classSignature.score;
+  }
 
   let detectedType = null;
-  const totalScore = structural.score + urlAnalysis.score + contentAnalysis.score;
+  const totalScore = structural.score + urlAnalysis.score + contentAnalysis.score + classSignature.score;
 
   if (Object.keys(typeVotes).length > 0) {
     detectedType = Object.entries(typeVotes).sort((a, b) => b[1] - a[1])[0][0];
@@ -435,7 +498,7 @@ function detectSection($, $section, index) {
   ];
   let isStaticOverride = STATIC_PATTERNS.some(p => p.test(combinedIdClass));
 
-  if (isStaticOverride && urlAnalysis.score === 0 && contentAnalysis.score <= 12) {
+  if (isStaticOverride && urlAnalysis.score === 0 && contentAnalysis.score <= 12 && classSignature.score === 0) {
     detectedType = null;
   }
 
@@ -453,6 +516,9 @@ function detectSection($, $section, index) {
   if (contentAnalysis.score > 0) {
     evidence.push(`内容启发: 检测到 ${contentAnalysis.evidence.join(', ')} 特征 (${contentAnalysis.score}/20)`);
   }
+  if (classSignature.score > 0) {
+    evidence.push(`类名签名: 匹配 ${classSignature.type} 模板特征 (${classSignature.score}/25)`);
+  }
 
   if (detectedType === 'prodList' && structural.score > 0) {
     const hasCategory = /categor|classif|分类|group/i.test(combinedIdClass);
@@ -466,9 +532,14 @@ function detectSection($, $section, index) {
     }
   }
 
+  if (classSignature.type === 'groupProduct' && detectedType === 'prodList') {
+    detectedType = 'groupProduct';
+  }
+
   const isDynamic = detectedType !== null && (
     (structural.score >= 25 && urlAnalysis.score > 0) ||
     (structural.score >= 25 && contentAnalysis.score >= 15) ||
+    (structural.score >= 25 && classSignature.score >= 25) ||
     (totalScore >= 60 && structural.score >= 25)
   );
 
@@ -476,11 +547,12 @@ function detectSection($, $section, index) {
     sectionIndex: index,
     sectionDescription: desc,
     detectedType: isDynamic ? detectedType : null,
-    confidence: totalScore / 85,
+    confidence: totalScore / 110,
     scores: {
       structural: structural.score,
       urlPattern: urlAnalysis.score,
       contentHeuristic: contentAnalysis.score,
+      classSignature: classSignature.score,
       total: totalScore,
     },
     evidence,
@@ -506,23 +578,50 @@ function extractApiBlock(templateContent) {
   const initScriptMatch = templateContent.match(/<script>\s*\$\(function\(\)\{[\s\S]*?\}\);\s*<\/script>/);
   const initScript = initScriptMatch ? initScriptMatch[0] : '';
 
-  const rootDataAttrs = extractRootDataAttrs(templateContent);
+  const outerContainerAttrs = extractOuterContainerAttrs(templateContent);
+  const nodeComponentAttrs = extractNodeComponentAttrs(templateContent);
+  const nodeComponentStyle = extractNodeComponentStyle(templateContent);
+  const langCodeBlock = extractLangCodeBlock(templateContent);
 
-  return { apiTag, queryStr, initScript, rootDataAttrs };
+  return { apiTag, queryStr, initScript, outerContainerAttrs, nodeComponentAttrs, nodeComponentStyle, langCodeBlock };
 }
 
-function extractRootDataAttrs(templateContent) {
+function extractOuterContainerAttrs(templateContent) {
   const divMatch = templateContent.match(/<div\s[^>]*>/s);
   if (!divMatch) return {};
-
   const divTag = divMatch[0];
   const attrs = {};
+  const re = /([\w-]+)="([^"]*)"/g;
+  let m;
+  while ((m = re.exec(divTag)) !== null) {
+    attrs[m[1]] = m[2];
+  }
+  return attrs;
+}
 
-  const simpleAttrRe = /data-(?!default-setting)([\w-]+)="([^"]*)"/g;
+function extractNodeComponentAttrs(templateContent) {
+  const nodeRe = /<div\s[^>]*data-gjs-type="developer-node-component"[^>]*>/s;
+  const match = templateContent.match(nodeRe);
+  if (!match) {
+    const altRe = /<div[^>]*developer-node-component[^>]*>/s;
+    const altMatch = templateContent.match(altRe);
+    if (!altMatch) return {};
+    return parseNodeDivAttrs(altMatch[0]);
+  }
+  return parseNodeDivAttrs(match[0]);
+}
+
+function parseNodeDivAttrs(divTag) {
+  const attrs = {};
+
+  const simpleAttrRe = /\b(data-(?!default-setting)[\w-]+)="([^"]*)"/g;
   let m;
   while ((m = simpleAttrRe.exec(divTag)) !== null) {
-    attrs[`data-${m[1]}`] = m[2];
+    attrs[m[1]] = m[2];
   }
+
+  const classMatch = divTag.match(/\bclass="([^"]*)"/);
+  if (classMatch) attrs['class'] = classMatch[1];
 
   const settingIdx = divTag.indexOf('data-default-setting=');
   if (settingIdx !== -1) {
@@ -543,6 +642,19 @@ function extractRootDataAttrs(templateContent) {
   }
 
   return attrs;
+}
+
+function extractNodeComponentStyle(templateContent) {
+  const nodeIdx = templateContent.indexOf('developer-node-component');
+  if (nodeIdx === -1) return '';
+  const afterNode = templateContent.substring(nodeIdx);
+  const styleMatch = afterNode.match(/<style>\s*\[data-new-auto-uuid[^<]*<\/style>/s);
+  return styleMatch ? styleMatch[0] : '';
+}
+
+function extractLangCodeBlock(templateContent) {
+  const langMatch = templateContent.match(/\[#assign\s+specialLanCode[\s\S]*?\[#if[\s\S]*?\[\/#if\]/);
+  return langMatch ? langMatch[0] : '';
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -738,25 +850,42 @@ function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
 
   sectionHtmlFinal = unescapeFreeMarkerDirectives(sectionHtmlFinal);
 
-  const wrapperDiv = buildWrapperDiv(apiBlock.rootDataAttrs, uuid, blockType);
-  return `${wrapperDiv}\n${sectionHtmlFinal}\n</div>`;
+  const outerDiv = buildOuterContainer(uuid, apiBlock.outerContainerAttrs);
+  const langBlock = apiBlock.langCodeBlock ? `\n    ${apiBlock.langCodeBlock}\n` : '';
+  const innerDiv = buildInnerNodeComponent(apiBlock.nodeComponentAttrs, uuid, blockType);
+  const nodeStyle = apiBlock.nodeComponentStyle || '';
+  const nodeStyleStr = nodeStyle ? `\n        ${nodeStyle}` : '';
+
+  return `${outerDiv}${langBlock}\n    ${innerDiv}${nodeStyleStr}\n${sectionHtmlFinal}\n    </div>\n</div>`;
 }
 
-function buildWrapperDiv(rootDataAttrs, uuid, blockType) {
-  const attrs = { ...rootDataAttrs };
+function buildOuterContainer(uuid, outerAttrs) {
+  const gjsType = outerAttrs?.['data-gjs-type'] || 'phoenix-container';
+  const strong = outerAttrs?.['data-strong'] || '1';
+  return `<div class="block_${uuid}" data-gjs-type="${gjsType}" data-strong="${strong}">`;
+}
+
+function buildInnerNodeComponent(nodeAttrs, uuid, blockType) {
+  const attrs = { ...nodeAttrs };
   attrs['data-block-uuid'] = uuid;
   if (blockType) attrs['data-block-type'] = blockType;
-  if (!attrs['data-gjs-type']) attrs['data-gjs-type'] = 'developer-node-component';
+  attrs['data-gjs-type'] = 'developer-node-component';
 
   let attrStr = '';
   for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') continue;
     if (k === 'data-default-setting') {
       attrStr += ` ${k}=${v}`;
     } else {
       attrStr += ` ${k}="${v}"`;
     }
   }
-  return `<div class="backstage-blocksEditor-wrap wra block_${uuid}"${attrStr}>`;
+
+  const existingClass = attrs['class'] || '';
+  const hasBackstage = existingClass.includes('backstage-blocksEditor-wrap');
+  const classStr = hasBackstage ? existingClass : `backstage-blocksEditor-wrap ${existingClass}`.trim();
+
+  return `<div class="${classStr}"${attrStr}>`;
 }
 
 function unescapeFreeMarkerDirectives(html) {
@@ -1075,7 +1204,7 @@ async function main() {
     const typeLabel = det.detectedType ? (TYPE_LABELS[det.detectedType] || det.detectedType) : '静态';
     const conf = (det.confidence * 100).toFixed(0);
     console.log(`${icon} Section ${det.sectionIndex}: "${det.sectionDescription}"`);
-    console.log(`   类型: ${typeLabel} | 得分: ${det.scores.total}/85 | 置信度: ${conf}%`);
+    console.log(`   类型: ${typeLabel} | 得分: ${det.scores.total}/110 | 置信度: ${conf}%`);
     if (det.evidence.length > 0) {
       det.evidence.forEach(e => console.log(`   ├─ ${e}`));
     }

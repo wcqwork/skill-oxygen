@@ -1,57 +1,81 @@
-<div class="backstage-blocksEditor-wrap wra block_a5cb5c837cde" data-block-uuid="a5cb5c837cde" data-gjs-type="developer-node-component" data-block-type="phoenix_blocks_prodlist">
+<div class="block_bf976106b31d" data-gjs-type="phoenix-container" data-strong="1">
+    [#assign specialLanCode = ["3", "45", "42", "32", "29"] ]
+    [#if __current_site_lanCode__?? && specialLanCode?seq_contains(__current_site_lanCode__)]
+        <!-- 此处写小语种特殊的css代码。比如下面图1中让两个元素到右边 -->
+        <style data-collect='1'>
+            .block35644 .proList .proshow-scroll-list .proshow-scroll-item * {
+                text-align: center;
+            }
+            .block35644 .slick-prev, 
+            .block35644 .slick-next {
+                display: inline-flex!important;
+                justify-content: center;
+                align-items: center;
+            }            
+        </style>
+    [/#if]
+
+    <div class="backstage-blocksEditor-wrap" data-block-uuid="bf976106b31d" data-gjs-type="developer-node-component" data-block-list-setting="dataSelect,pageNumber" data-block-type="phoenix_blocks_prodlist" data-default-setting={"pageSize":10,"page":1,"dataType":"0","dataIds":[],"dataGroupId":[],"orderBy":"0","loadMethod":"0","refreshMethod":"0","jumpMethod":"0","expandIds":{"functionBtn":{"label":"功能按钮","key":"functionBtn","draggable":true,"data":[{"label":"询盘","key":"inquiry","value":"1","checked":false},{"label":"加入询盘栏","key":"addInquiry","value":"2","checked":false},{"label":"立即购买","key":"buyNow","value":"3","checked":false},{"label":"加入购物车","key":"addBasket","value":"4","checked":false}]},"showField":{"label":"显示字段","key":"showField","draggable":false,"data":[{"fieldName":"星级评价","fieldId":"starRating","fieldType":"100","value":"1","checked":false},{"fieldName":"简介","fieldId":"briefIntroduction","fieldType":"101","value":"2","checked":false},{"fieldName":"品牌","fieldId":"prodBrand","fieldType":"0","value":"3","checked":false},{"fieldName":"型号","fieldId":"prodModel","fieldType":"0","value":"4","checked":false},{"fieldName":"编码","fieldId":"prodCode","fieldType":"0","value":"5","checked":false}]}},"expandSort":["functionBtn","showField"],"layoutStyle":"0","showDate":"1","relatedTypes":"0","translationEntry":[]}>
+        <style>
+        [data-new-auto-uuid="${pageNodeId!''}"] {
+            --color-match-setting1: var(--ld-main1, #000000);
+        }
+        </style>
 <ul class="fix grid-container">
 
 [@api method="post" url="/phoenix2/composite/graphql" page="${pageNum!1}" limit="${pageSize!'10'}"  dataIds = "${dataIds!''}" dataGroupId = "${dataGroupId!''}" productGroupId = "${productGroupId!'-1'}"
-		 dataType="${dataType!'0'}" jumpMethod="${jumpMethod!'0'}"
-		  layoutStyle="${layoutStyle!'0'}" orderBy="${orderBy!'0'}"
-		  expandIds="${expandIds!''}" productId="${productId!-1}" currentPageIdForRelated="${pageId!-1}"
-		  articleRelatedId="${infoId!-1}"
-			query='{
-			productList(
-				conditionDto:{
-				searchGroupIds: $dataGroupId
-				searchProdIds: $dataIds
-				prodType: "$dataType"
-				page: $page
-				limit: $limit
-				orderBy: "$orderBy"
-				optionsParam: $optionsParam
-				prodRelatedId: "$productId"
-				prodCateIdByPage: "$productGroupId"
-				articleRelatedId: "$articleRelatedId"
-				currentPageIdForRelated: "$currentPageIdForRelated"
-				}) {
-				totalRow
-				pageSize
-				pageNumber
-				extraData{
-					coinSymbol
-					isB2cPlan
-					prodStructureData
-					summaryRichTextFlag
-				}
-				list {
-					encodeId
-					prodName 
-					prodPrice
-					prodBrief
-					commentStar
-					prodMaxPrice
-					prodMinPrice
-					prodDiscountPrice
-					prodUrl
-					photoUrlList
-					enabledTrade
-					isSkuProd
-					showFieldList
-					customFieldList
-					$showField
-					phoenixProductSubVo{
-						hasProdVideo
-					}
-				}
-			}
-		}']
+                        dataType="${dataType!'0'}" jumpMethod="${jumpMethod!'0'}"
+                        layoutStyle="${layoutStyle!'0'}" orderBy="${orderBy!'0'}"
+                        expandIds="${expandIds!''}" productId="${productId!-1}"
+                            query='{
+                            productList(
+                                conditionDto:{
+                                searchGroupIds: $dataGroupId
+                                searchProdIds: $dataIds
+                                prodType: "$dataType"
+                                page: $page
+                                limit: $limit
+                                orderBy: "$orderBy"
+                                optionsParam: $optionsParam
+                                prodRelatedId: "$productId"
+                                prodCateIdByPage: "$productGroupId"
+                                }) {
+                                totalRow
+                                pageSize
+                                pageNumber
+                                extraData{
+                                    coinSymbol
+                                    isB2cPlan
+                                    prodStructureData
+                                }
+                                list {
+                                    encodeId
+                                    prodName 
+                                    prodPrice
+                                    prodBrief
+                                    prodMaxPrice
+                                    prodMinPrice
+                                    prodDiscountPrice
+                                    prodUrl
+                                    photoUrlList
+                                    enabledTrade
+                                    isSkuProd
+                                    showFieldList
+                                    customFieldList
+                                    shopProdPrice
+                                    $showField
+                                    phoenixProductSubVo{
+                                        hasProdVideo
+                                    }
+                                    photoSeoList{
+                                        photoId
+                                        photoUrlNormal
+                                        photoAlt
+                                        photoTitle
+                                    }
+                                }
+                            }
+                        }']
 <body><ul class="fix grid-container">
                                                     
 [#if data?? && data.productList?? && data.productList.list?? && (data.productList.list?size > 0)]
@@ -197,11 +221,7 @@
 <input type="hidden" name="totalRow" value="${data.productList.totalRow!'0'}">
 <input type="hidden" name="pageNumber" value="${data.productList.pageNumber!'1'}">
 <input type="hidden" name="pageSize" value="${data.productList.pageSize!'20'}">
-<script> 
-			\$(function(){
-				window._block_namespaces_['prodlist_editor13'].init({'relationId':'${relationId}','relationType':'${relationType}','pageId':'${pageId}','nodeId':'aaa_${nodeId!""}', 'appId': '${appId!}', 'appIsDev': '${appIsDev!"0"}','appVersion':'${appVersion}', 'productGroupId':'${productGroupId!}'});
-			});
-		<\/script>
 [/@api]
 </ul>
+    </div>
 </div>
