@@ -13,8 +13,19 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const originalFile = process.argv[2] || path.resolve(__dirname, '../../../../src/page.html');
-const dynamicFile = process.argv[3] || path.resolve(__dirname, '../../../../src/dynamic_page.html');
+function findLatestGenerateDir() {
+  const genDir = path.resolve(__dirname, '../../../../src/Generate');
+  if (!fs.existsSync(genDir)) return null;
+  const dirs = fs.readdirSync(genDir)
+    .filter(d => /^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}$/.test(d))
+    .sort()
+    .reverse();
+  return dirs.length > 0 ? path.join(genDir, dirs[0]) : null;
+}
+
+const latestDir = findLatestGenerateDir();
+const originalFile = process.argv[2] || path.resolve(__dirname, '../../../../src/pages/page.html');
+const dynamicFile = process.argv[3] || (latestDir ? path.join(latestDir, 'pages', 'dynamic_page.html') : path.resolve(__dirname, '../../../../src/pages/dynamic_page.html'));
 
 const origHtml = fs.readFileSync(originalFile, 'utf-8');
 const dynHtml = fs.readFileSync(dynamicFile, 'utf-8');

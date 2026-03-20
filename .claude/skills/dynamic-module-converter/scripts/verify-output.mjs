@@ -19,8 +19,19 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const inputFile = process.argv[2] || path.resolve(__dirname, '../../../../src/dynamic_page.html');
-const originalFile = process.argv[3] || path.resolve(__dirname, '../../../../src/page.html');
+function findLatestGenerateDir() {
+  const genDir = path.resolve(__dirname, '../../../../src/Generate');
+  if (!fs.existsSync(genDir)) return null;
+  const dirs = fs.readdirSync(genDir)
+    .filter(d => /^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}$/.test(d))
+    .sort()
+    .reverse();
+  return dirs.length > 0 ? path.join(genDir, dirs[0]) : null;
+}
+
+const latestDir = findLatestGenerateDir();
+const inputFile = process.argv[2] || (latestDir ? path.join(latestDir, 'pages', 'dynamic_page.html') : path.resolve(__dirname, '../../../../src/pages/dynamic_page.html'));
+const originalFile = process.argv[3] || path.resolve(__dirname, '../../../../src/pages/page.html');
 
 if (!fs.existsSync(inputFile)) {
   console.error(`[FATAL] 文件不存在: ${inputFile}`);
@@ -129,7 +140,7 @@ devComponents.each((i, outer) => {
   check('class 包含 developer-component-newedit', $node.hasClass('developer-component-newedit'), 'OK');
 });
 
-// ─── Check 3: Model Setup Script + dynamic_block/ 验证 ═══
+// ─── Check 3: Model Setup Script + blocks/ 验证 ═══
 console.log('\n═══ 3. Model Setup Script + FTL 文件验证 ═══');
 const modelScriptFound = html.includes('__DYNAMIC_MODULES__');
 const pathMatches = html.match(/TEMPLATE_PATHS\["[^"]+"\]/g);
@@ -140,9 +151,9 @@ check('templatePaths 映射存在', pathsInScript > 0, `${pathsInScript} 个路�
 check('路径数量匹配模块数量', pathsInScript === devComponents.length,
   `路径映射: ${pathsInScript}, 模块: ${devComponents.length}`);
 
-const dynamicBlockDir = path.join(path.dirname(inputFile), 'dynamic_block');
+const dynamicBlockDir = path.resolve(path.dirname(inputFile), '..', 'blocks');
 const blockDirExists = fs.existsSync(dynamicBlockDir);
-check('dynamic_block/ 目录存在', blockDirExists, dynamicBlockDir);
+check('blocks/ 目录存在', blockDirExists, dynamicBlockDir);
 
 if (blockDirExists) {
   const ftlFiles = fs.readdirSync(dynamicBlockDir).filter(f => f.endsWith('.ftl'));

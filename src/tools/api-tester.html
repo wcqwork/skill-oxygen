@@ -226,7 +226,7 @@
     <div class="panel-title">请求参数</div>
 
     <div class="info-bar" id="proxyInfo">
-      跨域代理：请先在终端运行 <code>node src/proxy-server.mjs</code>，然后勾选下方「使用本地代理」。
+      跨域代理：请先在终端运行 <code>node src/tools/proxy-server.mjs</code>，然后勾选下方「使用本地代理」。
       代理地址默认为 <code>http://localhost:3456</code>
     </div>
 
@@ -539,7 +539,7 @@ async function sendRequest() {
 
     let hint = err.message;
     if (document.getElementById('useProxy').checked) {
-      hint += '\n\n代理可能未启动，请在终端运行:\n  node src/proxy-server.mjs';
+      hint += '\n\n代理可能未启动，请在终端运行:\n  node src/tools/proxy-server.mjs';
     } else {
       hint += '\n\n提示: 遇到 CORS 跨域错误，请勾选「使用本地代理」并启动代理服务器';
     }

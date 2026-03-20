@@ -2,7 +2,7 @@
 /**
  * verify-export-path.mjs — 模拟 GrapesJS editor export 路径
  *
- * 验证 dynamic_preview.html + dynamic_block/*.ftl 的外部模板引用模式
+ * 验证 dynamic_page.html + blocks/*.ftl 的外部模板引用模式
  * 能否让 handleGeneralBlock 正确读取 freemakerHtml
  */
 
@@ -14,8 +14,20 @@ import vm from 'vm';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const dynamicHtml = path.resolve(__dirname, '../../../../src/dynamic_page.html');
-const dynamicBlockDir = path.resolve(__dirname, '../../../../src/dynamic_block');
+
+function findLatestGenerateDir() {
+  const genDir = path.resolve(__dirname, '../../../../src/Generate');
+  if (!fs.existsSync(genDir)) return null;
+  const dirs = fs.readdirSync(genDir)
+    .filter(d => /^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}$/.test(d))
+    .sort()
+    .reverse();
+  return dirs.length > 0 ? path.join(genDir, dirs[0]) : null;
+}
+
+const latestDir = findLatestGenerateDir();
+const dynamicHtml = process.argv[2] || (latestDir ? path.join(latestDir, 'pages', 'dynamic_page.html') : path.resolve(__dirname, '../../../../src/pages/dynamic_page.html'));
+const dynamicBlockDir = latestDir ? path.join(latestDir, 'blocks') : path.resolve(__dirname, '../../../../src/blocks');
 
 if (!fs.existsSync(dynamicHtml)) {
   console.error('[ERROR] dynamic_page.html 不存在，请先运行 npm run convert');
@@ -48,13 +60,13 @@ console.log(`[INFO] 找到 ${nodeComponents.length} 个 developer-node-component
 
 check('DOM中有动态组件', nodeComponents.length > 0, `${nodeComponents.length} 个组件`);
 
-// Step 2: Verify dynamic_block/ directory
-check('dynamic_block/ 目录存在', fs.existsSync(dynamicBlockDir), dynamicBlockDir);
+// Step 2: Verify blocks/ directory
+check('blocks/ 目录存在', fs.existsSync(dynamicBlockDir), dynamicBlockDir);
 
 const ftlFiles = fs.existsSync(dynamicBlockDir)
   ? fs.readdirSync(dynamicBlockDir).filter(f => f.endsWith('.ftl'))
   : [];
-check('dynamic_block/ 包含 .ftl 文件', ftlFiles.length > 0, `${ftlFiles.length} 个 .ftl 文件`);
+check('blocks/ 包含 .ftl 文件', ftlFiles.length > 0, `${ftlFiles.length} 个 .ftl 文件`);
 
 // Step 3: Extract Model Setup Script
 const scripts = $('script');

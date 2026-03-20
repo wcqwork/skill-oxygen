@@ -78,13 +78,13 @@ node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -k 产品
 node .claude/skills/template-fetcher/scripts/fetch-templates.mjs --app-ids auKUfpACdcBh
 
 # Fetch from local JSON file (skip paginated scan)
-node .claude/skills/template-fetcher/scripts/fetch-templates.mjs --from-json ./src/fetch_template/prod.json
+node .claude/skills/template-fetcher/scripts/fetch-templates.mjs --from-json ./src/fetch_config/prod.json
 
 # Fetch from multiple JSON files
-node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -j ./src/fetch_template/prod.json,./src/fetch_template/article.json
+node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -j ./src/fetch_config/prod.json,./src/fetch_config/article.json
 
 # JSON + keyword secondary filter
-node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -j ./src/fetch_template/prod.json -k 产品分类
+node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -j ./src/fetch_config/prod.json -k 产品分类
 
 # Custom output directory
 node .claude/skills/template-fetcher/scripts/fetch-templates.mjs -o ./my-templates
@@ -185,7 +185,7 @@ inject-to-editor.js with dynamic markers
 When user requests `/fetch-templates`:
 
 1. Parse user intent for type/filter/scope
-2. If user provides a JSON file path (e.g. `src/fetch_template/prod.json`), use `--from-json` mode
+2. If user provides a JSON file path (e.g. `src/fetch_config/prod.json`), use `--from-json` mode
 3. Run `node .claude/skills/template-fetcher/scripts/fetch-templates.mjs [options]`
 4. Report results: count fetched, any failures
 5. If user wants to proceed with conversion, hand off to `/convert-dynamic`

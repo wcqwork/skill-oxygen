@@ -38,9 +38,18 @@ if (!inputArg) {
   process.exit(1);
 }
 const inputFile = path.resolve(inputArg);
+
+function getTimestamp() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
+}
+
+const srcDir = path.resolve(path.dirname(inputFile), '..');
+const generateDir = path.join(srcDir, 'Generate', getTimestamp());
 const outputFile = getArg('--output')
   ? path.resolve(getArg('--output'))
-  : path.join(path.dirname(inputFile), 'dynamic_' + path.basename(inputFile));
+  : path.join(generateDir, 'pages', 'dynamic_' + path.basename(inputFile));
 
 // ─── Template Registry ───
 const TEMPLATES_DIR = path.resolve(__dirname, '../templates/fetched');
@@ -1107,8 +1116,10 @@ function validateInjection($, uuid) {
 //  Generate export script (model setup)
 // ═══════════════════════════════════════════════════════════
 
-function generateModelSetupScript(injections, dynamicBlockDir) {
-  const relDir = path.basename(dynamicBlockDir);
+function generateModelSetupScript(injections, dynamicBlockDir, outputFile) {
+  const outputDir = path.dirname(path.resolve(outputFile));
+  const absBlockDir = path.resolve(dynamicBlockDir);
+  const relDir = path.relative(outputDir, absBlockDir).replace(/\\/g, '/');
   const scriptLines = [];
   scriptLines.push(`<!-- Dynamic Module Model Setup Script -->`);
   scriptLines.push(`<script>`);
@@ -1244,6 +1255,7 @@ async function main() {
 
   if (dynamicDetections.length === 0) {
     console.log('[INFO] 未检测到动态区块，输出原始 HTML');
+    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
     fs.writeFileSync(outputFile, html, 'utf-8');
     return;
   }
@@ -1291,9 +1303,9 @@ async function main() {
 
   console.log('');
 
-  // ─── Write .ftl files to dynamic_block/ ───
-  const outputDir = path.dirname(outputFile);
-  const dynamicBlockDir = path.join(outputDir, 'dynamic_block');
+  // ─── Write .ftl files to blocks/ ───
+  const dateDir = path.resolve(path.dirname(outputFile), '..');
+  const dynamicBlockDir = path.join(dateDir, 'blocks');
 
   if (fs.existsSync(dynamicBlockDir)) {
     fs.rmSync(dynamicBlockDir, { recursive: true, force: true });
@@ -1310,7 +1322,7 @@ async function main() {
   console.log('');
 
   // ─── Generate model setup script ───
-  const modelScript = generateModelSetupScript(injections, dynamicBlockDir);
+  const modelScript = generateModelSetupScript(injections, dynamicBlockDir, outputFile);
   const finalHtml = $.html();
   const bodyEnd = finalHtml.lastIndexOf('</body>');
   let outputHtml;
@@ -1321,10 +1333,14 @@ async function main() {
   }
 
   // ─── Write output ───
+  fs.mkdirSync(path.dirname(outputFile), { recursive: true });
   fs.writeFileSync(outputFile, outputHtml, 'utf-8');
   console.log(`[OUTPUT] 已生成: ${outputFile}`);
 
-  const reportFile = outputFile.replace(/\.html$/, '_report.json');
+  const reportFileName = path.basename(outputFile).replace(/\.html$/, '_report.json');
+  const reportsDir = path.join(dateDir, 'reports');
+  fs.mkdirSync(reportsDir, { recursive: true });
+  const reportFile = path.join(reportsDir, reportFileName);
   const report = generateReport(
     detections.map(d => ({ ...d, el: undefined, $el: undefined })),
     injections,
@@ -1341,7 +1357,11 @@ async function main() {
   console.log('╠════════════════════════════════════════════════════════╣');
   console.log(`║  总区块数: ${String(detections.length).padEnd(5)} | 动态: ${String(dynamicDetections.length).padEnd(5)} | 静态: ${String(detections.length - dynamicDetections.length).padEnd(5)} ║`);
   console.log(`║  成功注入: ${String(injections.filter(i => i.success).length).padEnd(5)} | 失败: ${String(injections.filter(i => !i.success).length).padEnd(5)} | FTL文件: ${String(ftlCount).padEnd(5)} ║`);
-  console.log(`║  输出目录: dynamic_block/                              ║`);
+  console.log('╠════════════════════════════════════════════════════════╣');
+  console.log(`║  输出目录: ${path.relative(process.cwd(), dateDir).replace(/\\/g, '/')}`);
+  console.log(`║  ├── pages/   → dynamic_page.html`);
+  console.log(`║  ├── blocks/  → ${ftlCount} 个 .ftl 文件`);
+  console.log(`║  └── reports/ → report.json`);
   console.log('╚════════════════════════════════════════════════════════╝');
 }
 
