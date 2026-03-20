@@ -1,0 +1,106 @@
+{
+  "timestamp": "2026-03-20T07:52:54.864Z",
+  "inputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\inline_script_dollar.html",
+  "outputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\inline_script_dollar_out.html",
+  "dynamicBlockDir": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks",
+  "totalSections": 1,
+  "dynamicSections": 1,
+  "staticSections": 0,
+  "detections": [
+    {
+      "sectionIndex": 0,
+      "sectionDescription": "A",
+      "detectedType": "prodList",
+      "confidence": 0.39090909090909093,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 18,
+        "classSignature": 0,
+        "total": 43
+      },
+      "evidence": [
+        "结构检测: 3 个重复子元素 (25/40)",
+        "内容启发: 检测到 prodList 特征 (18/20)"
+      ],
+      "itemCount": 3,
+      "isDynamic": true,
+      "repeatingContainer": "grid",
+      "repeatingItemTag": "div"
+    }
+  ],
+  "injections": [
+    {
+      "success": true,
+      "blockType": "phoenix_blocks_prodlist",
+      "uuid": "ed3d2fdec37f",
+      "appId": "eRKAfpUNFbOE",
+      "templateFile": "phoenix_blocks_prodlist_35644.ftl",
+      "freemakerHtmlLength": 11709,
+      "ftlOutputPath": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks\\ed3d2fdec37f.ftl"
+    }
+  ],
+  "validations": [
+    {
+      "uuid": "ed3d2fdec37f",
+      "blockType": "phoenix_blocks_prodlist",
+      "checks": [
+        {
+          "name": "DOM层级",
+          "pass": true,
+          "detail": "developer-component > developer-node-component > 原始HTML ✓"
+        },
+        {
+          "name": "属性完整性",
+          "pass": true,
+          "detail": "block-type:true gjs-type:true auto-uuid:true"
+        },
+        {
+          "name": "FreeMarker标记",
+          "pass": true,
+          "detail": "freemakerHtml 标记已设置 ✓"
+        },
+        {
+          "name": "原始内容保留",
+          "pass": true,
+          "detail": "内容完整 (227 chars) ✓"
+        },
+        {
+          "name": "FTL-@api标签",
+          "pass": true,
+          "detail": "[@api]...[/@api] 完整 ✓"
+        },
+        {
+          "name": "FTL-列表循环",
+          "pass": true,
+          "detail": "[#list] 循环存在 ✓"
+        },
+        {
+          "name": "FTL-空数据处理",
+          "pass": true,
+          "detail": "no-data 处理 ✓"
+        },
+        {
+          "name": "FTL-初始化脚本",
+          "pass": true,
+          "detail": "block init script ✓"
+        },
+        {
+          "name": "FTL-initScript位置",
+          "pass": true,
+          "detail": "init script 在 [/@api] 外部 ✓"
+        },
+        {
+          "name": "FTL-外层容器",
+          "pass": false,
+          "detail": "缺少 phoenix-container 外层容器"
+        },
+        {
+          "name": "FTL-内层节点组件",
+          "pass": true,
+          "detail": "developer-node-component ✓"
+        }
+      ]
+    }
+  ]
+}

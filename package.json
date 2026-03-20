@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "convert": "node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs --input src/pages/page.html --auto",
+    "convert": "node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs --input src/pages/clone-wpdemo.archiwp.com/preview.html --auto",
     "verify": "node .claude/skills/dynamic-module-converter/scripts/verify-output.mjs",
     "verify:js": "node .claude/skills/dynamic-module-converter/scripts/verify-js-syntax.mjs",
     "verify:visual": "node .claude/skills/dynamic-module-converter/scripts/verify-visual.mjs",

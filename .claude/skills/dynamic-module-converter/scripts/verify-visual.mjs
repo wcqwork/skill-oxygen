@@ -23,9 +23,33 @@ function findLatestGenerateDir() {
   return dirs.length > 0 ? path.join(genDir, dirs[0]) : null;
 }
 
+function findFirstDynamicHtml(dir) {
+  const pagesDir = path.join(dir, 'pages');
+  if (!fs.existsSync(pagesDir)) return null;
+  const files = fs.readdirSync(pagesDir).filter(f => /^dynamic_.*\.html$/.test(f)).sort();
+  return files.length > 0 ? path.join(pagesDir, files[0]) : null;
+}
+
+function findOriginalFile(dynamicPath) {
+  const basename = path.basename(dynamicPath).replace(/^dynamic_/, '');
+  const srcDir = path.resolve(__dirname, '../../../../src');
+  const pagesDir = path.join(srcDir, 'pages');
+  const candidates = [];
+  function walk(dir) {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory()) walk(path.join(dir, entry.name));
+      else if (entry.name === basename) candidates.push(path.join(dir, entry.name));
+    }
+  }
+  walk(pagesDir);
+  return candidates.length > 0 ? candidates[0] : path.join(pagesDir, basename);
+}
+
 const latestDir = findLatestGenerateDir();
-const originalFile = process.argv[2] || path.resolve(__dirname, '../../../../src/pages/page.html');
-const dynamicFile = process.argv[3] || (latestDir ? path.join(latestDir, 'pages', 'dynamic_page.html') : path.resolve(__dirname, '../../../../src/pages/dynamic_page.html'));
+const latestDynamic = latestDir ? findFirstDynamicHtml(latestDir) : null;
+const originalFile = process.argv[2] || (latestDynamic ? findOriginalFile(latestDynamic) : path.resolve(__dirname, '../../../../src/pages/page.html'));
+const dynamicFile = process.argv[3] || latestDynamic || path.resolve(__dirname, '../../../../src/pages/dynamic_page.html');
 
 const origHtml = fs.readFileSync(originalFile, 'utf-8');
 const dynHtml = fs.readFileSync(dynamicFile, 'utf-8');

@@ -1,0 +1,116 @@
+{
+  "timestamp": "2026-03-20T07:52:53.094Z",
+  "inputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\article_list.html",
+  "outputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\article_list_out.html",
+  "dynamicBlockDir": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks",
+  "totalSections": 1,
+  "dynamicSections": 1,
+  "staticSections": 0,
+  "detections": [
+    {
+      "sectionIndex": 0,
+      "sectionDescription": "Latest News",
+      "detectedType": "articleList",
+      "confidence": 0.39090909090909093,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 18,
+        "classSignature": 0,
+        "total": 43
+      },
+      "evidence": [
+        "结构检测: 3 个重复子元素 (25/40)",
+        "内容启发: 检测到 articleList 特征 (18/20)"
+      ],
+      "itemCount": 3,
+      "isDynamic": true,
+      "repeatingContainer": "article-list",
+      "repeatingItemTag": "div"
+    }
+  ],
+  "injections": [
+    {
+      "success": true,
+      "blockType": "phoenix_blocks_Articlelist",
+      "uuid": "aca68fd257cf",
+      "appId": "WcKpfAUiEVNZ",
+      "templateFile": "phoenix_blocks_Articlelist_34134.ftl",
+      "freemakerHtmlLength": 3876,
+      "ftlOutputPath": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks\\aca68fd257cf.ftl"
+    }
+  ],
+  "validations": [
+    {
+      "uuid": "aca68fd257cf",
+      "blockType": "phoenix_blocks_Articlelist",
+      "checks": [
+        {
+          "name": "DOM层级",
+          "pass": true,
+          "detail": "developer-component > developer-node-component > 原始HTML ✓"
+        },
+        {
+          "name": "属性完整性",
+          "pass": true,
+          "detail": "block-type:true gjs-type:true auto-uuid:true"
+        },
+        {
+          "name": "FreeMarker标记",
+          "pass": true,
+          "detail": "freemakerHtml 标记已设置 ✓"
+        },
+        {
+          "name": "原始内容保留",
+          "pass": true,
+          "detail": "内容完整 (449 chars) ✓"
+        },
+        {
+          "name": "FTL-@api标签",
+          "pass": true,
+          "detail": "[@api]...[/@api] 完整 ✓"
+        },
+        {
+          "name": "FTL-列表循环",
+          "pass": true,
+          "detail": "[#list] 循环存在 ✓"
+        },
+        {
+          "name": "FTL-空数据处理",
+          "pass": true,
+          "detail": "no-data 处理 ✓"
+        },
+        {
+          "name": "FTL-hiddenInputs位置",
+          "pass": true,
+          "detail": "hidden inputs 在 [/@api] 内 ✓"
+        },
+        {
+          "name": "FTL-JSON-LD",
+          "pass": true,
+          "detail": "JSON-LD 结构化数据 ✓"
+        },
+        {
+          "name": "FTL-初始化脚本",
+          "pass": true,
+          "detail": "block init script ✓"
+        },
+        {
+          "name": "FTL-initScript位置",
+          "pass": true,
+          "detail": "init script 在 [/@api] 外部 ✓"
+        },
+        {
+          "name": "FTL-外层容器",
+          "pass": true,
+          "detail": "phoenix-container 外层 ✓"
+        },
+        {
+          "name": "FTL-内层节点组件",
+          "pass": true,
+          "detail": "developer-node-component ✓"
+        }
+      ]
+    }
+  ]
+}

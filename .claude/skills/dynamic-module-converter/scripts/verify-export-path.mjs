@@ -25,12 +25,20 @@ function findLatestGenerateDir() {
   return dirs.length > 0 ? path.join(genDir, dirs[0]) : null;
 }
 
+function findFirstDynamicHtml(dir) {
+  const pagesDir = path.join(dir, 'pages');
+  if (!fs.existsSync(pagesDir)) return null;
+  const files = fs.readdirSync(pagesDir).filter(f => /^dynamic_.*\.html$/.test(f)).sort();
+  return files.length > 0 ? path.join(pagesDir, files[0]) : null;
+}
+
 const latestDir = findLatestGenerateDir();
-const dynamicHtml = process.argv[2] || (latestDir ? path.join(latestDir, 'pages', 'dynamic_page.html') : path.resolve(__dirname, '../../../../src/pages/dynamic_page.html'));
+const latestDynamic = latestDir ? findFirstDynamicHtml(latestDir) : null;
+const dynamicHtml = process.argv[2] || latestDynamic || path.resolve(__dirname, '../../../../src/pages/dynamic_page.html');
 const dynamicBlockDir = latestDir ? path.join(latestDir, 'blocks') : path.resolve(__dirname, '../../../../src/blocks');
 
 if (!fs.existsSync(dynamicHtml)) {
-  console.error('[ERROR] dynamic_page.html 不存在，请先运行 npm run convert');
+  console.error(`[ERROR] 动态 HTML 文件不存在: ${dynamicHtml}，请先运行 npm run convert`);
   process.exit(1);
 }
 

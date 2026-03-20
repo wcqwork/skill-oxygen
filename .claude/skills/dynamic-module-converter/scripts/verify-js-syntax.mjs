@@ -26,8 +26,16 @@ function findLatestGenerateDir() {
   return dirs.length > 0 ? path.join(genDir, dirs[0]) : null;
 }
 
+function findFirstDynamicHtml(dir) {
+  const pagesDir = path.join(dir, 'pages');
+  if (!fs.existsSync(pagesDir)) return null;
+  const files = fs.readdirSync(pagesDir).filter(f => /^dynamic_.*\.html$/.test(f)).sort();
+  return files.length > 0 ? path.join(pagesDir, files[0]) : null;
+}
+
 const latestDir = findLatestGenerateDir();
-const inputFile = process.argv[2] || (latestDir ? path.join(latestDir, 'pages', 'dynamic_page.html') : path.resolve(__dirname, '../../../../src/pages/dynamic_page.html'));
+const latestDynamic = latestDir ? findFirstDynamicHtml(latestDir) : null;
+const inputFile = process.argv[2] || latestDynamic || path.resolve(__dirname, '../../../../src/pages/dynamic_page.html');
 
 if (!fs.existsSync(inputFile)) {
   console.error(`[FATAL] 文件不存在: ${inputFile}`);

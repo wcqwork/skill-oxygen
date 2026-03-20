@@ -18,12 +18,12 @@ npm run convert
 
 # 指定任意 HTML 文件转换
 node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs \
-  --input src/pages/page.html \
+  --input src/pages/clone-wpdemo.archiwp.com/preview.html \
   --auto
 
 # 指定输入（输出自动生成到 src/Generate/YYYY-MM-DD_HH-mm-ss/ 下）
 node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs \
-  --input src/pages/my-page.html \
+  --input src/pages/your-page.html \
   --auto
 
 # 验证套件 (可单独运行)
@@ -340,8 +340,9 @@ For each converted section:
 
 src/                                 -- Project source files
   pages/                             -- HTML pages (source + conversion output)
-    page.html                        -- Original static HTML
-    dynamic_page.html                -- Converted HTML with dynamic module markers
+    clone-wpdemo.archiwp.com/
+      preview.html                   -- Original static HTML (cloned page)
+      previewNoDesc.html             -- Alternative version without descriptions
   blocks/                            -- Independent FTL files per dynamic module
     {uuid}.ftl                       -- FreeMarker template (one per module)
   reports/                           -- Conversion reports
@@ -359,13 +360,13 @@ Main conversion script. Accepts any static HTML and outputs a dynamic version wi
 
 | Arg | Default | Description |
 |-----|---------|-------------|
-| `--input` | `src/pages/page.html` | Input HTML file |
+| `--input` | (必需，无默认值) | Input HTML file |
 | `--output` | `src/Generate/YYYY-MM-DD_HH-mm-ss/pages/dynamic_<input>.html` | Output HTML file (可选，默认自动生成时间戳目录) |
 | `--auto` | off | Skip user confirmation, auto-apply all detections |
 
 Outputs (生成到 `src/Generate/YYYY-MM-DD_HH-mm-ss/` 下):
-- `pages/dynamic_page.html` — Converted HTML with dynamic module markers (templates referenced, not inlined)
-- `reports/dynamic_page_report.json` — Detection + injection + validation report (includes ftlOutputPath)
+- `pages/dynamic_<input>.html` — Converted HTML with dynamic module markers (templates referenced, not inlined)
+- `reports/dynamic_<input>_report.json` — Detection + injection + validation report (includes ftlOutputPath)
 - `blocks/{uuid}.ftl` — Independent FreeMarker template file per dynamic module
 
 ### `verify-output.mjs`
@@ -437,7 +438,7 @@ The three-layer detection has been enhanced with:
 
 ## Verification Results (v7)
 
-Full test suite (`npm test`) against `src/pages/page.html` → `src/Generate/<timestamp>/pages/dynamic_page.html` + `src/Generate/<timestamp>/blocks/*.ftl`:
+Full test suite (`npm test`) against `src/pages/clone-wpdemo.archiwp.com/preview.html` → `src/Generate/<timestamp>/pages/dynamic_preview.html` + `src/Generate/<timestamp>/blocks/*.ftl`:
 
 Key verified facts:
 - 3 dynamic modules injected: `groupProduct_new`, `prodlist`, `Articlelist`
