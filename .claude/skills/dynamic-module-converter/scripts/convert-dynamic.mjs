@@ -45,7 +45,15 @@ function getTimestamp() {
   return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
 }
 
-const srcDir = path.resolve(path.dirname(inputFile), '..');
+function findSrcDir(from) {
+  let dir = path.resolve(from);
+  while (dir !== path.dirname(dir)) {
+    if (path.basename(dir) === 'src') return dir;
+    dir = path.dirname(dir);
+  }
+  return path.resolve(path.dirname(from), '..');
+}
+const srcDir = findSrcDir(path.dirname(inputFile));
 const generateDir = path.join(srcDir, 'Generate', getTimestamp());
 const outputFile = getArg('--output')
   ? path.resolve(getArg('--output'))
@@ -610,15 +618,52 @@ function extractApiBlock(templateContent) {
   const queryMatch = apiTag.match(/query\s*=\s*'(\{[\s\S]*?\})'\s*\]/);
   const queryStr = queryMatch ? queryMatch[1] : '';
 
-  const initScriptMatch = templateContent.match(/<script>\s*\$\(function\(\)\{[\s\S]*?\}\);\s*<\/script>/);
-  const initScript = initScriptMatch ? initScriptMatch[0] : '';
-
   const outerContainerAttrs = extractOuterContainerAttrs(templateContent);
   const nodeComponentAttrs = extractNodeComponentAttrs(templateContent);
   const nodeComponentStyle = extractNodeComponentStyle(templateContent);
   const langCodeBlock = extractLangCodeBlock(templateContent);
 
-  return { apiTag, queryStr, initScript, outerContainerAttrs, nodeComponentAttrs, nodeComponentStyle, langCodeBlock };
+  const listDirective = extractListDirective(templateContent);
+  const hiddenInputs = extractHiddenInputs(templateContent);
+  const jsonLd = extractJsonLd(templateContent);
+
+  return {
+    apiTag, queryStr,
+    outerContainerAttrs, nodeComponentAttrs, nodeComponentStyle, langCodeBlock,
+    ...listDirective,
+    hiddenInputs,
+    jsonLd,
+  };
+}
+
+function extractListDirective(templateContent) {
+  const nullCheckMatch = templateContent.match(/\[#if\s+(data\?\?[\s\S]*?)\]\s*\n\s*\[#list/);
+  const nullCheck = nullCheckMatch ? nullCheckMatch[1].replace(/\s+/g, ' ').trim() : '';
+
+  const listMatch = templateContent.match(/\[#list\s+(data\.\w+(?:\.\w+)*)\s+as\s+(\w+)\]/);
+  const listExpr = listMatch ? listMatch[1] : '';
+  const itemVar = listMatch ? listMatch[2] : '';
+
+  const noDataMatch = templateContent.match(/<div\s+class="templist-no-data">[^<]*<\/div>/);
+  const noDataHtml = noDataMatch ? noDataMatch[0] : '<div class="templist-no-data">[@s.m "phoenix_no_content" /]</div>';
+
+  return { nullCheck, listExpr, itemVar, noDataHtml };
+}
+
+function extractHiddenInputs(templateContent) {
+  const inputs = [];
+  const re = /<input\s+type="hidden"\s+name="(totalRow|pageNumber|pageSize)"[^>]*>/g;
+  let m;
+  while ((m = re.exec(templateContent)) !== null) {
+    inputs.push(m[0].trim());
+  }
+  return inputs;
+}
+
+function extractJsonLd(templateContent) {
+  const match = templateContent.match(/<script\s+type="application\/ld\+json">[\s\S]*?<\/script>/);
+  if (!match) return '';
+  return match[0].replace(/^\s+/gm, '').trim();
 }
 
 function extractOuterContainerAttrs(templateContent) {
@@ -693,14 +738,13 @@ function extractLangCodeBlock(templateContent) {
 }
 
 // ═══════════════════════════════════════════════════════════
-//  FTL Synthesis: field mapping config per dynamic type
+//  FTL Synthesis: field mapping for HTML variable replacement ONLY
+//  All FreeMarker directives (@api, [#list], hiddenInputs, JSON-LD)
+//  are extracted from reference templates — never hardcoded here.
 // ═══════════════════════════════════════════════════════════
 
 const FIELD_MAPPING = {
   prodList: {
-    listExpr: 'data.productList.list',
-    itemVar: 'product',
-    nullCheck: 'data?? && data.productList?? && data.productList.list?? && (data.productList.list?size > 0)',
     fields: {
       img: '${product.photoUrlList[0]!}',
       imgAlt: '${product.prodName!?html}',
@@ -709,16 +753,8 @@ const FIELD_MAPPING = {
       price: '${product.prodPrice!}',
       desc: '${product.prodBrief!}',
     },
-    hiddenInputs: [
-      '<input type="hidden" name="totalRow" value="${data.productList.totalRow!\'0\'}">',
-      '<input type="hidden" name="pageNumber" value="${data.productList.pageNumber!\'1\'}">',
-      '<input type="hidden" name="pageSize" value="${data.productList.pageSize!\'20\'}">',
-    ],
   },
   articleList: {
-    listExpr: 'data.articleList.list',
-    itemVar: 'article',
-    nullCheck: 'data?? && data.articleList?? && data.articleList.list?? && (data.articleList.list?size > 0)',
     fields: {
       img: '${article.photoUrlNormal!\'\'}',
       imgAlt: '${article.articleTitle!\'\'}',
@@ -727,16 +763,8 @@ const FIELD_MAPPING = {
       date: '${article.publishTime!\'\'}',
       desc: '${article.articleSummary!\'\'}',
     },
-    hiddenInputs: [
-      '<input type="hidden" name="totalRow" value="${data.articleList.totalRow!\'0\'}">',
-      '<input type="hidden" name="pageNumber" value="${data.articleList.pageNumber!\'1\'}">',
-      '<input type="hidden" name="pageSize" value="${data.articleList.pageSize!\'10\'}">',
-    ],
   },
   groupProduct: {
-    listExpr: 'data.productGroupList',
-    itemVar: 'group',
-    nullCheck: 'data?? && data.productGroupList?? && (data.productGroupList?size > 0)',
     fields: {
       img: '${group.groupPhotoUrlList[0]!}',
       imgAlt: '${group.groupName!?html}',
@@ -744,53 +772,6 @@ const FIELD_MAPPING = {
       url: '${group.groupUrl!\'\'}',
       desc: '',
     },
-    hiddenInputs: [],
-  },
-  galleryList: {
-    listExpr: 'data.galleryList.list',
-    itemVar: 'gallery',
-    nullCheck: 'data?? && data.galleryList?? && data.galleryList.list?? && (data.galleryList.list?size > 0)',
-    fields: {
-      img: '${gallery.photoUrl!\'\'}',
-      imgAlt: '${gallery.galleryTitle!\'\'}',
-      title: '${gallery.galleryTitle!\'\'}',
-      url: '${gallery.galleryUrl!\'\'}',
-    },
-    hiddenInputs: [],
-  },
-  videoList: {
-    listExpr: 'data.videoList.list',
-    itemVar: 'video',
-    nullCheck: 'data?? && data.videoList?? && data.videoList.list?? && (data.videoList.list?size > 0)',
-    fields: {
-      img: '${video.videoCoverUrl!\'\'}',
-      imgAlt: '${video.videoTitle!\'\'}',
-      title: '${video.videoTitle!\'\'}',
-      url: '${video.videoUrl!\'\'}',
-    },
-    hiddenInputs: [],
-  },
-  FAQList: {
-    listExpr: 'data.faqList.list',
-    itemVar: 'faq',
-    nullCheck: 'data?? && data.faqList?? && data.faqList.list?? && (data.faqList.list?size > 0)',
-    fields: {
-      title: '${faq.faqQuestion!\'\'}',
-      desc: '${faq.faqAnswer!\'\'}',
-      url: '',
-    },
-    hiddenInputs: [],
-  },
-  downloadList: {
-    listExpr: 'data.downloadList.list',
-    itemVar: 'download',
-    nullCheck: 'data?? && data.downloadList?? && data.downloadList.list?? && (data.downloadList.list?size > 0)',
-    fields: {
-      title: '${download.downloadTitle!\'\'}',
-      url: '${download.downloadUrl!\'\'}',
-      desc: '${download.downloadBrief!\'\'}',
-    },
-    hiddenInputs: [],
   },
 };
 
@@ -799,11 +780,15 @@ const FIELD_MAPPING = {
 // ═══════════════════════════════════════════════════════════
 
 function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
-  const mapping = FIELD_MAPPING[detection.detectedType];
-  if (!mapping) return templateData.content;
-
   const apiBlock = extractApiBlock(templateData.content);
   if (!apiBlock) return templateData.content;
+
+  if (!apiBlock.nullCheck || !apiBlock.listExpr || !apiBlock.itemVar) {
+    console.warn(`[WARN] 参考模板中未找到 [#if]/[#list] 指令，回退为原始模板`);
+    return templateData.content;
+  }
+
+  const mapping = FIELD_MAPPING[detection.detectedType];
 
   const sectionHtml = $.html($section);
   const $local = load(sectionHtml, { decodeEntities: false, xmlMode: false });
@@ -827,14 +812,16 @@ function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
   });
   if (sameTagChildren.length < 2) return templateData.content;
 
-  const dynamicItemHtml = applyFieldMapping($local, $local(sameTagChildren[0]), mapping);
+  const dynamicItemHtml = mapping
+    ? applyFieldMapping($local, $local(sameTagChildren[0]), mapping)
+    : $local.html($local(sameTagChildren[0]));
 
   for (let i = sameTagChildren.length - 1; i >= 1; i--) {
     $local(sameTagChildren[i]).remove();
   }
 
-  const listOpen = `[#if ${mapping.nullCheck}]\n[#list ${mapping.listExpr} as ${mapping.itemVar}]`;
-  const listClose = `[/#list]\n[#else]\n<div class="no-data">No content available</div>\n[/#if]`;
+  const listOpen = `[#if ${apiBlock.nullCheck}]\n[#list ${apiBlock.listExpr} as ${apiBlock.itemVar}]`;
+  const listClose = `[/#list]\n[#else]\n${apiBlock.noDataHtml}\n[/#if]`;
 
   $local(sameTagChildren[0]).replaceWith(`\n${listOpen}\n${dynamicItemHtml}\n${listClose}\n`);
 
@@ -853,10 +840,8 @@ function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
   const isBodyOrRoot = !containerParentTag || containerParentTag === 'body' || containerParentTag === 'html' || containerParentTag === '[document]';
   const useContainerParentAsApiScope = !isBodyOrRoot && containerParentTag !== sectionTag;
 
-  const initScriptStr = apiBlock.initScript
-    ? apiBlock.initScript.replace(/\$\(function/, '\\$(function').replace(/<\/script/g, '<\\/script')
-    : '';
-  const hiddenInputsStr = mapping.hiddenInputs.length > 0 ? '\n' + mapping.hiddenInputs.join('\n') : '';
+  const hiddenInputsStr = apiBlock.hiddenInputs.length > 0 ? '\n' + apiBlock.hiddenInputs.join('\n') : '';
+  const jsonLdStr = apiBlock.jsonLd ? '\n' + apiBlock.jsonLd : '';
 
   let sectionHtmlFinal;
   if (useContainerParentAsApiScope) {
@@ -869,8 +854,8 @@ function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
       beforeCp +
       `\n${apiOpen}\n` +
       cpOuterHtml +
-      hiddenInputsStr + '\n' +
-      (initScriptStr ? initScriptStr + '\n' : '') +
+      hiddenInputsStr +
+      jsonLdStr + '\n' +
       `[/@api]\n` +
       afterCp +
       `</${sectionTag}>`;
@@ -879,7 +864,8 @@ function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
       `<${sectionTag}${attrStr}>\n` +
       `${apiOpen}\n` +
       sectionInnerHtml +
-      hiddenInputsStr + '\n' +
+      hiddenInputsStr +
+      jsonLdStr + '\n' +
       `[/@api]\n` +
       `</${sectionTag}>`;
   }
@@ -892,7 +878,13 @@ function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
   const nodeStyle = apiBlock.nodeComponentStyle || '';
   const nodeStyleStr = nodeStyle ? `\n        ${nodeStyle}` : '';
 
-  return `${outerDiv}${langBlock}\n    ${innerDiv}${nodeStyleStr}\n${sectionHtmlFinal}\n    </div>\n</div>`;
+  const initScript = buildInitScript(uuid);
+
+  return `${outerDiv}${langBlock}\n    ${innerDiv}${nodeStyleStr}\n${sectionHtmlFinal}\n${initScript}\n    </div>\n</div>`;
+}
+
+function buildInitScript(uuid) {
+  return `        <script>\n            $(function () {\n                window._block_namespaces_['block_${uuid}'].init({ 'relationId': '\${relationId}', 'relationType': '\${relationType}', 'pageId': '\${pageId}', 'pageNodeId': '\${pageNodeId!""}', 'appId': '\${appId!}', 'appIsDev': '\${appIsDev!"0"}', 'appVersion': '\${appVersion}' });\n            });\n        </script>`;
 }
 
 function buildOuterContainer(uuid, outerAttrs) {
@@ -986,11 +978,37 @@ function applyFieldMapping($local, $item, mapping) {
     }
   });
 
-  const dateEls = $root.find('[class*="date"], [class*="time"], time');
+  $root.find('[class*="category"], [class*="cate"], [class*="tag"]').each((_, el) => {
+    const $el = $frag(el);
+    const tag = el.tagName?.toLowerCase();
+    if (['a','img'].includes(tag)) return;
+    if ($el.find('a, img, h1, h2, h3, h4, h5, h6').length > 0) return;
+    const cls = (el.attribs?.class || '').toLowerCase();
+    if (/nav|menu|filter/.test(cls)) return;
+    const text = $el.text().trim();
+    if (text && text.length > 0 && text.length < 100) {
+      if (mapping.fields.cateName) {
+        $el.html(mapping.fields.cateName);
+      } else if (mapping.itemVar === 'article' && mapping.fields.desc) {
+        $el.html("${article.cateName!''}");
+      }
+    }
+  });
+
+  const dateEls = $root.find('[class*="date"], [class*="time"], [class*="meta"], time');
   dateEls.each((_, el) => {
     const $el = $frag(el);
     if (mapping.fields.date) {
-      $el.html(mapping.fields.date);
+      const childSpans = $el.children('span');
+      if (childSpans.length > 1) {
+        const firstSpan = childSpans.first();
+        const dateText = firstSpan.text().trim();
+        if (dateText && /\d/.test(dateText)) {
+          firstSpan.html(mapping.fields.date);
+        }
+      } else if ($el.children().length === 0) {
+        $el.html(mapping.fields.date);
+      }
     }
   });
 
@@ -1002,7 +1020,7 @@ function applyFieldMapping($local, $item, mapping) {
     }
   });
 
-  const descEls = $root.find('[class*="desc"], [class*="brief"], [class*="summary"]');
+  const descEls = $root.find('[class*="desc"], [class*="brief"], [class*="summary"], [class*="excerpt"]');
   descEls.each((_, el) => {
     const $el = $frag(el);
     if ($el.find('a, img').length > 0) return;
@@ -1010,6 +1028,22 @@ function applyFieldMapping($local, $item, mapping) {
       $el.html(mapping.fields.desc);
     }
   });
+
+  if (mapping.fields.desc) {
+    const headingParent = $root.find('h1, h2, h3, h4, h5, h6').first().parent();
+    if (headingParent.length) {
+      headingParent.children('p').each((_, el) => {
+        const $el = $frag(el);
+        if ($el.find('a, img').length > 0) return;
+        const cls = (el.attribs?.class || '').toLowerCase();
+        if (cls && /desc|brief|summary|excerpt/.test(cls)) return;
+        const text = $el.text().trim();
+        if (text && text.length > 5 && text.length < 500) {
+          $el.html(mapping.fields.desc);
+        }
+      });
+    }
+  }
 
   const outerTag = $item[0].tagName;
   const outerAttrs = $item[0].attribs || {};
@@ -1107,6 +1141,85 @@ function validateInjection($, uuid) {
     name: '原始内容保留',
     pass: hasOriginalContent,
     detail: hasOriginalContent ? `内容完整 (${innerHtml.length} chars) ✓` : '内容丢失或过短',
+  });
+
+  return checks;
+}
+
+function validateFtlContent(ftlContent, _detectedType) {
+  const checks = [];
+
+  checks.push({
+    name: 'FTL-@api标签',
+    pass: /\[@api\s/.test(ftlContent) && /\[\/@api\]/.test(ftlContent),
+    detail: /\[@api\s/.test(ftlContent) && /\[\/@api\]/.test(ftlContent)
+      ? '[@api]...[/@api] 完整 ✓'
+      : '缺少 @api 开闭标签',
+  });
+
+  checks.push({
+    name: 'FTL-列表循环',
+    pass: /\[#list\s/.test(ftlContent) && /\[\/#list\]/.test(ftlContent),
+    detail: /\[#list\s/.test(ftlContent) ? '[#list] 循环存在 ✓' : '缺少 [#list] 循环',
+  });
+
+  checks.push({
+    name: 'FTL-空数据处理',
+    pass: /templist-no-data/.test(ftlContent),
+    detail: /templist-no-data/.test(ftlContent) ? 'no-data 处理 ✓' : '缺少 templist-no-data 处理',
+  });
+
+  const hasHiddenInputs = /name="totalRow"/.test(ftlContent);
+  if (hasHiddenInputs) {
+    const apiCloseIdx = ftlContent.lastIndexOf('[/@api]');
+    const hiddenIdx = ftlContent.lastIndexOf('name="totalRow"');
+    const hiddenBeforeApiClose = apiCloseIdx > 0 && hiddenIdx > 0 && hiddenIdx < apiCloseIdx;
+    checks.push({
+      name: 'FTL-hiddenInputs位置',
+      pass: hiddenBeforeApiClose,
+      detail: hiddenBeforeApiClose ? 'hidden inputs 在 [/@api] 内 ✓' : 'hidden inputs 应在 [/@api] 关闭前',
+    });
+  }
+
+  const hasJsonLd = /application\/ld\+json/.test(ftlContent);
+  if (hasJsonLd) {
+    checks.push({
+      name: 'FTL-JSON-LD',
+      pass: true,
+      detail: 'JSON-LD 结构化数据 ✓',
+    });
+  }
+
+  const hasInitScript = /window\._block_namespaces_/.test(ftlContent);
+  checks.push({
+    name: 'FTL-初始化脚本',
+    pass: hasInitScript,
+    detail: hasInitScript ? 'block init script ✓' : '缺少 _block_namespaces_ 初始化脚本',
+  });
+
+  if (hasInitScript) {
+    const apiCloseIdx = ftlContent.lastIndexOf('[/@api]');
+    const initIdx = ftlContent.lastIndexOf('_block_namespaces_');
+    const initAfterApiClose = apiCloseIdx > 0 && initIdx > 0 && initIdx > apiCloseIdx;
+    checks.push({
+      name: 'FTL-initScript位置',
+      pass: initAfterApiClose,
+      detail: initAfterApiClose ? 'init script 在 [/@api] 外部 ✓' : 'init script 应在 [/@api] 关闭后',
+    });
+  }
+
+  const hasOuterDiv = /class="block_\w+"/.test(ftlContent) && /data-gjs-type="phoenix-container"/.test(ftlContent);
+  checks.push({
+    name: 'FTL-外层容器',
+    pass: hasOuterDiv,
+    detail: hasOuterDiv ? 'phoenix-container 外层 ✓' : '缺少 phoenix-container 外层容器',
+  });
+
+  const hasInnerDiv = /data-gjs-type="developer-node-component"/.test(ftlContent);
+  checks.push({
+    name: 'FTL-内层节点组件',
+    pass: hasInnerDiv,
+    detail: hasInnerDiv ? 'developer-node-component ✓' : '缺少 developer-node-component 内层',
   });
 
   return checks;
@@ -1260,6 +1373,28 @@ async function main() {
     return;
   }
 
+  // ─── Template availability check ───
+  const availableBlockTypes = new Set(registry.filter(r => r.status === 'ok').map(r => r.blockType));
+  const availableTypeLabels = [...availableBlockTypes].map(bt => {
+    const entry = Object.entries(BLOCK_TYPE_MAP).find(([_, v]) => v === bt);
+    return entry ? `${entry[0]}(${bt})` : bt;
+  });
+  console.log(`[INFO] 可用参考模板类型: ${availableTypeLabels.join(', ') || '无'}`);
+
+  const noTemplateDets = dynamicDetections.filter(d => {
+    const bt = BLOCK_TYPE_MAP[d.detectedType];
+    return !bt || !availableBlockTypes.has(bt);
+  });
+  if (noTemplateDets.length > 0) {
+    console.log('');
+    for (const d of noTemplateDets) {
+      const bt = BLOCK_TYPE_MAP[d.detectedType] || '?';
+      console.log(`⚠️  [WARN] Section ${d.sectionIndex} "${d.sectionDescription}" 类型 ${d.detectedType}(${bt}) 无可用参考模板，将跳过 FTL 生成`);
+      console.log(`   请先运行 /fetch-templates 获取该类型的参考模板`);
+    }
+  }
+  console.log('');
+
   // ─── Phase 2: In auto mode, accept all detected ───
   if (!AUTO_MODE) {
     console.log('[INFO] 交互模式: 以上检测结果将全部应用（当前版本等同 --auto）');
@@ -1286,7 +1421,7 @@ async function main() {
   console.log('');
 
   // ─── Phase 4: Validation ───
-  console.log('═══ Phase 4: 验证 ═══');
+  console.log('═══ Phase 4: 验证 (HTML注入) ═══');
   const allValidations = [];
 
   for (const inj of injections) {
@@ -1297,6 +1432,32 @@ async function main() {
     const allPass = checks.every(c => c.pass);
     console.log(`[${allPass ? '✅' : '❌'}] ${inj.blockType} (${inj.uuid})`);
     for (const c of checks) {
+      console.log(`   ${c.pass ? '✓' : '✗'} ${c.name}: ${c.detail}`);
+    }
+  }
+
+  console.log('\n═══ Phase 4: 验证 (FTL结构) ═══');
+  const dynamicTypeMap = {};
+  for (const det of dynamicDetections) {
+    for (const inj of injections) {
+      if (inj.success && inj.blockType === BLOCK_TYPE_MAP[det.detectedType]) {
+        dynamicTypeMap[inj.uuid] = det.detectedType;
+      }
+    }
+  }
+
+  for (const inj of injections) {
+    if (!inj.success || !inj.freemakerContent) continue;
+    const detectedType = dynamicTypeMap[inj.uuid] || null;
+    const ftlChecks = validateFtlContent(inj.freemakerContent, detectedType);
+    const existingValidation = allValidations.find(v => v.uuid === inj.uuid);
+    if (existingValidation) {
+      existingValidation.checks.push(...ftlChecks);
+    }
+
+    const allPass = ftlChecks.every(c => c.pass);
+    console.log(`[${allPass ? '✅' : '❌'}] ${inj.blockType} (${inj.uuid}) FTL结构`);
+    for (const c of ftlChecks) {
       console.log(`   ${c.pass ? '✓' : '✗'} ${c.name}: ${c.detail}`);
     }
   }

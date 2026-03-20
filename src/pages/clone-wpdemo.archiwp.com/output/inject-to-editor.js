@@ -123,6 +123,41 @@ function addSection(html, moduleCss, customJs, index, extraCss) {
   }
 }
 
+/* ============================= ADD DYNAMIC SECTION ============================= */
+function addDynamicSection(html, moduleCss, customJs, freemakerHtml, blockType, blockUuid, appId, index, extraCss) {
+  try {
+    var sid = uid(index);
+    var scopeAttr = '[data-clone-section="' + sid + '"]';
+    var scopedHtml = html.replace(
+      'data-clone-section="' + sid + '"',
+      'data-clone-section="' + sid + '"'
+    );
+    if (scopedHtml.indexOf('data-clone-section') < 0) {
+      scopedHtml = html.replace(
+        'data-gjs-type="developer-component"',
+        'data-gjs-type="developer-component" data-clone-section="' + sid + '"'
+      );
+    }
+    var scopedCss = scopeCSS(moduleCss, scopeAttr);
+    if (extraCss) scopedCss = extraCss + scopedCss;
+    var components = editor.addComponents(scopedHtml);
+    var outerModel = Array.isArray(components) ? components[0] : components;
+    if (outerModel && scopedCss) outerModel.set('customCss', scopedCss);
+    if (outerModel && customJs) outerModel.set('customJs', customJs);
+    var nodeModel = outerModel.findType('developer-node-component')[0];
+    if (nodeModel) {
+      nodeModel.set('freemakerHtml', freemakerHtml);
+      if (appId) nodeModel.set('appId', appId);
+      nodeModel.set('appIsDev', true);
+    }
+    console.log('[Clone-Inject] S' + index + ' injected as DYNAMIC (sid=' + sid + ', type=' + blockType + ')');
+    return outerModel;
+  } catch(err) {
+    console.error('[Clone-Inject] S' + index + ' dynamic inject failed:', err);
+    return null;
+  }
+}
+
 /* ============================= GALLERY IDS ============================= */
 var galId5 = _gid('categories');
 var galId6 = _gid('services');
@@ -752,8 +787,14 @@ var js10 =
 /* =====================================================================
    SECTION 11 — BLOG CAROUSEL (Slick 2/view, dots, no autoplay, Gallery 3)
    ===================================================================== */
+var _s11uuid = 'articlelist_' + _cloneId + '_11';
 var html11 =
-  '<div class="block-container"><div class="developer-component-ai" data-gjs-type="developer-component-ai">' +
+  '<div class="block-container"><div class="developer-component" data-gjs-type="developer-component">' +
+  '<div class="backstage-blocksEditor-wrap developer-node-component developer-component-newedit block_' + _s11uuid + '"' +
+    ' data-gjs-type="developer-node-component"' +
+    ' data-block-type="phoenix_blocks_Articlelist"' +
+    ' data-block-uuid="' + _s11uuid + '"' +
+    ' data-new-auto-uuid="' + _s11uuid + '">' +
   '<div class="section-blog has-grid-lines">' +
   '<div class="grid-lines-vertical">' +
     '<span class="g-line line-left"></span>' +
@@ -798,7 +839,7 @@ var html11 =
       '</div>' +
     '</div>' +
     '<div class="blog-dots-container"></div>' +
-  '</div></div></div></div>';
+  '</div></div></div></div></div>';
 
 var css11 =
   '.section-blog{padding:110px 0 120px;position:relative}' +
@@ -841,6 +882,140 @@ var js11 =
   '});' +
   '})();';
 
+/* ============================= FREEMARKER TEMPLATES ============================= */
+var ftl_articlelist_34134 =
+  '<div class="block34134" data-gjs-type="phoenix-container" data-strong="1">\n' +
+  '\t[#assign specialLanCode = ["3", "45", "42", "32", "29"] ]\n' +
+  '\t[#if __current_site_lanCode__?? && specialLanCode?seq_contains(__current_site_lanCode__)]\n' +
+  '\t\t<style data-collect=\'1\'>\n' +
+  '\t\t\tdiv.block34134 .butn {\n' +
+  '\t\t\t\tposition: absolute;\n' +
+  '\t\t\t\tleft: auto;\n' +
+  '\t\t\t\tright: 25px;\n' +
+  '\t\t\t}\n' +
+  '\t\t</style>\n' +
+  '\t[/#if]\n' +
+  '\t<div class="backstage-blocksEditor-wrap wra" data-block-uuid="cyber" data-gjs-type="developer-node-component"\n' +
+  '\t\tdata-block-type="phoenix_blocks_Articlelist"\n' +
+  '\t\tdata-block-list-setting="dataSelect,loadMethod,pageNumber,dataOrderBy,showDate"\n' +
+  '\t\tdata-default-setting={"pageSize":3,"page":1,"dataType":"0","dataIds":[],"dataGroupId":[],"orderBy":"0","loadMethod":"1","refreshMethod":"0","jumpMethod":"0","expandIds":{"showField":{"label":"\\u663e\\u793a\\u5b57\\u6bb5","key":"showField","draggable":false,"data":[{"fieldName":"\\u6587\\u7ae0\\u6807\\u9898","fieldId":"articleTitle","fieldType":"0","value":"1","checked":false},{"fieldName":"\\u6587\\u7ae0\\u7b80\\u4ecb","fieldId":"articleSummary","fieldType":"0","value":"2","checked":false},{"fieldName":"\\u65e5\\u671f","fieldId":"publishTime","fieldType":"0","value":"3","checked":false},{"fieldName":"\\u6587\\u7ae0\\u5206\\u7c7b","fieldId":"cateName","fieldType":"0","value":"4","checked":false}]}},"expandSort":["showField"],"layoutStyle":"0","showDate":"1","relatedTypes":"0","translationEntry":[]}>\n' +
+  '\t\t<style>\n' +
+  '\t\t\t[data-new-auto-uuid="${pageNodeId!\'\'}"] {\n' +
+  '\t\t\t\t--color-match-setting1: var(--ld-main1, #62c6ff);\n' +
+  '\t\t\t\t--color-match-setting2: var(--ld-Auxiliary1, #37383e);\n' +
+  '\t\t\t}\n' +
+  '\t\t</style>\n' +
+  '\t\t[@api method="post" url="/phoenix2/composite/graphql" page="${pageNum!1}" limit="${pageSize!\'10\'}"\n' +
+  '\t\tselectArticleCateType="${dataType!\'0\'}" selectCateIds="${dataGroupId!\'\'}" selectArticleIds="${dataIds!\'\'}"\n' +
+  '\t\torderBy="${orderBy!\'0\'}" expandIds="${expandIds!\'\'}" articleId="${infoId!-1}" articlePageId="${infoGroupId!-1}"\n' +
+  '\t\tquery=\'{\n' +
+  '\t\tarticleList(\n' +
+  '\t\tconditionDto:{\n' +
+  '\t\tpage: $page\n' +
+  '\t\tlimit: $limit\n' +
+  '\t\toptionsParam: $optionsParam\n' +
+  '\t\tselectCateIds: $selectCateIds\n' +
+  '\t\tselectArticleIds: $selectArticleIds\n' +
+  '\t\tselectArticleCateType: "$selectArticleCateType"\n' +
+  '\t\torderBy: "$orderBy"\n' +
+  '\t\tarticleRelatedId: "$articleId"\n' +
+  '\t\tarticlePageId: "$articlePageId"\n' +
+  '\t\t}) {\n' +
+  '\t\ttotalRow\n' +
+  '\t\tpageSize\n' +
+  '\t\tpageNumber\n' +
+  '\t\textraData{\n' +
+  '\t\tarticleStructureData\n' +
+  '\t\t}\n' +
+  '\t\tlist{\n' +
+  '\t\tencodeId\n' +
+  '\t\tarticleTitle\n' +
+  '\t\tpublishTime\n' +
+  '\t\tarticleUrl\n' +
+  '\t\tarticleSummary\n' +
+  '\t\ttopFlag\n' +
+  '\t\tphotoUrlNormal\n' +
+  '\t\tphotoUrlDefine\n' +
+  '\t\tcateName\n' +
+  '\t\tcateUrl\n' +
+  '\t\tshowFieldList\n' +
+  '\t\t$showField\n' +
+  '\t\tphotoSeoList{\n' +
+  '\t\t\tphotoId\n' +
+  '\t\t\tphotoUrlNormal\n' +
+  '\t\t\tphotoAlt\n' +
+  '\t\t\tphotoTitle\n' +
+  '\t\t}\n' +
+  '\t\t}\n' +
+  '\t\t}\n' +
+  '\t\t}\']\n' +
+  '\t\t<div class="cont">\n' +
+  '\t\t\t<div class="Article_Container">\n' +
+  '\t\t\t\t<div class="zh articalWrap block-article-container-replace">\n' +
+  '\t\t\t\t\t[#if data?? && data.articleList?? && data.articleList.list?? && (data.articleList.list?size > 0)]\n' +
+  '\t\t\t\t\t[#list data.articleList.list as article]\n' +
+  '\t\t\t\t\t<article class="ArticlePicList_Item">\n' +
+  '\t\t\t\t\t\t<div class="imgBtn">\n' +
+  '\t\t\t\t\t\t\t<div class="imgBox">\n' +
+  '\t\t\t\t\t\t\t\t<div class="img">\n' +
+  '\t\t\t\t\t\t\t\t\t<a class="maskT" href="${article.articleUrl!}"></a>\n' +
+  '\t\t\t\t\t\t\t\t\t<source media="(min-width: 768px)" data-srcset="${article.photoUrlNormal!}" />\n' +
+  '\t\t\t\t\t\t\t\t\t<source media="(max-width: 767px)" data-srcset="${article.photoUrlNormal!}" />\n' +
+  '\t\t\t\t\t\t\t\t\t<img class="headlines-content-img ArticlePicList_ItemImg lazyimg" src="${article.photoUrlNormal!}" alt="${article.photoSeoList[0].photoAlt!}" title="${article.photoSeoList[0].photoTitle!}">\n' +
+  '\t\t\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t\t\t\t<div class="butn">\n' +
+  '\t\t\t\t\t\t\t\t\t<a class="ArticlePicList_ItemContentInnerA paragraph2" href="${article.articleUrl!}">\n' +
+  '\t\t\t\t\t\t\t\t\t\t<span>[@s.m "phoenix_block_news" /]</span>\n' +
+  '\t\t\t\t\t\t\t\t\t</a>\n' +
+  '\t\t\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t\t<div class="ArticlePicList_ItemContent">\n' +
+  '\t\t\t\t\t\t\t<div class="ArticlePicList_ItemContentInner">\n' +
+  '\t\t\t\t\t\t\t\t<div class="ArticlePicList_ItemContentInnerBox">\n' +
+  '\t\t\t\t\t\t\t\t\t[#if showDate?? && showDate == \'1\']\n' +
+  '\t\t\t\t\t\t\t\t\t<time class="artime paragraph2">${article.publishTime!}</time>\n' +
+  '\t\t\t\t\t\t\t\t\t[/#if]\n' +
+  '\t\t\t\t\t\t\t\t\t<h3 class="ArticlePicList_ItemContentInnerH5">\n' +
+  '\t\t\t\t\t\t\t\t\t\t<a class="heading5" href="${article.articleUrl!}" title="${article.articleTitle!?html}">${article.articleTitle!?html}</a>\n' +
+  '\t\t\t\t\t\t\t\t\t</h3>\n' +
+  '\t\t\t\t\t\t\t\t\t<div class="articleList-summary ArticlePicList_ItemContentInnerP paragraph2">${article.articleSummary!\'\'}</div>\n' +
+  '\t\t\t\t\t\t\t\t\t<div class="butn1">\n' +
+  '\t\t\t\t\t\t\t\t\t\t<a class="ArticlePicList_ItemContentInnerA paragraph2" href="${article.articleUrl!}">\n' +
+  '\t\t\t\t\t\t\t\t\t\t\t<span>[@s.m "phoenix_block_news" /]</span>\n' +
+  '\t\t\t\t\t\t\t\t\t\t</a>\n' +
+  '\t\t\t\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t</article>\n' +
+  '\t\t\t\t\t[/#list]\n' +
+  '\t\t\t\t\t[#else]\n' +
+  '\t\t\t\t\t<div class="templist-no-data">[@s.m "phoenix_no_content" /]</div>\n' +
+  '\t\t\t\t\t[/#if]\n' +
+  '\t\t\t\t</div>\n' +
+  '\t\t\t\t<input type="hidden" name="totalRow" value="${data.articleList.totalRow!\'0\'}">\n' +
+  '\t\t\t\t<input type="hidden" name="pageNumber" value="${data.articleList.pageNumber!\'1\'}">\n' +
+  '\t\t\t\t<input type="hidden" name="pageSize" value="${data.articleList.pageSize!\'10\'}">\n' +
+  '\t\t\t\t[#if (dataType?? && dataType != \'3\') && (!loadMethod?? || loadMethod == \'0\')]\n' +
+  '\t\t\t\t<div class="artclelist-site-pagination-34134 [#if data.articleList.pageSize?? && data.articleList.totalRow?? && data.articleList.totalRow <= data.articleList.pageSize]hide[/#if]">\n' +
+  '\t\t\t\t\t<div class="artclelist-laypage-normal" id=\'artclelist-laypage-normal\'></div>\n' +
+  '\t\t\t\t</div>\n' +
+  '\t\t\t\t[/#if]\n' +
+  '\t\t\t</div>\n' +
+  '\t\t</div>\n' +
+  '\t\t<script>\n' +
+  '\t\t\t$(function () {\n' +
+  '\t\t\t\twindow._block_namespaces_[\'block34134\'].init({ \'relationId\': \'${relationId}\', \'relationType\': \'${relationType}\', \'pageId\': \'${pageId}\', \'nodeId\':\'cyber_${nodeId!""}\', \'appId\': \'${appId!}\', \'appIsDev\': \'${appIsDev!"0"}\', \'appVersion\': \'${appVersion}\' });\n' +
+  '\t\t\t});\n' +
+  '\t\t</script>\n' +
+  '\t\t<script type="application/ld+json">\n' +
+  '\t\t\t${data.articleList.extraData.articleStructureData!""}\n' +
+  '\t\t</script>\n' +
+  '\t\t[/@api]\n' +
+  '\t</div>\n' +
+  '</div>';
+
 /* ============================= INJECT ALL SECTIONS ============================= */
 addSection(html1,  css1,  js1,  1,  GLOBAL_CSS);
 addSection(html2,  css2,  '',   2,  GLOBAL_CSS);
@@ -852,7 +1027,7 @@ addSection(html7,  css7,  js7,  7,  GLOBAL_CSS);
 addSection(html8,  css8,  '',   8,  GLOBAL_CSS);
 addSection(html9,  css9,  js9,  9,  GLOBAL_CSS);
 addSection(html10, css10, js10, 10, GLOBAL_CSS);
-addSection(html11, css11, js11, 11, GLOBAL_CSS);
+addDynamicSection(html11, css11, js11, ftl_articlelist_34134, 'phoenix_blocks_Articlelist', _s11uuid, 'eRKfUApi34134', 11, GLOBAL_CSS);
 
-console.log('[Clone-Inject] All 11 sections injected successfully.');
+console.log('[Clone-Inject] All 11 sections injected (10 static + 1 dynamic).');
 })();
