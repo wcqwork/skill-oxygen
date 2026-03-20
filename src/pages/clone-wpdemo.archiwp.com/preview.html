@@ -1516,15 +1516,7 @@ p {
   </div>
 </section>
 
-<!-- ==================== SECTION 7: PORTFOLIO METRO GRID [DYNAMIC: galleryList] ==================== -->
-<div class="developer-component" data-gjs-type="developer-component">
-<div class="backstage-blocksEditor-wrap developer-node-component developer-component-newedit block_60a10fef6db1"
-     data-gjs-type="developer-node-component"
-     data-block-type="phoenix_blocks_galleryList"
-     data-block-uuid="60a10fef6db1"
-     data-new-auto-uuid="60a10fef6db1"
-     data-app-id=""
-     data-freemaker-html-available="true">
+<!-- ==================== SECTION 7: PORTFOLIO METRO GRID ==================== -->
 <section class="section-portfolio">
   <div class="portfolio-filters">
     <span class="portfolio-filter-tab active" data-filter="all">All</span>
@@ -1578,7 +1570,6 @@ p {
     </div>
   </div>
 </section>
-</div></div>
 
 <!-- ==================== SECTION 8: CTA BANNER ==================== -->
 <section class="section-cta">
@@ -1704,15 +1695,7 @@ p {
   </div>
 </section>
 
-<!-- ==================== SECTION 11: BLOG / NEWS [DYNAMIC: Articlelist] ==================== -->
-<div class="developer-component" data-gjs-type="developer-component">
-<div class="backstage-blocksEditor-wrap developer-node-component developer-component-newedit block_54847350b547"
-     data-gjs-type="developer-node-component"
-     data-block-type="phoenix_blocks_Articlelist"
-     data-block-uuid="54847350b547"
-     data-new-auto-uuid="54847350b547"
-     data-app-id=""
-     data-freemaker-html-available="true">
+<!-- ==================== SECTION 11: BLOG / NEWS (Flat Grid) ==================== -->
 <section class="section-blog has-grid-lines">
   <div class="grid-lines-vertical">
     <span class="g-line line-left"></span>
@@ -1774,7 +1757,6 @@ p {
     </div>
   </div>
 </section>
-</div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
@@ -1888,49 +1870,6 @@ new Swiper('.blog-swiper', {
     768: { slidesPerView: 2 }
   }
 });
-</script>
-<!-- Dynamic Module Model Setup Script -->
-<script>
-(function() {
-  var TEMPLATE_PATHS = {};
-  TEMPLATE_PATHS["60a10fef6db1"] = "../Generate/2026-03-20_11-03-15/blocks/60a10fef6db1.ftl";
-  TEMPLATE_PATHS["54847350b547"] = "../Generate/2026-03-20_11-03-15/blocks/54847350b547.ftl";
-
-  window.__DYNAMIC_MODULES__ = {
-    templatePaths: TEMPLATE_PATHS,
-    modules: [
-      {
-        uuid: "60a10fef6db1",
-        blockType: "phoenix_blocks_galleryList",
-        appId: "",
-        templateFile: "60a10fef6db1.ftl",
-        templatePath: "../Generate/2026-03-20_11-03-15/blocks/60a10fef6db1.ftl",
-      },
-      {
-        uuid: "54847350b547",
-        blockType: "phoenix_blocks_Articlelist",
-        appId: "",
-        templateFile: "54847350b547.ftl",
-        templatePath: "../Generate/2026-03-20_11-03-15/blocks/54847350b547.ftl",
-      },
-    ],
-    inject: async function(editor) {
-      if (!editor) return;
-      for (var i = 0; i < this.modules.length; i++) {
-        var mod = this.modules[i];
-        var nodeEls = editor.DomComponents.getWrapper().find('[data-block-uuid="' + mod.uuid + '"]');
-        if (nodeEls.length > 0) {
-          var resp = await fetch(mod.templatePath);
-          var ftlContent = await resp.text();
-          var nodeModel = nodeEls[0];
-          nodeModel.set('freemakerHtml', ftlContent);
-          nodeModel.set('appId', mod.appId);
-          nodeModel.set('appIsDev', true);
-        }
-      }
-    }
-  };
-})();
 </script>
 </body>
 </html>
