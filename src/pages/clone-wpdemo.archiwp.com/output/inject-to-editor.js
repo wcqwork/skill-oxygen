@@ -499,10 +499,16 @@ var js6 =
   '})();';
 
 /* =====================================================================
-   SECTION 7 — PORTFOLIO METRO GRID (Gallery 6 items, tab filter)
+   SECTION 7 — PORTFOLIO METRO GRID (DYNAMIC: galleryList)
    ===================================================================== */
+var _s7uuid = 'gallerylist_' + _cloneId + '_7';
 var html7 =
-  '<div class="block-container"><div class="developer-component-ai" data-gjs-type="developer-component-ai">' +
+  '<div class="block-container"><div class="developer-component" data-gjs-type="developer-component">' +
+  '<div class="backstage-blocksEditor-wrap developer-node-component developer-component-newedit block_' + _s7uuid + '"' +
+    ' data-gjs-type="developer-node-component"' +
+    ' data-block-type="phoenix_blocks_galleryList"' +
+    ' data-block-uuid="' + _s7uuid + '"' +
+    ' data-new-auto-uuid="' + _s7uuid + '">' +
   '<div class="section-portfolio">' +
   '<div class="portfolio-filters">' +
     '<span class="portfolio-filter-tab active" data-filter="all">' + lt('All') + '</span>' +
@@ -554,7 +560,7 @@ var html7 =
         '<div class="portfolio-cates" data-ai-field="text"><a href="#" class="block-ai-link">' + lt('Furniture') + '</a> <a href="#" class="block-ai-link">' + lt('Interior') + '</a></div>' +
       '</div>' +
     '</div>' +
-  '</div></div></div></div>';
+  '</div></div></div></div></div>';
 
 var css7 =
   '.section-portfolio{padding:0 0 120px}' +
@@ -883,6 +889,85 @@ var js11 =
   '})();';
 
 /* ============================= FREEMARKER TEMPLATES ============================= */
+var ftl_gallerylist_placeholder =
+  '<div class="blockGallery" data-gjs-type="phoenix-container" data-strong="1">\n' +
+  '\t<div class="backstage-blocksEditor-wrap wra" data-block-uuid="cyber" data-gjs-type="developer-node-component"\n' +
+  '\t\tdata-block-type="phoenix_blocks_galleryList"\n' +
+  '\t\tdata-block-list-setting="dataSelect,loadMethod,pageNumber"\n' +
+  '\t\tdata-default-setting={"pageSize":6,"page":1,"dataType":"0","dataIds":[],"dataGroupId":[],"orderBy":"0","loadMethod":"1","refreshMethod":"0","jumpMethod":"0","expandIds":{},"expandSort":[],"layoutStyle":"0","relatedTypes":"0","translationEntry":[]}>\n' +
+  '\t\t<style>\n' +
+  '\t\t\t[data-new-auto-uuid="${pageNodeId!\'\'}"] {\n' +
+  '\t\t\t\t--color-match-setting1: var(--ld-main1, #62c6ff);\n' +
+  '\t\t\t\t--color-match-setting2: var(--ld-Auxiliary1, #37383e);\n' +
+  '\t\t\t}\n' +
+  '\t\t</style>\n' +
+  '\t\t[@api method="post" url="/phoenix2/composite/graphql" page="${pageNum!1}" limit="${pageSize!\'6\'}"\n' +
+  '\t\tselectGalleryCateType="${dataType!\'0\'}" selectCateIds="${dataGroupId!\'\'}" selectGalleryIds="${dataIds!\'\'}"\n' +
+  '\t\torderBy="${orderBy!\'0\'}" expandIds="${expandIds!\'\'}"\n' +
+  '\t\tquery=\'{\n' +
+  '\t\tgalleryList(\n' +
+  '\t\tconditionDto:{\n' +
+  '\t\tpage: $page\n' +
+  '\t\tlimit: $limit\n' +
+  '\t\toptionsParam: $optionsParam\n' +
+  '\t\tselectCateIds: $selectCateIds\n' +
+  '\t\tselectGalleryIds: $selectGalleryIds\n' +
+  '\t\tselectGalleryCateType: "$selectGalleryCateType"\n' +
+  '\t\torderBy: "$orderBy"\n' +
+  '\t\t}) {\n' +
+  '\t\ttotalRow\n' +
+  '\t\tpageSize\n' +
+  '\t\tpageNumber\n' +
+  '\t\tlist{\n' +
+  '\t\tencodeId\n' +
+  '\t\tgalleryTitle\n' +
+  '\t\tgalleryUrl\n' +
+  '\t\tgallerySummary\n' +
+  '\t\tphotoUrlNormal\n' +
+  '\t\tphotoUrlDefine\n' +
+  '\t\tcateName\n' +
+  '\t\tcateUrl\n' +
+  '\t\tphotoSeoList{\n' +
+  '\t\t\tphotoId\n' +
+  '\t\t\tphotoUrlNormal\n' +
+  '\t\t\tphotoAlt\n' +
+  '\t\t\tphotoTitle\n' +
+  '\t\t}\n' +
+  '\t\t}\n' +
+  '\t\t}\n' +
+  '\t\t}\']\n' +
+  '\t\t<div class="cont">\n' +
+  '\t\t\t<div class="Gallery_Container">\n' +
+  '\t\t\t\t<div class="zh galleryWrap block-gallery-container-replace">\n' +
+  '\t\t\t\t\t[#if data?? && data.galleryList?? && data.galleryList.list?? && (data.galleryList.list?size > 0)]\n' +
+  '\t\t\t\t\t[#list data.galleryList.list as gallery]\n' +
+  '\t\t\t\t\t<div class="galleryItem">\n' +
+  '\t\t\t\t\t\t<div class="imgBox">\n' +
+  '\t\t\t\t\t\t\t<a href="${gallery.galleryUrl!}">\n' +
+  '\t\t\t\t\t\t\t\t<img class="lazyimg" src="${gallery.photoUrlNormal!}" alt="${gallery.photoSeoList[0].photoAlt!}" title="${gallery.photoSeoList[0].photoTitle!}">\n' +
+  '\t\t\t\t\t\t\t</a>\n' +
+  '\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t\t<div class="textBox">\n' +
+  '\t\t\t\t\t\t\t<h3><a href="${gallery.galleryUrl!}" title="${gallery.galleryTitle!?html}">${gallery.galleryTitle!?html}</a></h3>\n' +
+  '\t\t\t\t\t\t\t<span class="cateName">${gallery.cateName!}</span>\n' +
+  '\t\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t</div>\n' +
+  '\t\t\t\t\t[/#list]\n' +
+  '\t\t\t\t\t[#else]\n' +
+  '\t\t\t\t\t<div class="templist-no-data">[@s.m "phoenix_no_content" /]</div>\n' +
+  '\t\t\t\t\t[/#if]\n' +
+  '\t\t\t\t</div>\n' +
+  '\t\t\t</div>\n' +
+  '\t\t</div>\n' +
+  '\t\t<script>\n' +
+  '\t\t\t$(function () {\n' +
+  '\t\t\t\twindow._block_namespaces_[\'blockGallery\'].init({ \'relationId\': \'${relationId}\', \'relationType\': \'${relationType}\', \'pageId\': \'${pageId}\', \'nodeId\':\'cyber_${nodeId!""}\', \'appId\': \'${appId!}\', \'appIsDev\': \'${appIsDev!"0"}\', \'appVersion\': \'${appVersion}\' });\n' +
+  '\t\t\t});\n' +
+  '\t\t</script>\n' +
+  '\t\t[/@api]\n' +
+  '\t</div>\n' +
+  '</div>';
+
 var ftl_articlelist_34134 =
   '<div class="block34134" data-gjs-type="phoenix-container" data-strong="1">\n' +
   '\t[#assign specialLanCode = ["3", "45", "42", "32", "29"] ]\n' +
@@ -1023,11 +1108,11 @@ addSection(html3,  css3,  '',   3,  GLOBAL_CSS);
 addSection(html4,  css4,  js4,  4,  GLOBAL_CSS);
 addSection(html5,  css5,  '',   5,  GLOBAL_CSS);
 addSection(html6,  css6,  js6,  6,  GLOBAL_CSS);
-addSection(html7,  css7,  js7,  7,  GLOBAL_CSS);
+addDynamicSection(html7, css7, js7, ftl_gallerylist_placeholder, 'phoenix_blocks_galleryList', _s7uuid, '', 7, GLOBAL_CSS);
 addSection(html8,  css8,  '',   8,  GLOBAL_CSS);
 addSection(html9,  css9,  js9,  9,  GLOBAL_CSS);
 addSection(html10, css10, js10, 10, GLOBAL_CSS);
 addDynamicSection(html11, css11, js11, ftl_articlelist_34134, 'phoenix_blocks_Articlelist', _s11uuid, 'eRKfUApi34134', 11, GLOBAL_CSS);
 
-console.log('[Clone-Inject] All 11 sections injected (10 static + 1 dynamic).');
+console.log('[Clone-Inject] All 11 sections injected (9 static + 2 dynamic: S7=galleryList, S11=Articlelist).');
 })();
