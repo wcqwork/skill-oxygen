@@ -519,6 +519,15 @@ async function sendRequest() {
       htmlContent = text;
     }
 
+    if (htmlContent && typeof htmlContent === 'string') {
+      try {
+        const decoded = base64ToUtf8(htmlContent);
+        if (decoded && (decoded.includes('<') || decoded.includes('&'))) {
+          htmlContent = decoded;
+        }
+      } catch (_) {}
+    }
+
     lastHtmlContent = htmlContent;
     document.getElementById('htmlOutput').textContent = htmlContent || '(无 HTML 内容)';
 
