@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>renderFreemarker 接口验证</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1b2e;
+    --surface: #232540;
+    --surface2: #2a2d4a;
+    --border: #3a3d5c;
+    --text: #e0e0f0;
+    --text2: #9a9bb8;
+    --accent: #6c7cff;
+    --accent-hover: #8b97ff;
+    --success: #4cdf8b;
+    --error: #ff6b7a;
+    --warn: #ffb84d;
+    --radius: 8px;
+    --mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 16px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+  header .badge {
+    font-size: 11px; padding: 2px 8px; background: var(--accent);
+    border-radius: 10px; color: #fff; font-weight: 500;
+  }
+
+  .proxy-status {
+    margin-left: auto;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .proxy-status .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block;
+  }
+  .proxy-status.online { background: rgba(76,223,139,.15); color: var(--success); }
+  .proxy-status.online .dot { background: var(--success); }
+  .proxy-status.offline { background: rgba(255,107,122,.15); color: var(--error); }
+  .proxy-status.offline .dot { background: var(--error); }
+  .proxy-status.checking { background: rgba(255,184,77,.15); color: var(--warn); }
+  .proxy-status.checking .dot { background: var(--warn); }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    height: calc(100vh - 57px);
+  }
+  @media (max-width: 1100px) {
+    .layout { grid-template-columns: 1fr; height: auto; }
+  }
+
+  .panel { overflow-y: auto; padding: 20px; }
+  .panel-left { border-right: 1px solid var(--border); }
+  .panel-title {
+    font-size: 13px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--text2); margin-bottom: 16px;
+  }
+
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--text2); margin-bottom: 4px;
+  }
+  .field input, .field textarea {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text); padding: 8px 12px;
+    font-size: 13px; font-family: var(--mono); outline: none; transition: border-color .2s;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field textarea { resize: vertical; min-height: 60px; }
+  .field textarea.tall { min-height: 200px; }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .toggle-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  .toggle-row label {
+    font-size: 12px; color: var(--text2); cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .toggle-row input[type="radio"] { width: auto; accent-color: var(--accent); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 24px; font-size: 14px; font-weight: 600; border: none;
+    border-radius: var(--radius); cursor: pointer; transition: background .2s, transform .1s; color: #fff;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); width: 100%; margin-top: 6px; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-sm { padding: 4px 12px; font-size: 12px; border-radius: 6px; }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text2); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .info-bar {
+    padding: 10px 14px; border-radius: var(--radius); margin-bottom: 14px;
+    font-size: 12px; line-height: 1.6; background: rgba(108,124,255,.1);
+    border: 1px solid rgba(108,124,255,.3); color: var(--text2);
+  }
+  .info-bar code {
+    background: var(--surface2); padding: 1px 6px; border-radius: 4px;
+    font-family: var(--mono); font-size: 11px; color: var(--accent);
+  }
+
+  .status-bar {
+    display: flex; align-items: center; gap: 16px; padding: 10px 14px;
+    background: var(--surface2); border-radius: var(--radius);
+    margin-bottom: 14px; font-size: 13px; flex-wrap: wrap;
+  }
+  .status-bar .status-code { font-weight: 700; font-family: var(--mono); }
+  .status-bar .status-code.ok { color: var(--success); }
+  .status-bar .status-code.err { color: var(--error); }
+  .status-bar .timing { color: var(--text2); font-family: var(--mono); }
+
+  .result-section { margin-bottom: 16px; }
+  .result-section .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; padding: 8px 12px; background: var(--surface2);
+    border-radius: var(--radius) var(--radius) 0 0;
+    border: 1px solid var(--border); border-bottom: none; user-select: none;
+  }
+  .result-section .section-header span {
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.4px; color: var(--text2);
+  }
+  .result-section .section-header .arrow {
+    transition: transform .2s; color: var(--text2); font-size: 12px;
+  }
+  .result-section .section-header .arrow.collapsed { transform: rotate(-90deg); }
+  .result-section .section-body {
+    border: 1px solid var(--border);
+    border-radius: 0 0 var(--radius) var(--radius); overflow: hidden;
+  }
+  .result-section .section-body.hidden { display: none; }
+  .result-section pre {
+    padding: 12px; font-size: 12px; font-family: var(--mono); line-height: 1.6;
+    overflow-x: auto; background: var(--surface); max-height: 300px;
+    white-space: pre-wrap; word-break: break-all;
+  }
+
+  .preview-frame { width: 100%; min-height: 500px; border: none; background: #fff; }
+
+  .error-box {
+    padding: 12px 16px; background: rgba(255,107,122,.1);
+    border: 1px solid var(--error); border-radius: var(--radius);
+    color: var(--error); font-size: 13px; font-family: var(--mono);
+    white-space: pre-wrap; word-break: break-all; margin-bottom: 14px;
+  }
+
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; height: 60%; color: var(--text2);
+    text-align: center; gap: 8px;
+  }
+  .empty-state .icon { font-size: 48px; opacity: .3; }
+  .empty-state p { font-size: 14px; }
+
+  .loading-spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,.3); border-top-color: #fff;
+    border-radius: 50%; animation: spin .6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .decoded-preview {
+    margin-top: 6px; padding: 8px 12px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    font-size: 11px; font-family: var(--mono); color: var(--text2);
+    max-height: 120px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+  }
+
+  .copy-btn { position: absolute; top: 8px; right: 8px; }
+  .pre-wrapper { position: relative; }
+
+  .checkbox-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  .checkbox-row input[type="checkbox"] { width: auto; accent-color: var(--accent); }
+  .checkbox-row label { font-size: 12px; color: var(--text2); cursor: pointer; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>renderFreemarker 接口验证</h1>
+  <span class="badge">POST</span>
+  <div class="proxy-status checking" id="proxyStatus">
+    <span class="dot"></span>
+    <span id="proxyStatusText">检测代理中...</span>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="panel panel-left">
+    <div class="panel-title">请求参数</div>
+
+    <div class="info-bar" id="proxyInfo">
+      跨域代理：请先在终端运行 <code>node src/proxy-server.mjs</code>，然后勾选下方「使用本地代理」。
+      代理地址默认为 <code>http://localhost:3456</code>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="useProxy" checked>
+      <label for="useProxy">使用本地 CORS 代理 (localhost:3456)</label>
+    </div>
+
+    <div class="field">
+      <label>API URL</label>
+      <input type="text" id="apiUrl" value="http://website.leadong.com/phoenix2/composite/render/block/renderFreemarker">
+    </div>
+
+    <div class="field">
+      <label>Authorization Token</label>
+      <textarea rows="3" id="authToken">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaG9lbml4MlRva2VuIiwianNvbiI6IntcInJlYWxVc2VySWRcIjo3MzEwMzk0LFwibG9naW5Vc2VySWRcIjo3MzEwMzk0LFwiZW52XCI6XCJiYWNrZW5kXCIsXCJ1c2VyUm9sZVwiOlwiMFwiLFwic2l0ZVNldHRpbmdJZFwiOjI1MTgyNH0iLCJleHAiOjE3NzM5OTY5NDAsImlhdCI6MTc3MzkxMDU0MH0.fgch8YSaFtKH-d6WZcEY4IyTAtE88H7JmvsvNSX_w9Y</textarea>
+    </div>
+
+    <div class="field">
+      <label>Cookie</label>
+      <textarea rows="3" id="cookieVal">BDP=http; newWebsite=true; Hm_lvt_b22881fcdcb21ffd032e9a8ccf15f7b1=1773471747; Hm_lvt_f9633ca8f671f282402f6c6ca608b126=1773471747; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%2219ceafbc7c0101c-045c53b3e1e25e-26061c51-3686400-19ceafbc7c116fb%22%2C%22first_id%22%3A%22%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22%24latest_referrer%22%3A%22%22%7D%2C%22%24device_id%22%3A%2219ceafbc7c0101c-045c53b3e1e25e-26061c51-3686400-19ceafbc7c116fb%22%7D; _gid=GA1.2.701594666.1773822531; b_C=""; HMACCOUNT=118939266CA976BE; p_sid=f46892c6.1473179031; ALIVE=true; HOST=bjimKBwhu3wfV3dWwz4xe3WV4gam; BAIC=48119b0d02c707465a2f469d5eea021e; SLE=EN_US; ST=0; REALU=kdfpKcsVADot; BOPL=ZH_CN; BPC=oLKUtDPRzFgj; C=4a50554f6c434131484869754156776f6276776f624e76303874705351434437476631694d37564e644c627a6b35553937484c31687173416e6875587331354b71347670694e4241307038330d0a366b7067576f355565654c644b476a516d5a34690d0a; BCT=ef1154dbc2c85ba563d40ceb76003918386144f7f119969528e37119f21e4d0e3ed01f0d9c23daa9; FS=577a744357386b6f464e72554156383537677138746656324f4e4d474e4a6b76754252754a616b51486c5743727251474544365839457267754e534e32494c452b6574476e574c464451733d; AIC=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpbkluZm8iOiJna2xrS0JiNDRiejMxdjZoUnpxU2lra3JsbVNSU1JsaW5ubG1TUlJRUmlyU1NSeng0YlJRdzBlM2ZnM3oyZXdoZTNvIiwiZXhwIjoxNzc1MjY1OTkzfQ.OebbugGoCKbNQbkxv_MblmUBwk4DihVVFv7ShGD7f2s; FL=22_; LV=2b41666f6264664f6e777738414b44794b645069696b627573725958544f69470d0a; Hm_lpvt_b22881fcdcb21ffd032e9a8ccf15f7b1=1773970467; Hm_lpvt_f9633ca8f671f282402f6c6ca608b126=1773970467; _ga_XSEFEL1S6D=GS2.1.s1773970467$o5$g0$t1773970467$j60$l0$h0; _ga=GA1.1.1305196451.1773822529; JSESSIONID=02239B08D3DFE38A2091CE9E7181C4F2</textarea>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>pageId</label>
+        <input type="text" id="pageId" value="ibpAZjVlKsaE">
+      </div>
+      <div class="field">
+        <label>relationId</label>
+        <input type="text" id="relationId" value="ibpAZjVlKsaE">
+      </div>
+      <div class="field">
+        <label>relationType</label>
+        <input type="text" id="relationType" value="5">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>freemarkerContent</label>
+      <div class="toggle-row">
+        <label><input type="radio" name="contentMode" value="base64" checked onchange="toggleMode()"> Base64 编码内容</label>
+        <label><input type="radio" name="contentMode" value="raw" onchange="toggleMode()"> 原始 FreeMarker/HTML</label>
+      </div>
+      <textarea class="tall" id="freemarkerContent"></textarea>
+      <div id="decodedPreview" class="decoded-preview" style="display:none"></div>
+    </div>
+
+    <button class="btn btn-primary" id="sendBtn" onclick="sendRequest()">
+      发送请求
+    </button>
+  </div>
+
+  <div class="panel panel-right" id="responsePanel">
+    <div class="panel-title">响应结果</div>
+
+    <div id="emptyState" class="empty-state">
+      <div class="icon">&#9889;</div>
+      <p>填写参数后点击「发送请求」</p>
+      <p style="font-size:12px;opacity:.6">响应结果和渲染预览将显示在这里</p>
+    </div>
+
+    <div id="resultArea" style="display:none">
+      <div id="statusBar" class="status-bar"></div>
+      <div id="errorBox" class="error-box" style="display:none"></div>
+
+      <div class="result-section" id="jsonSection">
+        <div class="section-header" onclick="toggleSection('jsonSection')">
+          <span>原始 JSON 响应</span>
+          <span class="arrow" id="jsonSection-arrow">&#9660;</span>
+        </div>
+        <div class="section-body" id="jsonSection-body">
+          <div class="pre-wrapper">
+            <pre id="jsonOutput"></pre>
+            <button class="btn btn-sm btn-outline copy-btn" onclick="copyText('json')">复制</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-section" id="htmlSection">
+        <div class="section-header" onclick="toggleSection('htmlSection')">
+          <span>渲染的 HTML 源码</span>
+          <span class="arrow" id="htmlSection-arrow">&#9660;</span>
+        </div>
+        <div class="section-body" id="htmlSection-body">
+          <div class="pre-wrapper">
+            <pre id="htmlOutput"></pre>
+            <button class="btn btn-sm btn-outline copy-btn" onclick="copyText('html')">复制</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-section" id="previewSection">
+        <div class="section-header" onclick="toggleSection('previewSection')">
+          <span>渲染预览</span>
+          <span class="arrow" id="previewSection-arrow">&#9660;</span>
+        </div>
+        <div class="section-body" id="previewSection-body">
+          <iframe id="previewFrame" class="preview-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROXY_BASE = 'http://localhost:3456';
+
+const DEFAULT_FREEMARKER_B64 = "PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSIvL3Jwcm9yd3hobmpwaWxqNXEubGVhZG9uZ2Nkbi5jb20vZGV2ZWxvcC9aSXBmQVVLdFVwbmotQ3pLQWZVRm9KSGV0LUd2VUFwS2ZLS1VBVS1qb0JxcktvamlybHJyanJqaWxtLWprQnFyS29qa3Jucm1pbGxqa2kvaGVhZGVyXzQwMDg0LmNzcyI+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSIvL3Jwcm9yd3hobmpwaWxqNXEubGVhZG9uZ2Nkbi5jb20vZGV2ZWxvcC9aSXBmQVVLdFVwbmotbk5mVXBBUHplU0taLUd2VUFwS2ZLS1VBVS1qcUJxcktvamlybHJyanFycWxyLWprQnFyS29qa3Jucm1pbGxqa2kvc2VhcmNoXzQwMDg0LmNzcyI+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSIvL3Jwcm9yd3hobmpwaWxqNXEubGVhZG9uZ2Nkbi5jb20vZGV2ZWxvcC9aSXBmQVVLdFVwbmotb05wVWZLa0pUeXFPLUd2VUFwS2ZLS1VBVS1qcUJxcktvamlybHJxaXBqaWlyLWprQnFyS29qa3Jucm1pbGxqa2kvY29tbW9uX3N0eWxlLmNzcyI+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSIvL3Jwcm9yd3hobmpwaWxqNXEubGVhZG9uZ2Nkbi5jb20vZGV2ZWxvcC9oR1VBcGZLRElRa08tdFJLZlVBRm9nVHp0LUd2VUFwS2ZLS1VBVS1qcUJxcktvamlybXJtcmxpcGtpLWpvQnFyS29qaXJtcm1ycWlqbmkvaGVhZGVyX2xvZ28uY3NzIj5bQGJsb2NrIGFwcElzRGV2PSIwIiBoZWFkRm9vdEZsYWc9Ii0xIiBub2RlSWQ9IjFjNDU1NDAzMzRiODQzM2E5ODc4ZjRhOWI1YTNiMDMyIl0KWyNhc3NpZ24gc3BlY2lhbExhbkNvZGUgPSBbIjMiLCAiNDUiLCAiNDIiLCAiMzIiLCAiMjkiXSBdClsjaWYgX19jdXJyZW50X3NpdGVfbGFuQ29kZV9fPz8gJmFtcDsmYW1wOyBzcGVjaWFsTGFuQ29kZT9zZXFfY29udGFpbnMoX19jdXJyZW50X3NpdGVfbGFuQ29kZV9fKV0KICAgIFsjYXNzaWduIGlzQWxhQm9sYW5ndWFnZSA9ICdhbGFib3l1bGFuZ3VhZ2UnIF0KWy8jaWZdCgpbI2Fzc2lnbiBwYWdlTm9kZVNldHRpbmdJZCA9ICIke25vZGVJZH0iXQoxMTExMTExMTExMTExMTExMTExMTExCjxzZWN0aW9uIGlkPSJoZl9sZWFkXzFjNDU1NDAzMzRiODQzM2E5ODc4ZjRhOWI1YTNiMDMyXzQwMDg0IiBkYXRhLWJ1bGxldGluYmFja2dyb3VuZD0iIzUzNUU2QiIgZGF0YS1idWxsZXRpbi1ob3Zlci1iYWNrZ3JvdW5kPSIjNTM1RTZCIiBkYXRhLW5hdmhvdmVyYmFja2dyb3VuZD0iIzI5MkYzNiIgZGF0YS1uYXZiYWNrZ3JvdW5kPSIjMjkyRjM2IiBkYXRhLWxheW91dGRlc2lnbj0ibGF5b3V0LWRlc2lnbi1sZWZ0IiBjbGFzcz0iaGVhZGVyLWNvbnRhaW5lciBibG9jay1jb250YWluZXIgTEEyOTE4NCBibG9jay1lZGl0b3ItbGVhZC1jb250YWluZXIgYmFja3N0YWdlLWJsb2Nrc0VkaXRvci13cmFwIHdyYSBibG9jay1oZWFkZXItc3VzcGVuc2lvbi1zaG93IGJsb2NrXzQwMDg0IGJsb2NrLXNldHRpbmdJZC0zNGY4MWE1Mi1jNWZmLTQyZmMtODcxMy0yYzA1NDI1NWIxMjAiIGRhdGEtZ2pzLXR5cGU9ImJsb2NrQ29udGFpbmVyIiBkcmFnZ2FibGU9ImZhbHNlIj4=";
+
+document.getElementById('freemarkerContent').value = DEFAULT_FREEMARKER_B64;
+
+function utf8ToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
+
+function base64ToUtf8(b64) {
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+function getContentMode() {
+  return document.querySelector('input[name="contentMode"]:checked').value;
+}
+
+function toggleMode() {
+  const mode = getContentMode();
+  const ta = document.getElementById('freemarkerContent');
+  const preview = document.getElementById('decodedPreview');
+  const currentVal = ta.value.trim();
+  if (mode === 'raw') {
+    if (currentVal) { try { ta.value = base64ToUtf8(currentVal); } catch (_) {} }
+    preview.style.display = 'none';
+  } else {
+    if (currentVal) { try { ta.value = utf8ToBase64(currentVal); } catch (_) {} }
+    updateDecodedPreview();
+  }
+}
+
+function updateDecodedPreview() {
+  const preview = document.getElementById('decodedPreview');
+  if (getContentMode() !== 'base64') { preview.style.display = 'none'; return; }
+  const val = document.getElementById('freemarkerContent').value.trim();
+  if (!val) { preview.style.display = 'none'; return; }
+  try {
+    const decoded = base64ToUtf8(val);
+    preview.textContent = decoded.substring(0, 2000) + (decoded.length > 2000 ? '\n...(已截断)' : '');
+    preview.style.display = 'block';
+  } catch (_) {
+    preview.textContent = '(无法解码 Base64)';
+    preview.style.display = 'block';
+  }
+}
+
+document.getElementById('freemarkerContent').addEventListener('input', function () {
+  if (getContentMode() === 'base64') updateDecodedPreview();
+});
+updateDecodedPreview();
+
+function toggleSection(id) {
+  const body = document.getElementById(id + '-body');
+  const arrow = document.getElementById(id + '-arrow');
+  const hidden = body.classList.toggle('hidden');
+  arrow.classList.toggle('collapsed', hidden);
+}
+
+let lastJsonText = '';
+let lastHtmlContent = '';
+
+function copyText(type) {
+  const text = type === 'json' ? lastJsonText : lastHtmlContent;
+  if (text) navigator.clipboard.writeText(text);
+}
+
+// --- Proxy status check ---
+async function checkProxy() {
+  const el = document.getElementById('proxyStatus');
+  const textEl = document.getElementById('proxyStatusText');
+  el.className = 'proxy-status checking';
+  textEl.textContent = '检测代理中...';
+  try {
+    const r = await fetch(PROXY_BASE + '/', { signal: AbortSignal.timeout(2000) });
+    if (r.ok) {
+      el.className = 'proxy-status online';
+      textEl.textContent = '代理已就绪';
+    } else { throw new Error(); }
+  } catch (_) {
+    el.className = 'proxy-status offline';
+    textEl.textContent = '代理未启动';
+  }
+}
+checkProxy();
+setInterval(checkProxy, 10000);
+
+// --- Main request ---
+async function sendRequest() {
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span> 请求中...';
+
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('resultArea').style.display = 'block';
+  document.getElementById('errorBox').style.display = 'none';
+  document.getElementById('statusBar').innerHTML = '<span class="timing">请求中...</span>';
+  document.getElementById('jsonOutput').textContent = '';
+  document.getElementById('htmlOutput').textContent = '';
+  document.getElementById('previewFrame').removeAttribute('srcdoc');
+
+  const targetUrl = document.getElementById('apiUrl').value.trim();
+  const authorization = document.getElementById('authToken').value.trim();
+  const cookie = document.getElementById('cookieVal').value.trim();
+  const pageId = document.getElementById('pageId').value.trim();
+  const relationId = document.getElementById('relationId').value.trim();
+  const relationType = document.getElementById('relationType').value.trim();
+  const useProxy = document.getElementById('useProxy').checked;
+
+  let freemarkerContent = document.getElementById('freemarkerContent').value.trim();
+  if (getContentMode() === 'raw' && freemarkerContent) {
+    freemarkerContent = utf8ToBase64(freemarkerContent);
+  }
+
+  const bodyData = { pageId, relationId, relationType, freemarkerContent };
+
+  let fetchUrl, fetchHeaders;
+
+  if (useProxy) {
+    fetchUrl = PROXY_BASE + '/proxy?url=' + encodeURIComponent(targetUrl);
+    fetchHeaders = {
+      'accept': 'application/json, text/plain, */*',
+      'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+      'authorization': authorization,
+      'cache-control': 'no-cache',
+      'content-type': 'application/json',
+      'p2-module': 'new-editor',
+      'pragma': 'no-cache',
+      'x-proxy-cookie': cookie,
+      'x-proxy-referer': 'http://website.leadong.com/phoenix2/composite/blockEditorUI/index.html',
+    };
+  } else {
+    fetchUrl = targetUrl;
+    fetchHeaders = {
+      'accept': 'application/json, text/plain, */*',
+      'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+      'authorization': authorization,
+      'cache-control': 'no-cache',
+      'content-type': 'application/json',
+      'p2-module': 'new-editor',
+      'pragma': 'no-cache',
+      'cookie': cookie,
+      'Referer': 'http://website.leadong.com/phoenix2/composite/blockEditorUI/index.html',
+    };
+  }
+
+  const startTime = performance.now();
+
+  try {
+    const response = await fetch(fetchUrl, {
+      method: 'POST',
+      headers: fetchHeaders,
+      body: JSON.stringify(bodyData),
+    });
+
+    const elapsed = Math.round(performance.now() - startTime);
+    const statusOk = response.ok;
+
+    document.getElementById('statusBar').innerHTML =
+      `<span class="status-code ${statusOk ? 'ok' : 'err'}">${response.status} ${response.statusText}</span>` +
+      `<span class="timing">${elapsed}ms</span>` +
+      `<span class="timing">Content-Type: ${response.headers.get('content-type') || '-'}</span>`;
+
+    const text = await response.text();
+    let data;
+    try { data = JSON.parse(text); } catch (_) { data = text; }
+
+    lastJsonText = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+    document.getElementById('jsonOutput').textContent = lastJsonText;
+
+    let htmlContent = '';
+    if (typeof data === 'object' && data !== null) {
+      htmlContent = data.data || data.html || data.content || data.result || '';
+      if (typeof htmlContent === 'object') {
+        htmlContent = htmlContent.html || htmlContent.content || htmlContent.result || JSON.stringify(htmlContent);
+      }
+    } else {
+      htmlContent = text;
+    }
+
+    lastHtmlContent = htmlContent;
+    document.getElementById('htmlOutput').textContent = htmlContent || '(无 HTML 内容)';
+
+    if (htmlContent && typeof htmlContent === 'string' && htmlContent.trim().length > 0) {
+      document.getElementById('previewFrame').srcdoc = htmlContent;
+    }
+
+    if (!statusOk) {
+      document.getElementById('errorBox').textContent =
+        `HTTP ${response.status}: ${response.statusText}\n${lastJsonText}`;
+      document.getElementById('errorBox').style.display = 'block';
+    }
+
+  } catch (err) {
+    const elapsed = Math.round(performance.now() - startTime);
+    document.getElementById('statusBar').innerHTML =
+      `<span class="status-code err">网络错误</span><span class="timing">${elapsed}ms</span>`;
+
+    let hint = err.message;
+    if (document.getElementById('useProxy').checked) {
+      hint += '\n\n代理可能未启动，请在终端运行:\n  node src/proxy-server.mjs';
+    } else {
+      hint += '\n\n提示: 遇到 CORS 跨域错误，请勾选「使用本地代理」并启动代理服务器';
+    }
+    document.getElementById('errorBox').textContent = hint;
+    document.getElementById('errorBox').style.display = 'block';
+    lastJsonText = '';
+    lastHtmlContent = '';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '发送请求';
+  }
+}
+</script>
+</body>
+</html>
