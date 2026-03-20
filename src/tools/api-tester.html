@@ -68,11 +68,33 @@
   .proxy-status.checking { background: rgba(255,184,77,.15); color: var(--warn); }
   .proxy-status.checking .dot { background: var(--warn); }
 
+  /* === Tabs === */
+  .tab-bar {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    padding: 10px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color .2s, border-color .2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
   .layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
-    height: calc(100vh - 57px);
+    height: calc(100vh - 97px);
   }
   @media (max-width: 1100px) {
     .layout { grid-template-columns: 1fr; height: auto; }
@@ -90,12 +112,12 @@
     display: block; font-size: 12px; font-weight: 500;
     color: var(--text2); margin-bottom: 4px;
   }
-  .field input, .field textarea {
+  .field input, .field textarea, .field select {
     width: 100%; background: var(--surface2); border: 1px solid var(--border);
     border-radius: var(--radius); color: var(--text); padding: 8px 12px;
     font-size: 13px; font-family: var(--mono); outline: none; transition: border-color .2s;
   }
-  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); }
   .field textarea { resize: vertical; min-height: 60px; }
   .field textarea.tall { min-height: 200px; }
 
@@ -208,6 +230,137 @@
   }
   .checkbox-row input[type="checkbox"] { width: auto; accent-color: var(--accent); }
   .checkbox-row label { font-size: 12px; color: var(--text2); cursor: pointer; }
+
+  /* === Fullpage mode === */
+  .fullpage-layout {
+    height: calc(100vh - 97px);
+    display: flex;
+    flex-direction: column;
+  }
+  .fullpage-toolbar {
+    padding: 14px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .fullpage-toolbar .field { margin-bottom: 0; flex: 1; min-width: 200px; }
+  .fullpage-toolbar .btn { flex-shrink: 0; width: auto; margin-top: 0; }
+
+  .fullpage-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    overflow: hidden;
+  }
+  @media (max-width: 1100px) {
+    .fullpage-body { grid-template-columns: 1fr; }
+  }
+
+  .module-sidebar {
+    overflow-y: auto;
+    padding: 14px;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .module-card {
+    padding: 10px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+    font-size: 12px;
+    transition: border-color .2s;
+  }
+  .module-card .mc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .module-card .mc-uuid {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+  }
+  .module-card .mc-status {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .mc-status.pending { background: rgba(255,184,77,.15); color: var(--warn); }
+  .mc-status.rendering { background: rgba(108,124,255,.15); color: var(--accent); }
+  .mc-status.done { background: rgba(76,223,139,.15); color: var(--success); }
+  .mc-status.failed { background: rgba(255,107,122,.15); color: var(--error); }
+  .module-card .mc-type { color: var(--text2); }
+
+  .fullpage-preview {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .fullpage-preview iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+    background: #fff;
+  }
+
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--surface2);
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: var(--accent);
+    transition: width .3s ease;
+    width: 0%;
+  }
+
+  .dir-browser {
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    display: none;
+  }
+  .dir-browser.visible { display: block; }
+  .dir-item {
+    padding: 6px 12px;
+    font-size: 12px;
+    font-family: var(--mono);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background .15s;
+  }
+  .dir-item:hover { background: rgba(108,124,255,.1); }
+  .dir-item .dir-icon { opacity: .5; }
+
+  .credentials-toggle {
+    font-size: 11px;
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 12px;
+  }
+  .credentials-panel {
+    display: none;
+    padding: 14px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .credentials-panel.visible { display: block; }
+  .credentials-panel .row { grid-template-columns: 1fr 1fr; }
 </style>
 </head>
 <body>
@@ -221,6 +374,13 @@
   </div>
 </header>
 
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('single')">单区块测试</button>
+  <button class="tab-btn" onclick="switchTab('fullpage')">整页预览</button>
+</div>
+
+<!-- ==================== TAB 1: Single Block ==================== -->
+<div class="tab-content active" id="tab-single">
 <div class="layout">
   <div class="panel panel-left">
     <div class="panel-title">请求参数</div>
@@ -331,6 +491,57 @@
     </div>
   </div>
 </div>
+</div>
+
+<!-- ==================== TAB 2: Fullpage Preview ==================== -->
+<div class="tab-content" id="tab-fullpage">
+<div class="fullpage-layout">
+  <div class="fullpage-toolbar">
+    <div class="field">
+      <label>dynamic_preview.html 路径（相对项目根目录）</label>
+      <input type="text" id="fpFilePath" placeholder="src/Generate/2026-03-20_12-47-47/pages/dynamic_preview.html">
+    </div>
+    <button class="btn btn-sm btn-outline" onclick="browseGenerate()">浏览 Generate</button>
+    <button class="btn btn-primary" style="width:auto;padding:8px 20px" id="fpLoadBtn" onclick="loadFullPage()">
+      加载并渲染
+    </button>
+    <span class="credentials-toggle" onclick="toggleCredentials()">API 凭据</span>
+  </div>
+
+  <div class="credentials-panel" id="credentialsPanel">
+    <div class="row" style="grid-template-columns:1fr 1fr 1fr; margin-bottom:10px">
+      <div class="field"><label>pageId</label><input type="text" id="fpPageId" value="ibpAZjVlKsaE"></div>
+      <div class="field"><label>relationId</label><input type="text" id="fpRelationId" value="ibpAZjVlKsaE"></div>
+      <div class="field"><label>relationType</label><input type="text" id="fpRelationType" value="5"></div>
+    </div>
+    <div class="info-bar" style="margin-bottom:8px">
+      Token 和 Cookie 与「单区块测试」共享，在左侧标签页中编辑即可。
+    </div>
+  </div>
+
+  <div class="dir-browser" id="dirBrowser"></div>
+
+  <div class="progress-bar-wrap" id="fpProgressWrap">
+    <div class="progress-bar-inner" id="fpProgressBar"></div>
+  </div>
+
+  <div class="fullpage-body">
+    <div class="module-sidebar" id="moduleSidebar">
+      <div class="panel-title">动态模块列表</div>
+      <div id="moduleList">
+        <div class="empty-state" style="height:auto;padding:40px 0">
+          <div class="icon" style="font-size:32px">&#128230;</div>
+          <p style="font-size:12px">加载 dynamic_preview.html 后<br>动态区块将显示在这里</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="fullpage-preview">
+      <iframe id="fpPreviewFrame" sandbox="allow-scripts allow-same-origin" style="flex:1;width:100%;border:none;background:#fff"></iframe>
+    </div>
+  </div>
+</div>
+</div>
 
 <script>
 const PROXY_BASE = 'http://localhost:3456';
@@ -339,6 +550,7 @@ const DEFAULT_FREEMARKER_B64 = "PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSIvL3Jwcm9y
 
 document.getElementById('freemarkerContent').value = DEFAULT_FREEMARKER_B64;
 
+// === Shared utils ===
 function utf8ToBase64(str) {
   const bytes = new TextEncoder().encode(str);
   let binary = '';
@@ -353,6 +565,16 @@ function base64ToUtf8(b64) {
   return new TextDecoder().decode(bytes);
 }
 
+// === Tab switching ===
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', (name === 'single' && i === 0) || (name === 'fullpage' && i === 1));
+  });
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// === Single block mode ===
 function getContentMode() {
   return document.querySelector('input[name="contentMode"]:checked').value;
 }
@@ -406,7 +628,7 @@ function copyText(type) {
   if (text) navigator.clipboard.writeText(text);
 }
 
-// --- Proxy status check ---
+// === Proxy status check ===
 async function checkProxy() {
   const el = document.getElementById('proxyStatus');
   const textEl = document.getElementById('proxyStatusText');
@@ -426,7 +648,30 @@ async function checkProxy() {
 checkProxy();
 setInterval(checkProxy, 10000);
 
-// --- Main request ---
+// === Shared: get API credentials ===
+function getCredentials() {
+  return {
+    apiUrl: document.getElementById('apiUrl').value.trim(),
+    authorization: document.getElementById('authToken').value.trim(),
+    cookie: document.getElementById('cookieVal').value.trim(),
+  };
+}
+
+function buildProxyHeaders(creds) {
+  return {
+    'accept': 'application/json, text/plain, */*',
+    'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    'authorization': creds.authorization,
+    'cache-control': 'no-cache',
+    'content-type': 'application/json',
+    'p2-module': 'new-editor',
+    'pragma': 'no-cache',
+    'x-proxy-cookie': creds.cookie,
+    'x-proxy-referer': 'http://website.leadong.com/phoenix2/composite/blockEditorUI/index.html',
+  };
+}
+
+// === Single block: send request ===
 async function sendRequest() {
   const btn = document.getElementById('sendBtn');
   btn.disabled = true;
@@ -440,13 +685,10 @@ async function sendRequest() {
   document.getElementById('htmlOutput').textContent = '';
   document.getElementById('previewFrame').removeAttribute('srcdoc');
 
-  const targetUrl = document.getElementById('apiUrl').value.trim();
-  const authorization = document.getElementById('authToken').value.trim();
-  const cookie = document.getElementById('cookieVal').value.trim();
+  const creds = getCredentials();
   const pageId = document.getElementById('pageId').value.trim();
   const relationId = document.getElementById('relationId').value.trim();
   const relationType = document.getElementById('relationType').value.trim();
-  const useProxy = document.getElementById('useProxy').checked;
 
   let freemarkerContent = document.getElementById('freemarkerContent').value.trim();
   if (getContentMode() === 'raw' && freemarkerContent) {
@@ -454,36 +696,8 @@ async function sendRequest() {
   }
 
   const bodyData = { pageId, relationId, relationType, freemarkerContent };
-
-  let fetchUrl, fetchHeaders;
-
-  if (useProxy) {
-    fetchUrl = PROXY_BASE + '/proxy?url=' + encodeURIComponent(targetUrl);
-    fetchHeaders = {
-      'accept': 'application/json, text/plain, */*',
-      'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
-      'authorization': authorization,
-      'cache-control': 'no-cache',
-      'content-type': 'application/json',
-      'p2-module': 'new-editor',
-      'pragma': 'no-cache',
-      'x-proxy-cookie': cookie,
-      'x-proxy-referer': 'http://website.leadong.com/phoenix2/composite/blockEditorUI/index.html',
-    };
-  } else {
-    fetchUrl = targetUrl;
-    fetchHeaders = {
-      'accept': 'application/json, text/plain, */*',
-      'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
-      'authorization': authorization,
-      'cache-control': 'no-cache',
-      'content-type': 'application/json',
-      'p2-module': 'new-editor',
-      'pragma': 'no-cache',
-      'cookie': cookie,
-      'Referer': 'http://website.leadong.com/phoenix2/composite/blockEditorUI/index.html',
-    };
-  }
+  const fetchUrl = PROXY_BASE + '/proxy?url=' + encodeURIComponent(creds.apiUrl);
+  const fetchHeaders = buildProxyHeaders(creds);
 
   const startTime = performance.now();
 
@@ -547,11 +761,7 @@ async function sendRequest() {
       `<span class="status-code err">网络错误</span><span class="timing">${elapsed}ms</span>`;
 
     let hint = err.message;
-    if (document.getElementById('useProxy').checked) {
-      hint += '\n\n代理可能未启动，请在终端运行:\n  node src/tools/proxy-server.mjs';
-    } else {
-      hint += '\n\n提示: 遇到 CORS 跨域错误，请勾选「使用本地代理」并启动代理服务器';
-    }
+    hint += '\n\n代理可能未启动，请在终端运行:\n  node src/tools/proxy-server.mjs';
     document.getElementById('errorBox').textContent = hint;
     document.getElementById('errorBox').style.display = 'block';
     lastJsonText = '';
@@ -560,6 +770,428 @@ async function sendRequest() {
     btn.disabled = false;
     btn.textContent = '发送请求';
   }
+}
+
+// ================================================================
+//  FULLPAGE PREVIEW MODE
+// ================================================================
+
+function toggleCredentials() {
+  document.getElementById('credentialsPanel').classList.toggle('visible');
+}
+
+async function browseGenerate() {
+  const browser = document.getElementById('dirBrowser');
+  browser.innerHTML = '';
+  browser.classList.add('visible');
+
+  try {
+    const resp = await fetch(PROXY_BASE + '/list?dir=src/Generate');
+    const dirs = await resp.json();
+
+    if (!Array.isArray(dirs) || dirs.length === 0) {
+      browser.innerHTML = '<div class="dir-item" style="opacity:.5">src/Generate/ 为空</div>';
+      return;
+    }
+
+    for (const entry of dirs) {
+      if (entry.type !== 'dir') continue;
+      const div = document.createElement('div');
+      div.className = 'dir-item';
+      div.innerHTML = `<span class="dir-icon">&#128193;</span> ${entry.name}`;
+      div.onclick = () => browseSubdir('src/Generate/' + entry.name);
+      browser.appendChild(div);
+    }
+  } catch (e) {
+    browser.innerHTML = '<div class="dir-item" style="color:var(--error)">读取失败，请确认代理已启动</div>';
+  }
+}
+
+async function browseSubdir(dirPath) {
+  const browser = document.getElementById('dirBrowser');
+  browser.innerHTML = '';
+
+  try {
+    const resp = await fetch(PROXY_BASE + '/list?dir=' + encodeURIComponent(dirPath + '/pages'));
+    const files = await resp.json();
+
+    if (Array.isArray(files)) {
+      const htmlFiles = files.filter(f => f.name.endsWith('.html'));
+      for (const f of htmlFiles) {
+        const fullPath = dirPath + '/pages/' + f.name;
+        const div = document.createElement('div');
+        div.className = 'dir-item';
+        div.innerHTML = `<span class="dir-icon">&#128196;</span> ${fullPath}`;
+        div.onclick = () => {
+          document.getElementById('fpFilePath').value = fullPath;
+          browser.classList.remove('visible');
+        };
+        browser.appendChild(div);
+      }
+    }
+
+    if (browser.children.length === 0) {
+      browser.innerHTML = '<div class="dir-item" style="opacity:.5">未找到 HTML 文件</div>';
+    }
+  } catch (e) {
+    browser.innerHTML = '<div class="dir-item" style="color:var(--error)">读取失败</div>';
+  }
+}
+
+async function callRenderApi(ftlContent, pageId, relationId, relationType) {
+  const creds = getCredentials();
+  const freemarkerContent = utf8ToBase64(ftlContent);
+  const fetchUrl = PROXY_BASE + '/proxy?url=' + encodeURIComponent(creds.apiUrl);
+
+  const response = await fetch(fetchUrl, {
+    method: 'POST',
+    headers: buildProxyHeaders(creds),
+    body: JSON.stringify({ pageId, relationId, relationType, freemarkerContent }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`API 返回 ${response.status}: ${response.statusText}`);
+  }
+
+  const json = await response.json();
+  if (json.code !== 200000 && json.code !== 200) {
+    throw new Error(`API 业务错误: code=${json.code}, msg=${json.msg || ''}`);
+  }
+
+  let htmlData = json.data || json.html || json.content || json.result || '';
+
+  if (typeof htmlData === 'object' && htmlData !== null) {
+    htmlData = htmlData.data || htmlData.html || htmlData.content || htmlData.result || JSON.stringify(htmlData);
+  }
+  if (typeof htmlData !== 'string') {
+    htmlData = String(htmlData || '');
+  }
+  if (htmlData.length > 0) {
+    try {
+      const decoded = base64ToUtf8(htmlData);
+      if (decoded && (decoded.includes('<') || decoded.includes('&'))) {
+        htmlData = decoded;
+      }
+    } catch (_) {}
+  }
+
+  return htmlData;
+}
+
+function setProgress(pct) {
+  document.getElementById('fpProgressBar').style.width = pct + '%';
+}
+
+function setModuleStatus(uuid, status, extra) {
+  const card = document.getElementById('mc-' + uuid);
+  if (!card) return;
+  const statusEl = card.querySelector('.mc-status');
+  statusEl.className = 'mc-status ' + status;
+  const labels = { pending: '待渲染', rendering: '渲染中...', done: '完成', failed: '失败' };
+  statusEl.textContent = extra || labels[status] || status;
+}
+
+async function loadFullPage() {
+  const btn = document.getElementById('fpLoadBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span> 加载中...';
+  setProgress(0);
+
+  const filePath = document.getElementById('fpFilePath').value.trim();
+  if (!filePath) {
+    alert('请输入 dynamic_preview.html 的路径');
+    btn.disabled = false;
+    btn.textContent = '加载并渲染';
+    return;
+  }
+
+  try {
+    // Step 1: Load the HTML file via proxy's /local endpoint
+    const htmlResp = await fetch(PROXY_BASE + '/local?file=' + encodeURIComponent(filePath));
+    if (!htmlResp.ok) throw new Error('加载文件失败: ' + htmlResp.status + ' ' + await htmlResp.text());
+    const rawHtml = await htmlResp.text();
+    setProgress(10);
+
+    // Step 2: Parse the LAST __DYNAMIC_MODULES__ block (latest conversion; older blocks are residual)
+    const allModuleBlocks = [...rawHtml.matchAll(/window\.__DYNAMIC_MODULES__\s*=\s*\{[\s\S]*?modules\s*:\s*\[([\s\S]*?)\]/g)];
+    let modules = [];
+
+    if (allModuleBlocks.length > 0) {
+      const lastBlock = allModuleBlocks[allModuleBlocks.length - 1][1];
+      const uuids = [...lastBlock.matchAll(/uuid\s*:\s*"([^"]+)"/g)].map(m => m[1]);
+      const blockTypes = [...lastBlock.matchAll(/blockType\s*:\s*"([^"]+)"/g)].map(m => m[1]);
+      const templatePaths = [...lastBlock.matchAll(/templatePath\s*:\s*"([^"]+)"/g)].map(m => m[1]);
+
+      for (let i = 0; i < uuids.length; i++) {
+        modules.push({
+          uuid: uuids[i],
+          blockType: blockTypes[i] || 'unknown',
+          templatePath: templatePaths[i] || '',
+        });
+      }
+    }
+
+    // Step 3: Build sidebar module cards
+    const moduleListEl = document.getElementById('moduleList');
+    if (modules.length === 0) {
+      moduleListEl.innerHTML = '<div class="info-bar">未检测到 __DYNAMIC_MODULES__，直接显示原始页面。</div>';
+      document.getElementById('fpPreviewFrame').srcdoc = rawHtml;
+      setProgress(100);
+      btn.disabled = false;
+      btn.textContent = '加载并渲染';
+      return;
+    }
+
+    moduleListEl.innerHTML = '';
+    for (const mod of modules) {
+      const card = document.createElement('div');
+      card.className = 'module-card';
+      card.id = 'mc-' + mod.uuid;
+      card.innerHTML =
+        `<div class="mc-header">` +
+        `  <span class="mc-uuid">${mod.uuid}</span>` +
+        `  <span class="mc-status pending">待渲染</span>` +
+        `</div>` +
+        `<div class="mc-type">${mod.blockType}</div>` +
+        `<div class="mc-detail" style="font-size:10px;color:var(--text2);margin-top:4px;word-break:break-all;display:none"></div>`;
+      moduleListEl.appendChild(card);
+    }
+    setProgress(15);
+
+    // Remove ALL Dynamic Module Setup Scripts (there may be multiple from previous conversions)
+    let cleanHtml = rawHtml.replace(/<!-- Dynamic Module Model Setup Script -->[\s\S]*?<\/script>/g, '');
+    document.getElementById('fpPreviewFrame').srcdoc = cleanHtml;
+    let workingHtml = cleanHtml;
+
+    // Step 4: Resolve base paths
+    // filePath example: "src/Generate/2026-03-20_13-44-22/pages/dynamic_preview.html"
+    // pageDir:  "src/Generate/2026-03-20_13-44-22/pages"
+    // parentDir: "src/Generate/2026-03-20_13-44-22"
+    const pageDir = filePath.replace(/\\/g, '/').replace(/\/[^/]*$/, '');
+    const parentDir = pageDir.replace(/\/[^/]*$/, '');
+    const pageId = document.getElementById('fpPageId').value.trim();
+    const relationId = document.getElementById('fpRelationId').value.trim();
+    const relationType = document.getElementById('fpRelationType').value.trim();
+
+    const total = modules.length;
+    let successCount = 0;
+
+    for (let i = 0; i < total; i++) {
+      const mod = modules[i];
+      setModuleStatus(mod.uuid, 'rendering');
+      const detailEl = document.querySelector('#mc-' + mod.uuid + ' .mc-detail');
+
+      try {
+        // Resolve relative FTL path to project-relative path
+        let ftlRelPath = resolveFtlPath(mod.templatePath, pageDir);
+
+        if (detailEl) {
+          detailEl.textContent = 'FTL: ' + ftlRelPath;
+          detailEl.style.display = 'block';
+        }
+
+        let ftlResp = await fetch(PROXY_BASE + '/local?file=' + encodeURIComponent(ftlRelPath));
+
+        // Fallback: if the resolved path fails, try {parentDir}/blocks/{uuid}.ftl
+        if (!ftlResp.ok && ftlRelPath !== parentDir + '/blocks/' + mod.uuid + '.ftl') {
+          const fallback = parentDir + '/blocks/' + mod.uuid + '.ftl';
+          if (detailEl) detailEl.textContent = 'FTL 重试: ' + fallback;
+          ftlResp = await fetch(PROXY_BASE + '/local?file=' + encodeURIComponent(fallback));
+          if (ftlResp.ok) ftlRelPath = fallback;
+        }
+
+        if (!ftlResp.ok) {
+          throw new Error('FTL 不存在: ' + ftlRelPath + ' (该模块可能来自已删除的旧版本)');
+        }
+        const ftlContent = await ftlResp.text();
+
+        if (detailEl) {
+          detailEl.textContent = 'FTL 已加载 (' + ftlContent.length + ' chars)，正在调用 API...';
+        }
+
+        const renderedHtml = await callRenderApi(ftlContent, pageId, relationId, relationType);
+
+        if (detailEl) {
+          detailEl.textContent = 'API 返回 (' + renderedHtml.length + ' chars)，正在替换...';
+        }
+
+        // Replace the block content in the full page HTML
+        const beforeLen = workingHtml.length;
+        const replacedHtml = replaceBlockContent(workingHtml, mod.uuid, renderedHtml);
+        const afterLen = replacedHtml.length;
+        const changed = replacedHtml !== workingHtml;
+
+        if (changed) {
+          workingHtml = replacedHtml;
+          successCount++;
+          if (detailEl) {
+            detailEl.textContent = '替换成功: HTML ' + beforeLen + ' → ' + afterLen + ' chars (diff=' + (afterLen - beforeLen) + ')';
+          }
+        } else {
+          if (detailEl) {
+            // Debug: check why replacement failed
+            const marker = 'data-block-uuid="' + mod.uuid + '"';
+            const pos = workingHtml.indexOf(marker);
+            detailEl.textContent = '替换失败: marker位置=' + pos + ', renderedHtml前100=' + renderedHtml.substring(0, 100);
+            detailEl.style.color = 'var(--warn)';
+          }
+        }
+
+        setModuleStatus(mod.uuid, 'done');
+      } catch (err) {
+        const errMsg = err.message || String(err);
+        setModuleStatus(mod.uuid, 'failed', errMsg.substring(0, 80));
+        if (detailEl) {
+          detailEl.textContent = errMsg;
+          detailEl.style.display = 'block';
+          detailEl.style.color = 'var(--error)';
+        }
+        console.error(`Module ${mod.uuid} render failed:`, err);
+      }
+
+      setProgress(15 + Math.round(((i + 1) / total) * 85));
+    }
+
+    // Update iframe with rendered content
+    if (successCount > 0) {
+      document.getElementById('fpPreviewFrame').srcdoc = workingHtml;
+    }
+    setProgress(100);
+
+  } catch (err) {
+    alert('加载失败: ' + err.message);
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '加载并渲染';
+  }
+}
+
+function replaceBlockContent(html, uuid, newInnerHtml) {
+  const marker = 'data-block-uuid="' + uuid + '"';
+  const markerPos = html.indexOf(marker);
+  if (markerPos === -1) {
+    console.warn('[replace] marker not found:', marker);
+    return html;
+  }
+
+  // Find the end of the opening tag (the '>' after our marker)
+  let tagEndPos = markerPos;
+  while (tagEndPos < html.length && html[tagEndPos] !== '>') tagEndPos++;
+  if (tagEndPos >= html.length) return html;
+  if (html[tagEndPos - 1] === '/') return html;
+
+  const innerStart = tagEndPos + 1;
+
+  // Find the opening '<' of this tag
+  let tagOpenPos = markerPos;
+  while (tagOpenPos > 0 && html[tagOpenPos] !== '<') tagOpenPos--;
+  let tagName = '';
+  let k = tagOpenPos + 1;
+  while (k < html.length && /[a-zA-Z0-9]/.test(html[k])) { tagName += html[k]; k++; }
+  tagName = tagName || 'div';
+
+  // Find the matching close tag
+  let depth = 1;
+  let searchPos = innerStart;
+  const openPattern = '<' + tagName;
+  const closePattern = '</' + tagName;
+  let iterations = 0;
+
+  while (searchPos < html.length && depth > 0) {
+    iterations++;
+    if (iterations > 5000) {
+      console.error('[replace] exceeded 5000 iterations, aborting');
+      return html;
+    }
+
+    const nextOpen = html.indexOf(openPattern, searchPos);
+    const nextClose = html.indexOf(closePattern, searchPos);
+
+    if (nextClose === -1) {
+      break;
+    }
+
+    let validOpen = -1;
+    if (nextOpen !== -1 && nextOpen < nextClose) {
+      const charAfter = html[nextOpen + openPattern.length];
+      if (charAfter === ' ' || charAfter === '>' || charAfter === '/' || charAfter === '\n' || charAfter === '\t' || charAfter === '\r') {
+        validOpen = nextOpen;
+      }
+    }
+
+    if (validOpen !== -1 && validOpen < nextClose) {
+      depth++;
+      searchPos = validOpen + openPattern.length;
+    } else {
+      depth--;
+      if (depth === 0) {
+        return html.substring(0, innerStart) + newInnerHtml + html.substring(nextClose);
+      }
+      searchPos = nextClose + closePattern.length + 1;
+    }
+  }
+
+  console.warn('[replace] matching close not found, final depth =', depth);
+  return html;
+}
+
+function resolveFtlPath(templatePath, pageDir) {
+  let p = templatePath.replace(/\\/g, '/');
+  if (p.startsWith('/') || /^[a-zA-Z]:/.test(p)) {
+    return p;
+  }
+  if (p.startsWith('./') || p.startsWith('../') || !p.includes('/')) {
+    // Resolve relative path from the pages/ directory
+    const baseParts = pageDir.replace(/\\/g, '/').split('/');
+    const relParts = p.split('/');
+    while (relParts[0] === '..') {
+      relParts.shift();
+      baseParts.pop();
+    }
+    if (relParts[0] === '.') relParts.shift();
+    return baseParts.join('/') + '/' + relParts.join('/');
+  }
+  return p;
+}
+
+function findOpeningTagName(html, posInsideTag) {
+  let i = posInsideTag;
+  while (i > 0 && html[i] !== '<') i--;
+  i++;
+  let tag = '';
+  while (i < html.length && /[a-zA-Z0-9]/.test(html[i])) {
+    tag += html[i];
+    i++;
+  }
+  return tag || 'div';
+}
+
+function findMatchingClose(html, startPos, tagName) {
+  let depth = 1;
+  let i = startPos;
+  const openRe = new RegExp(`<${tagName}[\\s>/]`, 'gi');
+  const closeRe = new RegExp(`</${tagName}>`, 'gi');
+
+  while (i < html.length && depth > 0) {
+    openRe.lastIndex = i;
+    closeRe.lastIndex = i;
+
+    const openMatch = openRe.exec(html);
+    const closeMatch = closeRe.exec(html);
+
+    if (!closeMatch) return -1;
+
+    if (openMatch && openMatch.index < closeMatch.index) {
+      depth++;
+      i = openMatch.index + openMatch[0].length;
+    } else {
+      depth--;
+      if (depth === 0) return closeMatch.index;
+      i = closeMatch.index + closeMatch[0].length;
+    }
+  }
+  return -1;
 }
 </script>
 </body>

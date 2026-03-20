@@ -10,6 +10,7 @@ import { load } from 'cheerio';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import path from 'path';
+import http from 'http';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,14 +23,31 @@ function getArg(name) {
   return idx !== -1 && args[idx + 1] ? args[idx + 1] : null;
 }
 const AUTO_MODE = args.includes('--auto');
+const RENDER_MODE = args.includes('--render');
 
 if (args.includes('--help') || args.includes('-h')) {
-  console.log('Usage: node convert-dynamic.mjs --input <file.html> [--output <file.html>] [--auto]');
-  console.log('  --input   必需，输入的静态 HTML 文件路径');
-  console.log('  --output  可选，输出文件路径（默认在同目录生成 dynamic_<原文件名>.html）');
-  console.log('  --auto    可选，自动模式，跳过确认');
+  console.log('Usage: node convert-dynamic.mjs --input <file.html> [--output <file.html>] [--auto] [--render]');
+  console.log('  --input        必需，输入的静态 HTML 文件路径');
+  console.log('  --output       可选，输出文件路径（默认在同目录生成 dynamic_<原文件名>.html）');
+  console.log('  --auto         可选，自动模式，跳过确认');
+  console.log('  --render       可选，生成后调用 renderFreemarker API 将动态区块渲染为真实数据');
+  console.log('  --api-url      renderFreemarker API 地址 (默认 http://website.leadong.com/phoenix2/composite/render/block/renderFreemarker)');
+  console.log('  --token        API Authorization Token');
+  console.log('  --cookie       API Cookie');
+  console.log('  --page-id      pageId (默认 ibpAZjVlKsaE)');
+  console.log('  --relation-id  relationId (默认 ibpAZjVlKsaE)');
+  console.log('  --relation-type relationType (默认 5)');
   process.exit(0);
 }
+
+const RENDER_CONFIG = {
+  apiUrl: getArg('--api-url') || 'http://website.leadong.com/phoenix2/composite/render/block/renderFreemarker',
+  token: getArg('--token') || '',
+  cookie: getArg('--cookie') || '',
+  pageId: getArg('--page-id') || 'ibpAZjVlKsaE',
+  relationId: getArg('--relation-id') || 'ibpAZjVlKsaE',
+  relationType: getArg('--relation-type') || '5',
+};
 
 const inputArg = getArg('--input');
 if (!inputArg) {
@@ -1284,6 +1302,110 @@ function generateModelSetupScript(injections, dynamicBlockDir, outputFile) {
 }
 
 // ═══════════════════════════════════════════════════════════
+//  Phase 5 helpers: API rendering
+// ═══════════════════════════════════════════════════════════
+
+function utf8ToBase64(str) {
+  return Buffer.from(str, 'utf-8').toString('base64');
+}
+
+function base64ToUtf8(b64) {
+  return Buffer.from(b64, 'base64').toString('utf-8');
+}
+
+async function callRenderFreemarkerApi(ftlContent, config) {
+  const freemarkerContent = utf8ToBase64(ftlContent);
+  const bodyData = JSON.stringify({
+    pageId: config.pageId,
+    relationId: config.relationId,
+    relationType: config.relationType,
+    freemarkerContent,
+  });
+
+  const url = new URL(config.apiUrl);
+  const options = {
+    hostname: url.hostname,
+    port: url.port || 80,
+    path: url.pathname + url.search,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(bodyData),
+      'Accept': 'application/json',
+      'Authorization': config.token,
+      'Cookie': config.cookie,
+      'p2-module': 'new-editor',
+      'Referer': 'http://website.leadong.com/phoenix2/composite/blockEditorUI/index.html',
+    },
+  };
+
+  return new Promise((resolve, reject) => {
+    const req = http.request(options, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.code !== 200000 && json.code !== 200) {
+            reject(new Error(`API code=${json.code}, msg=${json.msg || ''}`));
+            return;
+          }
+          let htmlData = json.data || json.html || json.content || json.result || '';
+          if (typeof htmlData === 'string' && htmlData.length > 0) {
+            try {
+              const decoded = base64ToUtf8(htmlData);
+              if (decoded.includes('<') || decoded.includes('&')) htmlData = decoded;
+            } catch (_) {}
+          }
+          resolve(htmlData);
+        } catch (e) {
+          reject(new Error('JSON parse error: ' + e.message));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(bodyData);
+    req.end();
+  });
+}
+
+function findOpeningTag(html, posInsideTag) {
+  let i = posInsideTag;
+  while (i > 0 && html[i] !== '<') i--;
+  i++;
+  let tag = '';
+  while (i < html.length && /[a-zA-Z0-9]/.test(html[i])) {
+    tag += html[i];
+    i++;
+  }
+  return tag || 'div';
+}
+
+function findMatchingCloseTag(html, startPos, tagName) {
+  let depth = 1;
+  let i = startPos;
+  const openRe = new RegExp(`<${tagName}[\\s>/]`, 'gi');
+  const closeRe = new RegExp(`</${tagName}>`, 'gi');
+
+  while (i < html.length && depth > 0) {
+    openRe.lastIndex = i;
+    closeRe.lastIndex = i;
+    const openMatch = openRe.exec(html);
+    const closeMatch = closeRe.exec(html);
+    if (!closeMatch) return -1;
+    if (openMatch && openMatch.index < closeMatch.index) {
+      depth++;
+      i = openMatch.index + openMatch[0].length;
+    } else {
+      depth--;
+      if (depth === 0) return closeMatch.index;
+      i = closeMatch.index + closeMatch[0].length;
+    }
+  }
+  return -1;
+}
+
+// ═══════════════════════════════════════════════════════════
 //  Generate separate JSON report
 // ═══════════════════════════════════════════════════════════
 
@@ -1511,6 +1633,61 @@ async function main() {
   fs.writeFileSync(reportFile, JSON.stringify(report, null, 2), 'utf-8');
   console.log(`[REPORT] 已生成: ${reportFile}`);
 
+  // ─── Phase 5 (optional): Render dynamic blocks via API ───
+  let renderCount = 0;
+  if (RENDER_MODE) {
+    console.log('\n═══ Phase 5: API 渲染动态区块 ═══');
+
+    if (!RENDER_CONFIG.token && !RENDER_CONFIG.cookie) {
+      console.log('[WARN] 未提供 --token 或 --cookie，将跳过 API 渲染');
+      console.log('[TIP]  使用方式: --render --token <JWT> --cookie <COOKIE>');
+    } else {
+      const successInjections = injections.filter(i => i.success && i.freemakerContent);
+      let renderHtml = outputHtml;
+
+      for (const inj of successInjections) {
+        const ftlPath = path.join(dynamicBlockDir, `${inj.uuid}.ftl`);
+        if (!fs.existsSync(ftlPath)) {
+          console.log(`   ⚠️  ${inj.uuid}.ftl 文件不存在，跳过`);
+          continue;
+        }
+
+        console.log(`[RENDER] ${inj.uuid} (${inj.blockType})...`);
+        try {
+          const ftlContent = fs.readFileSync(ftlPath, 'utf-8');
+          const renderedHtml = await callRenderFreemarkerApi(ftlContent, RENDER_CONFIG);
+
+          const uuidAttr = `data-block-uuid="${inj.uuid}"`;
+          const nodeStart = renderHtml.indexOf(uuidAttr);
+          if (nodeStart !== -1) {
+            const tagClose = renderHtml.indexOf('>', nodeStart);
+            if (tagClose !== -1) {
+              const afterTag = tagClose + 1;
+              const tagName = findOpeningTag(renderHtml, nodeStart);
+              const closeIdx = findMatchingCloseTag(renderHtml, afterTag, tagName);
+              if (closeIdx !== -1) {
+                renderHtml = renderHtml.substring(0, afterTag) + renderedHtml + renderHtml.substring(closeIdx);
+                renderCount++;
+                console.log(`   ✅ 渲染成功 (${renderedHtml.length} chars)`);
+              } else {
+                console.log(`   ⚠️  无法找到 ${inj.uuid} 的匹配闭合标签`);
+              }
+            }
+          } else {
+            console.log(`   ⚠️  在输出 HTML 中未找到 ${uuidAttr}`);
+          }
+        } catch (err) {
+          console.log(`   ❌ API 调用失败: ${err.message}`);
+        }
+      }
+
+      if (renderCount > 0) {
+        fs.writeFileSync(outputFile, renderHtml, 'utf-8');
+        console.log(`\n[OUTPUT] 已更新渲染结果: ${outputFile} (${renderCount} 个区块已渲染)`);
+      }
+    }
+  }
+
   // ─── Summary ───
   const ftlCount = injections.filter(i => i.success && i.freemakerContent).length;
   console.log('\n╔════════════════════════════════════════════════════════╗');
@@ -1518,6 +1695,9 @@ async function main() {
   console.log('╠════════════════════════════════════════════════════════╣');
   console.log(`║  总区块数: ${String(detections.length).padEnd(5)} | 动态: ${String(dynamicDetections.length).padEnd(5)} | 静态: ${String(detections.length - dynamicDetections.length).padEnd(5)} ║`);
   console.log(`║  成功注入: ${String(injections.filter(i => i.success).length).padEnd(5)} | 失败: ${String(injections.filter(i => !i.success).length).padEnd(5)} | FTL文件: ${String(ftlCount).padEnd(5)} ║`);
+  if (RENDER_MODE) {
+    console.log(`║  API渲染: ${String(renderCount).padEnd(5)} 个区块已替换为真实数据              ║`);
+  }
   console.log('╠════════════════════════════════════════════════════════╣');
   console.log(`║  输出目录: ${path.relative(process.cwd(), dateDir).replace(/\\/g, '/')}`);
   console.log(`║  ├── pages/   → dynamic_page.html`);

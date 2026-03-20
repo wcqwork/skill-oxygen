@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-03-20T04:47:47.307Z",
+  "timestamp": "2026-03-20T05:44:23.037Z",
   "inputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\pages\\clone-wpdemo.archiwp.com\\preview.html",
-  "outputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\Generate\\2026-03-20_12-47-47\\pages\\dynamic_preview.html",
-  "dynamicBlockDir": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\Generate\\2026-03-20_12-47-47\\blocks",
+  "outputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\Generate\\2026-03-20_13-44-22\\pages\\dynamic_preview.html",
+  "dynamicBlockDir": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\Generate\\2026-03-20_13-44-22\\blocks",
   "totalSections": 8,
   "dynamicSections": 1,
   "staticSections": 7,
@@ -174,16 +174,16 @@
     {
       "success": true,
       "blockType": "phoenix_blocks_Articlelist",
-      "uuid": "3f7c2d41d657",
+      "uuid": "d52a06722d36",
       "appId": "WcKpfAUiEVNZ",
       "templateFile": "phoenix_blocks_Articlelist_34134.ftl",
       "freemakerHtmlLength": 4170,
-      "ftlOutputPath": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\Generate\\2026-03-20_12-47-47\\blocks\\3f7c2d41d657.ftl"
+      "ftlOutputPath": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\src\\Generate\\2026-03-20_13-44-22\\blocks\\d52a06722d36.ftl"
     }
   ],
   "validations": [
     {
-      "uuid": "3f7c2d41d657",
+      "uuid": "d52a06722d36",
       "blockType": "phoenix_blocks_Articlelist",
       "checks": [
         {
