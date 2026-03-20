@@ -1,0 +1,105 @@
+{
+  "source": "user-review-after-qa",
+  "timestamp": "2026-03-18T12:00:00Z",
+  "sections": [
+    {
+      "sectionIndex": 1,
+      "sectionName": "hero-slider",
+      "userDescription": "全屏轮播，3张slide自动播放，有左右箭头，底部分页点，循环播放",
+      "interactions": ["carousel"],
+      "hoverEffects": [],
+      "animations": [],
+      "overrideAiDetection": false
+    },
+    {
+      "sectionIndex": 2,
+      "sectionName": "about-quote",
+      "userDescription": "纯静态展示区，无任何交互",
+      "interactions": [],
+      "hoverEffects": [],
+      "animations": [],
+      "overrideAiDetection": true
+    },
+    {
+      "sectionIndex": 3,
+      "sectionName": "sketch-to-life",
+      "userDescription": "图文对半布局，旋转文字徽章为纯CSS动画，无JS交互",
+      "interactions": [],
+      "hoverEffects": [],
+      "animations": ["旋转文字徽章CSS动画"],
+      "overrideAiDetection": true
+    },
+    {
+      "sectionIndex": 4,
+      "sectionName": "client-logos",
+      "userDescription": "Logo轮播，6个logo，自动播放，无限循环，无导航按钮/分页，速度1000ms",
+      "interactions": ["carousel"],
+      "hoverEffects": [],
+      "animations": [],
+      "overrideAiDetection": true
+    },
+    {
+      "sectionIndex": 5,
+      "sectionName": "portfolio-categories",
+      "userDescription": "3列分类卡，悬浮时分类卡图片亮度提高",
+      "interactions": [],
+      "hoverEffects": ["分类卡图片hover时亮度提高(brightness)"],
+      "animations": [],
+      "overrideAiDetection": true
+    },
+    {
+      "sectionIndex": 6,
+      "sectionName": "services-counters",
+      "userDescription": "服务卡+数字计数器，4个数字滚动动画(180+, 10+, 35+, 5+)",
+      "interactions": ["counter"],
+      "hoverEffects": [],
+      "animations": ["计数器滚动触发数字动画"],
+      "overrideAiDetection": false
+    },
+    {
+      "sectionIndex": 7,
+      "sectionName": "portfolio-metro",
+      "userDescription": "筛选标签页切换(ALL/ARCHITECTURE/DECOR/FURNITURE/INTERIOR)，点击标签筛选对应作品",
+      "interactions": ["tabs-filter"],
+      "hoverEffects": [],
+      "animations": [],
+      "overrideAiDetection": true
+    },
+    {
+      "sectionIndex": 8,
+      "sectionName": "cta-banner",
+      "userDescription": "纯静态展示区，无任何交互",
+      "interactions": [],
+      "hoverEffects": [],
+      "animations": [],
+      "overrideAiDetection": true
+    },
+    {
+      "sectionIndex": 9,
+      "sectionName": "company-values",
+      "userDescription": "进度条有滚动动画，滚动到可视区域时进度条从0%动画到目标百分比",
+      "interactions": [],
+      "hoverEffects": [],
+      "animations": ["进度条滚动触发动画(从0%到目标值)"],
+      "overrideAiDetection": true
+    },
+    {
+      "sectionIndex": 10,
+      "sectionName": "team-carousel",
+      "userDescription": "Swiper轮播，5个成员，3张/视图，底部分页点，自动播放速度1000ms，循环；Hover效果：显示社交图标",
+      "interactions": ["carousel"],
+      "hoverEffects": ["团队卡片hover时显示社交图标"],
+      "animations": [],
+      "overrideAiDetection": true
+    },
+    {
+      "sectionIndex": 11,
+      "sectionName": "blog-news",
+      "userDescription": "轮播，3篇文章，2张/视图，底部分页点，无自动播放；悬浮标题文字出现下划线",
+      "interactions": ["carousel"],
+      "hoverEffects": ["标题文字hover时出现下划线"],
+      "animations": [],
+      "overrideAiDetection": true
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "cssVariables": {
+    "--wp--preset--color--black": "#000000",
+    "--wp--preset--color--white": "#ffffff",
+    "--wp--preset--font-size--small": "13px",
+    "--wp--preset--font-size--medium": "20px",
+    "--wp--preset--font-size--large": "36px",
+    "--wp--preset--font-size--x-large": "42px",
+    "--wp--preset--spacing--20": "0.44rem",
+    "--wp--preset--spacing--30": "0.67rem",
+    "--wp--preset--spacing--40": "1rem",
+    "--wp--preset--spacing--50": "1.5rem",
+    "--wp--preset--spacing--60": "2.25rem",
+    "--wp--preset--spacing--70": "3.38rem",
+    "--wp--preset--spacing--80": "5.06rem",
+    "--swiper-theme-color": "#007aff",
+    "--swiper-navigation-size": "44px",
+    "--page-title-display": "block"
+  },
+  "typography": {
+    "body": {
+      "fontFamily": "Raleway, sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "30px",
+      "letterSpacing": "normal",
+      "color": "rgb(85, 85, 85)",
+      "textTransform": "none"
+    },
+    "h2": {
+      "fontFamily": "\"Titillium Web\", sans-serif",
+      "fontSize": "24px",
+      "fontWeight": "400",
+      "lineHeight": "48px",
+      "letterSpacing": "normal",
+      "color": "rgb(255, 255, 255)",
+      "textTransform": "none"
+    },
+    "h4": {
+      "fontFamily": "\"Titillium Web\", sans-serif",
+      "fontSize": "30px",
+      "fontWeight": "400",
+      "lineHeight": "36px",
+      "letterSpacing": "0.5px",
+      "color": "rgb(255, 255, 255)",
+      "textTransform": "uppercase"
+    },
+    "h5": {
+      "fontFamily": "\"Titillium Web\", sans-serif",
+      "fontSize": "24px",
+      "fontWeight": "400",
+      "lineHeight": "33.6px",
+      "letterSpacing": "normal",
+      "color": "rgb(255, 255, 255)",
+      "textTransform": "none"
+    },
+    "h6": {
+      "fontFamily": "\"Titillium Web\", sans-serif",
+      "fontSize": "18px",
+      "fontWeight": "600",
+      "lineHeight": "25.2px",
+      "letterSpacing": "1px",
+      "color": "rgb(35, 35, 35)",
+      "textTransform": "uppercase"
+    },
+    "p": {
+      "fontFamily": "Raleway, sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "26.25px",
+      "letterSpacing": "normal",
+      "color": "rgb(208, 207, 207)",
+      "textTransform": "uppercase"
+    },
+    "a": {
+      "fontFamily": "Raleway, sans-serif",
+      "fontSize": "20px",
+      "fontWeight": "400",
+      "lineHeight": "90px",
+      "letterSpacing": "normal",
+      "color": "rgb(255, 255, 255)",
+      "textTransform": "none"
+    },
+    "button": {
+      "fontFamily": "\"Titillium Web\"",
+      "fontSize": "13px",
+      "fontWeight": "600",
+      "lineHeight": "25px",
+      "backgroundColor": "rgb(26, 26, 26)",
+      "color": "rgb(255, 255, 255)",
+      "borderRadius": "0px",
+      "padding": "15px 39px",
+      "textTransform": "uppercase"
+    },
+    "ot-heading": {
+      "fontFamily": "Raleway, sans-serif",
+      "fontSize": "16px",
+      "color": "rgb(85, 85, 85)"
+    }
+  },
+  "colors": {
+    "primary": "#1a1a1a",
+    "secondary": "#555555",
+    "accent": "#b99272",
+    "background-dark": "rgb(42, 42, 42)",
+    "background-light": "#f4f4f4",
+    "background-white": "#ffffff",
+    "text-dark": "rgb(35, 35, 35)",
+    "text-body": "rgb(85, 85, 85)",
+    "text-light": "rgb(208, 207, 207)",
+    "text-white": "rgb(255, 255, 255)"
+  },
+  "spacing": {
+    "section-0": {
+      "paddingTop": "0px",
+      "paddingBottom": "0px",
+      "paddingLeft": "20px",
+      "paddingRight": "20px",
+      "backgroundColor": "rgb(42, 42, 42)"
+    },
+    "section-2": {
+      "paddingTop": "90px",
+      "paddingBottom": "90px",
+      "backgroundColor": "transparent"
+    },
+    "section-3": {
+      "paddingTop": "110px",
+      "paddingBottom": "110px",
+      "backgroundColor": "transparent"
+    },
+    "section-4": {
+      "paddingTop": "71px",
+      "paddingBottom": "71px",
+      "backgroundColor": "rgb(244, 244, 244)"
+    },
+    "section-6": {
+      "paddingTop": "110px",
+      "paddingBottom": "110px",
+      "backgroundColor": "transparent"
+    },
+    "section-7": {
+      "paddingTop": "0px",
+      "paddingBottom": "120px",
+      "backgroundColor": "transparent"
+    },
+    "section-10": {
+      "paddingTop": "73px",
+      "paddingBottom": "73px",
+      "backgroundColor": "transparent"
+    },
+    "section-11": {
+      "paddingTop": "80px",
+      "paddingBottom": "120px",
+      "backgroundColor": "transparent"
+    },
+    "section-12": {
+      "paddingTop": "105px",
+      "paddingBottom": "86px",
+      "backgroundColor": "transparent"
+    },
+    "section-13": {
+      "paddingTop": "110px",
+      "paddingBottom": "120px",
+      "backgroundColor": "transparent"
+    }
+  },
+  "fonts": {
+    "heading": "\"Titillium Web\", sans-serif",
+    "body": "Raleway, sans-serif",
+    "button": "\"Titillium Web\""
+  }
+}

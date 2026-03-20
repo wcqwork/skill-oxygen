@@ -1,0 +1,120 @@
+{
+  "carousels": [
+    {
+      "type": "revolution-slider",
+      "selector": ".revslider-initialised.rev_redraw_on_blurfocus",
+      "containerSelector": ".elementor-element-ec03e43 .wp-block-themepunch-revslider",
+      "description": "Hero banner Revolution Slider at top of page",
+      "slideCount": "unknown (RevSlider internal)",
+      "autoplay": true,
+      "loop": true,
+      "config": "RevSlider managed internally"
+    },
+    {
+      "type": "swiper",
+      "name": "image-carousel",
+      "selector": ".image-carousel.swiper.swiper-container",
+      "containerSelector": ".elementor-element-5d07b43.elementor-widget-theratio-image-carousel",
+      "description": "Client/partner logo carousel",
+      "originalSlideCount": 6,
+      "totalSlideCount": 18,
+      "hasDuplicates": true,
+      "loop": true,
+      "autoplay": true,
+      "slidesPerView": "auto",
+      "pagination": false,
+      "navigation": false
+    },
+    {
+      "type": "swiper",
+      "name": "team-slider",
+      "selector": ".team-slider.swiper.swiper-container",
+      "containerSelector": ".elementor-element-a3bdf7d.elementor-widget-imembercarousel",
+      "description": "Team members carousel with pagination dots",
+      "originalSlideCount": 5,
+      "totalSlideCount": 18,
+      "hasDuplicates": true,
+      "loop": true,
+      "autoplay": true,
+      "slidesPerView": 3,
+      "pagination": {
+        "type": "bullets",
+        "clickable": true,
+        "selector": ".octf-swiper-pagination"
+      },
+      "navigation": false
+    },
+    {
+      "type": "swiper",
+      "name": "blog-slider",
+      "selector": ".blog-slider.swiper.swiper-container.v-light",
+      "containerSelector": ".elementor-element-0d52666.elementor-widget-ipost_carousel",
+      "description": "Blog/news posts carousel",
+      "originalSlideCount": 3,
+      "totalSlideCount": 3,
+      "hasDuplicates": false,
+      "loop": false,
+      "autoplay": false,
+      "slidesPerView": 2,
+      "pagination": {
+        "type": "bullets",
+        "clickable": true,
+        "selector": ".octf-swiper-pagination",
+        "locked": true
+      },
+      "navigation": false
+    }
+  ],
+  "counters": [
+    {
+      "selector": ".elementor-element-e8c5768 .ot-counter",
+      "value": 180,
+      "suffix": "+",
+      "title": "Current Clients",
+      "animationType": "countUp"
+    },
+    {
+      "selector": ".elementor-element-9a2e097 .ot-counter",
+      "value": 10,
+      "suffix": "+",
+      "title": "years of experience",
+      "animationType": "countUp"
+    },
+    {
+      "selector": ".elementor-element-3606344 .ot-counter",
+      "value": 35,
+      "suffix": "+",
+      "title": "awards winning",
+      "animationType": "countUp"
+    },
+    {
+      "selector": ".elementor-element-62ab05f .ot-counter",
+      "value": 5,
+      "suffix": "+",
+      "title": "Offices Worldwide",
+      "animationType": "countUp"
+    }
+  ],
+  "tabs": [],
+  "accordions": [],
+  "lightboxes": [],
+  "videoBackgrounds": [],
+  "scrollAnimations": [],
+  "hoverEffects": [
+    {
+      "description": "Project/portfolio items have overlay hover effects",
+      "affectedElements": ".projects-grid .project-item"
+    },
+    {
+      "description": "Team member cards have info reveal on hover",
+      "affectedElements": ".team-slider .swiper-slide"
+    }
+  ],
+  "summary": {
+    "totalCarousels": 4,
+    "totalCounters": 4,
+    "heroType": "revolution-slider",
+    "primaryInteractions": ["carousel-swipe", "counter-animation", "hover-overlay"],
+    "jsLibraries": ["RevolutionSlider", "Swiper", "Elementor"]
+  }
+}

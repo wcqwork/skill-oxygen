@@ -1,0 +1,868 @@
+﻿
+	
+    		<div data-elementor-type="wp-page" data-elementor-id="320" class="elementor elementor-320">
+						<section class="elementor-section elementor-top-section elementor-element elementor-element-c760ec6 elementor-section-full_width has-lines-horizontal has-lines-vertical has-lines-horizontal-bottom elementor-section-height-default elementor-section-height-default no-lines-vertical-center" data-id="c760ec6" data-element_type="section"><div class="grid-lines grid-lines-horizontal"><span class="g-line-horizontal line-top"></span><span class="g-line-horizontal line-bottom"></span></div><div class="grid-lines grid-lines-vertical"><span class="g-line-vertical line-left"></span><span class="g-line-vertical line-center"></span><span class="g-line-vertical line-right"></span></div>
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-378f006 ot-flex-column-vertical" data-id="378f006" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-ec03e43 elementor-widget elementor-widget-slider_revolution" data-id="ec03e43" data-element_type="widget" data-widget_type="slider_revolution.default">
+				<div class="elementor-widget-container">
+					
+		<div class="wp-block-themepunch-revslider">
+			<!-- START Home 1 REVOLUTION SLIDER 6.7.29 -->
+			<rs-fullwidth-wrap id="rev_slider_1_1_forcefullwidth" style=""><rs-module-wrap id="rev_slider_1_1_wrapper" data-source="gallery" style="visibility: visible; background: transparent; padding: 0px; height: 1080px; display: block; width: 1645px; margin-top: 0px; margin-bottom: 0px; position: absolute; max-height: none; overflow: visible; left: 0px; transform: translate(0px, 0px); top: 0px;"><rs-module id="rev_slider_1_1" style="height: 100%; width: 1645px; max-height: none;" data-version="6.7.29" data-idcheck="true" class="revslider-initialised rev_redraw_on_blurfocus" data-slideactive="rs-2">
+					
+				<rs-arrow style="opacity: 1; transform: translate(-180px, -90px); top: 100%; left: 100%;" class="tp-leftarrow tparrows arrow-home-1"></rs-arrow><rs-arrow style="opacity: 1; transform: translate(-90px, -90px); top: 100%; left: 100%;" class="tp-rightarrow tparrows arrow-home-1"></rs-arrow><rs-bullets style="opacity: 1; width: 90px; height: 30px; transform: translate(-45px, -60px); top: 100%; left: 50%;" class="tp-bullets octf-pagination-bullet horizontal nav-pos-hor-center nav-pos-ver-bottom nav-dir-horizontal tp-forcenotvisible"><rs-bullet data-key="rs-1" class="tp-bullet" style="left: 0px; top: 0px;"></rs-bullet><rs-bullet data-key="rs-2" class="tp-bullet selected" style="left: 30px; top: 0px;"></rs-bullet><rs-bullet data-key="rs-3" class="tp-bullet" style="left: 60px; top: 0px;"></rs-bullet></rs-bullets><rs-progress style="visibility:hidden;"><rs-progress-bar style="background: rgba(255, 255, 255, 0.5); transform-origin: 0% 50%; transform: translate3d(0px, 0px, 0px) scale(0.301, 1);"></rs-progress-bar></rs-progress><rs-slides style="overflow: hidden; position: absolute; visibility: visible; max-height: none; height: 100%; width: 100%;">
+						<rs-slide style="position: absolute; display: none; overflow: hidden; height: 100%; width: 100%; z-index: 10; opacity: 1; visibility: inherit;" data-key="rs-1" data-title="Slide 1" data-thumb="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider1-home1-1-50x100.jpg" data-anim="ms:800ms;r:0;" data-in="o:0;" data-out="a:false;" data-originalindex="1" data-origindex="0" data-description="" data-sba="" data-scroll-based="false" data-owidth="1920" data-oheight="950" data-rspausetimeronce="0" data-isactiveslide="false"><rs-sbg-px><rs-sbg-wrap data-key="rs-1" data-owidth="1920" data-oheight="950"><!--Runtime Modification - Img tag is Still Available for SEO Goals in Source - <img decoding="async" src="//wpdemo.archiwp.com/theratio/wp-content/plugins/revslider/sr6/assets/assets/dummy.png" alt="" title="slider1-home1" width="1920" height="950" class="rev-slidebg tp-rs-img rs-lazyload" data-lazyload="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider1-home1-1.jpg" data-no-retina="">--><rs-sbg data-lazyload="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider1-home1-1.jpg" class="" data-bgcolor="transparent" style="width: 100%; height: 100%;" data-src-rs-ref="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider1-home1-1.jpg"><canvas style="width: 100%; height: 100%; background-color: transparent; opacity: 1; filter: none; transform: translate(0px, 0px);" width="1645" height="1080"></canvas></rs-sbg></rs-sbg-wrap></rs-sbg-px>
+							
+<!--
+							--><rs-layer-wrap class="rs-parallax-wrap rs-forcehidden" style="position: absolute; display: block; pointer-events: none; left: 441px; top: 445px; z-index: 5; visibility: hidden; perspective: 601px;"><rs-layer id="slider-1-slide-1-layer-0" data-type="text" data-rsp_ch="on" data-xy="x:c;xo:1px,0,0,0;y:m;yo:-55px,-63px,-60px,-65px;" data-text="w:nowrap;s:90,72,55,52;l:80,70,51,55;fw:200;a:center;" data-frame_0="y:50,42,31,19;" data-frame_1="st:1000;sp:1000;" data-frame_999="o:0;st:w;" style="z-index: 5; font-family: &quot;Titillium Web&quot;; height: auto; width: auto; color: rgb(255, 255, 255); text-decoration: none; white-space: nowrap; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 80px; letter-spacing: 0px; font-weight: 200; font-size: 90px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 0; transform: translate(0px, 0px); visibility: visible;" class="rs-layer" data-idcheck="true" data-stylerecorder="true" data-initialised="true">New Level of Interior 
+							</rs-layer></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap rs-layer-hidden rs-forcehidden" style="position: absolute; display: block; pointer-events: none; left: 413.5px; top: 591px; z-index: 10; visibility: hidden; perspective: 601px;"><rs-layer id="slider-1-slide-1-layer-1" data-type="text" data-rsp_ch="on" data-xy="x:c;y:m;yo:51px,43px,31px,20px;" data-text="w:normal;s:18,16,17,18;l:32,27,28,26;a:center;" data-dim="w:818px,630px,500px,417px;" data-vbility="f,f,f,t" data-frame_0="y:50,42,31,19;" data-frame_1="st:1400;sp:1000;" data-frame_999="o:0;st:w;" style="z-index: 10; font-family: Raleway; height: auto; color: rgb(255, 255, 255); text-decoration: none; white-space: normal; width: 818px; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 32px; letter-spacing: 0px; font-weight: 400; font-size: 18px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 0; transform: translate(0px, 0px); visibility: visible;" class="rs-layer" data-idcheck="true" data-stylerecorder="true" data-initialised="true">We create architectural and creative solutions to help people realize their vision and make them a reality.  
+							</rs-layer></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap rs-forcehidden" style="position: absolute; display: block; pointer-events: none; left: 239px; top: 377px; z-index: 8; visibility: hidden; perspective: 601px;"><rs-mask-wrap style="position: absolute; display: block; transform-origin: 50% 50%; overflow: visible;"><rs-layer id="slider-1-slide-1-layer-3" data-type="text" data-color="transparent" data-rsp_ch="on" data-xy="x:c;xo:55px,46px,34px,0;y:m;yo:-63px,-72px,-65px,-50px;" data-text="w:normal,normal,normal,nowrap;s:200,150,117,80;l:200,170,127,80;ls:100px,85px,63px,40px;fw:900;a:center;" data-dim="w:auto,auto,auto,472px;" data-tst="c:rgba(255, 255, 255, 0.3);" data-vbility="t,t,f,f" data-border="bor:0px,0,0,0;" data-frame_0="o:1;" data-frame_0_chars="d:5;y:100%;o:0;rZ:-35deg;" data-frame_0_mask="u:t;" data-frame_1="sp:1200;" data-frame_1_chars="e:power4.inOut;d:10;rZ:0deg;" data-frame_1_mask="u:t;" data-frame_999="o:0;st:w;" style="z-index: 8; font-family: &quot;Titillium Web&quot;; text-transform: uppercase; height: auto; width: auto; color: transparent; text-decoration: none; white-space: nowrap; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 200px; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3); letter-spacing: 100px; font-weight: 900; font-size: 200px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; transform: translate(0px, 0px); opacity: 0; visibility: visible;" class="rs-layer" data-idcheck="true" data-stylerecorder="true" data-initialised="true"><div class="rs_splitted_lines" style="display: block; text-align: center; position: relative;"><div style="position:relative;display:inline-block;" class="rs_splitted_words"><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">d</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">e</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">s</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">i</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">g</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">n</div></div> </div></rs-layer></rs-mask-wrap></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap rs-forcehidden" style="position: absolute; display: block; pointer-events: none; left: 737.5px; top: 676px; z-index: 12; visibility: hidden; perspective: 601px;"><rs-layer id="slider-1-slide-1-layer-12" class="rev-btn rs-layer" data-type="button" data-rsp_ch="on" data-xy="x:c;y:m;yo:165px,140px,119px,110px;" data-text="w:normal;s:13,13,12,12;l:25,25,25,14;ls:0px,0px,0px,1px;fw:600;a:center;" data-dim="minh:0px,none,none,none;" data-vbility="t,t,f,f" data-padding="t:15,12,10,13;r:39,30,25,22;b:15,12,10,13;l:39,30,25,22;" data-border="bos:solid;bow:1px,1px,1px,1px;" data-frame_0="y:50,42,31,19;" data-frame_1="st:1800;sp:500;" data-frame_999="o:0;st:w;" data-frame_hover="c:#1a1a1a;bgc:#fff;bor:0px,0px,0px,0px;bos:solid;bow:1px,1px,1px,1px;sp:0ms;e:power1.inOut;" style="z-index: 12; background-color: rgb(26, 26, 26); font-family: &quot;Titillium Web&quot;; text-transform: uppercase; cursor: pointer; height: auto; width: auto; color: rgb(255, 255, 255); text-decoration: none; white-space: nowrap; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 25px; letter-spacing: 0px; font-weight: 600; font-size: 13px; border-color: transparent; border-style: solid; border-width: 1px; padding: 15px 39px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 0; transform: translate(0px, 0px); visibility: visible;" data-idcheck="true" data-stylerecorder="true" data-initialised="true">View Projects 
+							</rs-layer></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap rs-forcehidden" style="position: absolute; display: block; pointer-events: none; left: 413.5px; top: 559px; z-index: 9; visibility: hidden; perspective: 601px;"><rs-layer id="slider-1-slide-1-layer-14" data-type="text" data-rsp_ch="on" data-xy="x:c;y:m;yo:51px,43px,31px,15px;" data-text="w:normal;s:18,18,17,16;l:32,27,28,24;a:center;" data-dim="w:818px,630px,500px,417px;" data-vbility="t,t,t,f" data-frame_0="y:50,42,31,19;" data-frame_1="st:1400;sp:1000;" data-frame_999="o:0;st:w;" style="z-index: 9; font-family: Raleway; height: auto; color: rgb(255, 255, 255); text-decoration: none; white-space: normal; width: 818px; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 32px; letter-spacing: 0px; font-weight: 400; font-size: 18px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 0; transform: translate(0px, 0px); visibility: visible;" class="rs-layer" data-idcheck="true" data-stylerecorder="true" data-initialised="true">We pride ourselves on being builders — creating architectural and creative solutions to help people realize their vision and make them a reality. Wanna work with us? 
+							</rs-layer></rs-layer-wrap><!--
+-->					</rs-slide>
+						<rs-slide style="position: absolute; display: block; overflow: hidden; height: 100%; width: 100%; z-index: 20; opacity: 1; visibility: inherit;" data-key="rs-2" data-title="Slide 2" data-thumb="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider2-home1-1-50x100.jpg" data-anim="ms:800ms;r:0;" data-in="o:0;" data-out="a:false;" data-originalindex="2" data-origindex="1" data-description="" data-sba="" data-scroll-based="false" data-owidth="1920" data-oheight="950" data-rspausetimeronce="0" data-isactiveslide="true"><rs-sbg-px><rs-sbg-wrap data-key="rs-2" data-owidth="1920" data-oheight="950"><!--Runtime Modification - Img tag is Still Available for SEO Goals in Source - <img decoding="async" src="//wpdemo.archiwp.com/theratio/wp-content/plugins/revslider/sr6/assets/assets/dummy.png" alt="" title="slider2-home1" width="1920" height="950" class="rev-slidebg tp-rs-img rs-lazyload" data-lazyload="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider2-home1-1.jpg" data-no-retina="">--><rs-sbg data-lazyload="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider2-home1-1.jpg" class="" data-bgcolor="transparent" style="width: 100%; height: 100%;" data-src-rs-ref="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider2-home1-1.jpg"><canvas style="width: 100%; height: 100%; background-color: transparent; opacity: 1; filter: none;" width="1645" height="1080"></canvas></rs-sbg></rs-sbg-wrap></rs-sbg-px>
+							
+<!--
+							--><rs-layer-wrap class="rs-parallax-wrap" style="position: absolute; display: block; pointer-events: auto; left: 366.5px; top: 445px; z-index: 10; visibility: visible; perspective: 601px;"><rs-layer id="slider-1-slide-2-layer-0" data-type="text" data-rsp_ch="on" data-xy="x:c;y:m;yo:-55px,-63px,-60px,-65px;" data-text="w:nowrap;s:90,72,55,44;l:80,70,51,55;fw:200;a:center;" data-frame_0="y:50,42,31,19;" data-frame_1="st:1000;sp:1000;" data-frame_999="o:0;st:w;" style="z-index: 10; font-family: &quot;Titillium Web&quot;; height: auto; width: auto; color: rgb(255, 255, 255); text-decoration: none; white-space: nowrap; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 80px; letter-spacing: 0px; font-weight: 200; font-size: 90px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); visibility: visible;" class="rs-layer" data-idcheck="true" data-stylerecorder="true" data-initialised="true">High-end Interior Design 
+							</rs-layer></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap" style="position: absolute; display: block; pointer-events: auto; left: 413.5px; top: 563px; z-index: 9; visibility: visible; perspective: 601px;"><rs-layer id="slider-1-slide-2-layer-1" data-type="text" data-rsp_ch="on" data-xy="x:c;y:m;yo:55px,46px,31px,15px;" data-text="w:normal;s:18,18,17,16;l:32,27,28,24;a:center;" data-dim="w:818px,630px,500px,417px;" data-vbility="t,t,t,f" data-frame_0="y:50,42,31,19;" data-frame_1="st:1400;sp:1000;" data-frame_999="o:0;st:w;" style="z-index: 9; font-family: Raleway; height: auto; color: rgb(255, 255, 255); text-decoration: none; white-space: normal; width: 818px; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 32px; letter-spacing: 0px; font-weight: 400; font-size: 18px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); visibility: visible;" class="rs-layer" data-idcheck="true" data-stylerecorder="true" data-initialised="true">We pride ourselves on being builders — creating architectural and creative solutions to help people realize their vision and make them a reality. Wanna work with us? 
+							</rs-layer></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap" style="position: absolute; display: block; pointer-events: auto; left: 142.5px; top: 377px; z-index: 8; visibility: visible; perspective: 601px;"><rs-mask-wrap style="position: absolute; display: block; transform-origin: 50% 50%; transform: translate(0px, 0px); overflow: hidden;"><rs-layer id="slider-1-slide-2-layer-3" data-type="text" data-color="transparent" data-rsp_ch="on" data-xy="x:c;xo:52px,34px,23px,11px;y:m;yo:-63px,-72px,-65px,-50px;" data-text="w:normal;s:200,150,112,80;l:200,170,127,80;ls:100px,73px,50px,26px;fw:900;a:center;" data-tst="c:rgba(255, 255, 255, 0.3);" data-vbility="t,t,f,f" data-border="bor:0px,0,0,0;" data-frame_0="o:1;" data-frame_0_chars="d:5;y:100%;o:0;rZ:-35deg;" data-frame_0_mask="u:t;" data-frame_1="sp:1200;" data-frame_1_chars="e:power4.inOut;d:10;rZ:0deg;" data-frame_1_mask="u:t;" data-frame_999="o:0;st:w;" style="z-index: 8; font-family: &quot;Titillium Web&quot;; text-transform: uppercase; height: auto; width: auto; color: transparent; text-decoration: none; white-space: nowrap; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 200px; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3); letter-spacing: 100px; font-weight: 900; font-size: 200px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; transform: translate(0px, 0px); opacity: 1; visibility: visible;" class="rs-layer" data-idcheck="true" data-stylerecorder="true" data-initialised="true"><div class="rs_splitted_lines" style="display: block; text-align: center; position: relative;"><div style="position:relative;display:inline-block;" class="rs_splitted_words"><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">q</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">u</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">a</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">l</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">i</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">t</div><div style="position: relative; display: inline-block; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); color: transparent;" class="rs_splitted_chars">y</div></div> </div></rs-layer></rs-mask-wrap></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap" style="position: absolute; display: block; pointer-events: auto; left: 737.5px; top: 676px; z-index: 5; visibility: visible; perspective: 601px;"><rs-layer id="slider-1-slide-2-layer-12" class="rev-btn rs-layer" data-type="button" data-rsp_ch="on" data-xy="x:c;y:m;yo:165px,140px,119px,110px;" data-text="w:normal;s:13,13,12,12;l:25,25,25,14;fw:600;a:center;" data-dim="minh:0px,none,none,none;" data-vbility="t,t,f,f" data-padding="t:15,12,10,13;r:39,30,25,22;b:15,12,10,13;l:39,30,25,22;" data-border="bos:solid;bow:1px,1px,1px,1px;" data-frame_0="y:50,42,31,19;" data-frame_1="st:1800;sp:500;" data-frame_999="o:0;st:w;" data-frame_hover="c:#1a1a1a;bgc:#fff;bor:0px,0px,0px,0px;bos:solid;bow:1px,1px,1px,1px;sp:0ms;e:power1.inOut;" style="z-index: 5; background-color: rgb(26, 26, 26); font-family: &quot;Titillium Web&quot;; text-transform: uppercase; cursor: pointer; height: auto; width: auto; color: rgb(255, 255, 255); text-decoration: none; white-space: nowrap; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 25px; letter-spacing: 0px; font-weight: 600; font-size: 13px; border-color: transparent; border-style: solid; border-width: 1px; padding: 15px 39px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); visibility: visible;" data-idcheck="true" data-stylerecorder="true" data-initialised="true">View Projects 
+							</rs-layer></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap rs-layer-hidden" style="position: absolute; display: block; pointer-events: auto; left: 413.5px; top: 591px; z-index: 10; visibility: visible; perspective: 601px;"><rs-layer id="slider-1-slide-2-layer-15" data-type="text" data-rsp_ch="on" data-xy="x:c;y:m;yo:51px,43px,31px,20px;" data-text="w:normal;s:18,16,17,18;l:32,27,28,26;a:center;" data-dim="w:818px,630px,500px,417px;" data-vbility="f,f,f,t" data-frame_0="y:50,42,31,19;" data-frame_1="st:1400;sp:1000;" data-frame_999="o:0;st:w;" style="z-index: 10; font-family: Raleway; height: auto; color: rgb(255, 255, 255); text-decoration: none; white-space: normal; width: 818px; min-height: 0px; min-width: 0px; max-height: none; max-width: none; text-align: center; line-height: 32px; letter-spacing: 0px; font-weight: 400; font-size: 18px; backdrop-filter: none; filter: none; transform-origin: 50% 50%; opacity: 1; transform: translate(0px, 0px); visibility: visible;" class="rs-layer" data-idcheck="true" data-stylerecorder="true" data-initialised="true">We create architectural and creative solutions to help people realize their vision and make them a reality.  
+							</rs-layer></rs-layer-wrap><!--
+-->					</rs-slide>
+						<rs-slide style="position: absolute; display: none; overflow: hidden; height: 100%; width: 100%;" data-key="rs-3" data-title="Slide 3" data-thumb="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider3-home1-1-50x100.jpg" data-anim="ms:800ms;r:0;" data-in="o:0;" data-out="a:false;" data-originalindex="3" data-origindex="2" data-description="" data-sba="" data-scroll-based="false" data-owidth="1920" data-oheight="950"><rs-sbg-px><rs-sbg-wrap data-key="rs-3" data-owidth="1920" data-oheight="950"><!--Runtime Modification - Img tag is Still Available for SEO Goals in Source - <img decoding="async" src="//wpdemo.archiwp.com/theratio/wp-content/plugins/revslider/sr6/assets/assets/dummy.png" alt="" title="slider3-home1" width="1920" height="950" class="rev-slidebg tp-rs-img rs-lazyload" data-lazyload="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider3-home1-1.jpg" data-no-retina="">--><rs-sbg data-lazyload="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider3-home1-1.jpg" class="" data-bgcolor="transparent" style="width: 100%; height: 100%;" data-src-rs-ref="//wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/slider3-home1-1.jpg"><canvas style="width: 100%; height: 100%;"></canvas></rs-sbg></rs-sbg-wrap></rs-sbg-px>
+							
+<!--
+							--><rs-layer-wrap class="rs-parallax-wrap " style=" position:absolute;display:block;;pointer-events:none"><rs-layer id="slider-1-slide-3-layer-0" data-type="text" data-rsp_ch="on" data-xy="x:c;xo:1px,0,0,0;y:m;yo:-55px,-63px,-60px,-65px;" data-text="w:nowrap;s:90,72,55,44;l:80,70,51,55;fw:200;a:center;" data-frame_0="y:50,42,31,19;" data-frame_1="st:1000;sp:1000;" data-frame_999="o:0;st:w;" style="z-index:10;font-family:'Titillium Web';" class="rs-layer" data-idcheck="true">Best Furniture and Decor 
+							</rs-layer></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap " style=" position:absolute;display:block;;pointer-events:none"><rs-layer id="slider-1-slide-3-layer-1" data-type="text" data-rsp_ch="on" data-xy="x:c;y:m;yo:55px,46px,31px,15px;" data-text="w:normal;s:18,18,17,16;l:32,27,28,24;a:center;" data-dim="w:818px,630px,500px,417px;" data-vbility="t,t,t,f" data-frame_0="y:50,42,31,19;" data-frame_1="st:1400;sp:1000;" data-frame_999="o:0;st:w;" style="z-index:9;font-family:'Raleway';" class="rs-layer" data-idcheck="true">We pride ourselves on being builders — creating architectural and creative solutions to help people realize their vision and make them a reality. Wanna work with us? 
+							</rs-layer></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap " style=" position:absolute;display:block;;pointer-events:none"><rs-mask-wrap style="position:absolute;display:block;"><rs-layer id="slider-1-slide-3-layer-3" data-type="text" data-color="transparent" data-rsp_ch="on" data-xy="x:c;xo:55px,46px,0,0;y:m;yo:-63px,-72px,-65px,-50px;" data-text="w:normal;s:200,150,117,80;l:200,170,127,80;ls:100px,85px,63px,39px;fw:900;a:center;" data-dim="w:auto,auto,735px,459px;" data-tst="c:rgba(255, 255, 255, 0.3);" data-vbility="t,t,f,f" data-border="bor:0px,0,0,0;" data-frame_0="o:1;" data-frame_0_chars="d:5;y:100%;o:0;rZ:-35deg;" data-frame_0_mask="u:t;" data-frame_1="sp:1200;" data-frame_1_chars="e:power4.inOut;d:10;rZ:0deg;" data-frame_1_mask="u:t;" data-frame_999="o:0;st:w;" style="z-index:8;font-family:'Titillium Web';text-transform:uppercase;" class="rs-layer" data-idcheck="true">studio 
+							</rs-layer></rs-mask-wrap></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap " style=" position:absolute;display:block;;pointer-events:none"><rs-layer id="slider-1-slide-3-layer-12" class="rev-btn rs-layer" data-type="button" data-rsp_ch="on" data-xy="x:c;y:m;yo:165px,140px,119px,110px;" data-text="w:normal;s:13,13,12,12;l:25,25,25,14;fw:600;a:center;" data-dim="minh:0px,none,none,none;" data-vbility="t,t,f,f" data-padding="t:15,12,10,13;r:39,30,25,22;b:15,12,10,13;l:39,30,25,22;" data-border="bos:solid;bow:1px,1px,1px,1px;" data-frame_0="y:50,42,31,19;" data-frame_1="st:1800;sp:500;" data-frame_999="o:0;st:w;" data-frame_hover="c:#1a1a1a;bgc:#fff;bor:0px,0px,0px,0px;bos:solid;bow:1px,1px,1px,1px;sp:0ms;e:power1.inOut;" style="z-index:5;background-color:#1a1a1a;font-family:'Titillium Web';text-transform:uppercase;cursor:pointer;" data-idcheck="true">View Projects 
+							</rs-layer></rs-layer-wrap><!--
+
+							--><rs-layer-wrap class="rs-parallax-wrap " style=" position:absolute;display:block;;pointer-events:none"><rs-layer id="slider-1-slide-3-layer-16" data-type="text" data-rsp_ch="on" data-xy="x:c;y:m;yo:51px,43px,31px,20px;" data-text="w:normal;s:18,16,17,18;l:32,27,28,26;a:center;" data-dim="w:818px,630px,500px,417px;" data-vbility="f,f,f,t" data-frame_0="y:50,42,31,19;" data-frame_1="st:1400;sp:1000;" data-frame_999="o:0;st:w;" style="z-index:10;font-family:'Raleway';" class="rs-layer" data-idcheck="true">We create architectural and creative solutions to help people realize their vision and make them a reality.  
+							</rs-layer></rs-layer-wrap><!--
+-->					</rs-slide>
+					</rs-slides></rs-module>
+				
+				
+			</rs-module-wrap><rs-fw-forcer style="height:1080px"></rs-fw-forcer></rs-fullwidth-wrap>
+			<!-- END REVOLUTION SLIDER -->
+</div>
+
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-f69bfba elementor-absolute elementor-icon-list--layout-inline elementor-widget-tablet__width-auto elementor-hidden-desktop elementor-hidden-phone elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="f69bfba" data-element_type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="icon-list.default">
+				<div class="elementor-widget-container">
+							<ul class="elementor-icon-list-items elementor-inline-items">
+							<li class="elementor-icon-list-item elementor-inline-item">
+											<a href="#">
+
+											<span class="elementor-icon-list-text">instagram</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item elementor-inline-item">
+											<a href="#">
+
+											<span class="elementor-icon-list-text">facebook</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item elementor-inline-item">
+											<a href="#">
+
+											<span class="elementor-icon-list-text">twitter</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item elementor-inline-item">
+											<a href="#">
+
+											<span class="elementor-icon-list-text">pinterest</span>
+											</a>
+									</li>
+						</ul>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-3ab8cc5 elementor-absolute elementor-widget__width-initial ot-social-vertical elementor-hidden-tablet elementor-hidden-phone elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="3ab8cc5" data-element_type="widget" data-settings="{&quot;_position&quot;:&quot;absolute&quot;}" data-widget_type="icon-list.default">
+				<div class="elementor-widget-container">
+							<ul class="elementor-icon-list-items">
+							<li class="elementor-icon-list-item">
+											<a href="#">
+
+											<span class="elementor-icon-list-text">pinterest</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="#">
+
+											<span class="elementor-icon-list-text">twitter</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="#">
+
+											<span class="elementor-icon-list-text">facebook</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item">
+											<a href="#">
+
+											<span class="elementor-icon-list-text">instagram</span>
+											</a>
+									</li>
+						</ul>
+						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-00c2934 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="00c2934" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+						<div class="elementor-container elementor-column-gap-extended">
+					<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-148e026 ot-flex-column-vertical" data-id="148e026" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-6cf3a0e elementor-widget elementor-widget-text-editor" data-id="6cf3a0e" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									“Even if you don’t have a ready sketch of what you want – we will help you to get the result you dreamed of.”								</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-744bca1 ot-flex-column-vertical" data-id="744bca1" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-c7832db elementor-position-left elementor-vertical-align-middle elementor-widget elementor-widget-image-box" data-id="c7832db" data-element_type="widget" data-widget_type="image-box.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-image-box-wrapper"><figure class="elementor-image-box-img"><img decoding="async" width="140" height="140" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image1-home1.png" class="attachment-full size-full wp-image-323 entered lazyloaded" alt="" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image1-home1.png" data-ll-status="loaded"></figure><div class="elementor-image-box-content"><h5 class="elementor-image-box-title">David Oswald</h5><p class="elementor-image-box-description">founder of company</p></div></div>				</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-cdf7ef1 elementor-section-content-middle has-lines-vertical has-lines-vertical-center elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="cdf7ef1" data-element_type="section"><div class="grid-lines grid-lines-vertical"><span class="g-line-vertical line-left"></span><span class="g-line-vertical line-center"></span><span class="g-line-vertical line-right"></span></div>
+						<div class="elementor-container elementor-column-gap-extended">
+					<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-10da194 ot-flex-column-vertical" data-id="10da194" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-ba0f6c6 elementor-widget elementor-widget-image" data-id="ba0f6c6" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="670" height="642" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image2-home1.png" class="attachment-full size-full wp-image-333 entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image2-home1.png 670w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image2-home1-300x287.png 300w" data-lazy-sizes="(max-width: 670px) 100vw, 670px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image2-home1.png" data-ll-status="loaded" sizes="(max-width: 670px) 100vw, 670px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image2-home1.png 670w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image2-home1-300x287.png 300w">															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-9ba0968 ot-flex-column-vertical" data-id="9ba0968" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-673de62 elementor-widget elementor-widget-iheading" data-id="673de62" data-element_type="widget" data-widget_type="iheading.default">
+				<div class="elementor-widget-container">
+							<div class="ot-heading is-dots">
+	        <span>[ about company ]</span>	        <h2 class="main-heading">From Sketch to Life</h2>	    </div>
+	    				</div>
+				</div>
+				<div class="elementor-element elementor-element-6dac75e elementor-widget elementor-widget-text-editor" data-id="6dac75e" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									<p>The basic philosophy of our studio is to create individual, aesthetically stunning solutions for our customers by lightning-fast development of projects employing unique styles and architecture. Even if you don’t have a ready sketch of what you want – we will help you to get the result you dreamed of.</p>								</div>
+				</div>
+				<div class="elementor-element elementor-element-4e8ad16 elementor-widget elementor-widget-ibutton" data-id="4e8ad16" data-element_type="widget" data-widget_type="ibutton.default">
+				<div class="elementor-widget-container">
+							<div class="ot-button">
+			<a href="http://wpdemo.archiwp.com/theratio/portfolio-grid/" class="octf-btn octf-btn-dark">View Projects</a>
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-74bd402 elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="74bd402" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-30f4359 ot-flex-column-vertical" data-id="30f4359" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated e-swiper-container">
+						<div class="elementor-element elementor-element-5d07b43 elementor-widget elementor-widget-theratio-image-carousel e-widget-swiper" data-id="5d07b43" data-element_type="widget" data-widget_type="theratio-image-carousel.default">
+				<div class="elementor-widget-container">
+					
+		<div class="image-carousel swiper swiper-container swiper-initialized swiper-horizontal swiper-pointer-events" data-slider_options="{&quot;slides_show_desktop&quot;:6,&quot;slides_show_tablet&quot;:4,&quot;slides_show_mobile&quot;:2,&quot;slides_scroll_desktop&quot;:1,&quot;slides_scroll_tablet&quot;:1,&quot;slides_scroll_mobile&quot;:1,&quot;margin_desktop&quot;:140,&quot;margin_tablet&quot;:90,&quot;margin_mobile&quot;:70,&quot;arrows&quot;:false,&quot;dots&quot;:false}" data-item-slider="ot_slider_5d07b43">			
+			<div class="swiper-wrapper" id="swiper-wrapper-a98d8042a10f1022ab" aria-live="off" style="transform: translate3d(-3010px, 0px, 0px); transition-duration: 0ms;"><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="0" role="group" aria-label="1 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 1" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client01.svg"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="1" role="group" aria-label="2 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 2" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client02.svg"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="2" role="group" aria-label="3 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 3" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client03.svg"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="3" role="group" aria-label="4 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 4" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client04.svg"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="4" role="group" aria-label="5 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 5" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client05.svg"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-prev" data-swiper-slide-index="5" role="group" aria-label="6 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 6" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client06.svg"></figure></a></div></div>
+		        <div class="swiper-slide swiper-slide-duplicate-active" data-swiper-slide-index="0" role="group" aria-label="1 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 1" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client01.svg"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate-next" data-swiper-slide-index="1" role="group" aria-label="2 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 2" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client02.svg"></figure></a></div></div><div class="swiper-slide" data-swiper-slide-index="2" role="group" aria-label="3 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 3" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client03.svg"></figure></a></div></div><div class="swiper-slide" data-swiper-slide-index="3" role="group" aria-label="4 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client04.svg" alt="Partner 4" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client04.svg" data-ll-status="loaded" class="entered lazyloaded"></figure></a></div></div><div class="swiper-slide" data-swiper-slide-index="4" role="group" aria-label="5 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client05.svg" alt="Partner 5" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client05.svg" data-ll-status="loaded" class="entered lazyloaded"></figure></a></div></div><div class="swiper-slide swiper-slide-prev" data-swiper-slide-index="5" role="group" aria-label="6 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client06.svg" alt="Partner 6" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client06.svg" data-ll-status="loaded" class="entered lazyloaded"></figure></a></div></div>		    <div class="swiper-slide swiper-slide-duplicate swiper-slide-active" data-swiper-slide-index="0" role="group" aria-label="1 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client01.svg" alt="Partner 1" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client01.svg" data-ll-status="loaded" class="entered lazyloaded"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate swiper-slide-next" data-swiper-slide-index="1" role="group" aria-label="2 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client02.svg" alt="Partner 2" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client02.svg" data-ll-status="loaded" class="entered lazyloaded"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="2" role="group" aria-label="3 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client03.svg" alt="Partner 3" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client03.svg" data-ll-status="loaded" class="entered lazyloaded"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="3" role="group" aria-label="4 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 4" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client04.svg"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="4" role="group" aria-label="5 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 5" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client05.svg"></figure></a></div></div><div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-prev" data-swiper-slide-index="5" role="group" aria-label="6 / 6" style="width: 110.833px; margin-right: 140px;"><div class="img-item"><a href="#"><figure><img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Partner 6" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/client06.svg"></figure></a></div></div></div>
+
+							    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-92eb555 elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="92eb555" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-no">
+					<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-01b328d ot-flex-column-vertical" data-id="01b328d" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-59f8e19 elementor-widget elementor-widget-imagecategory" data-id="59f8e19" data-element_type="widget" data-widget_type="imagecategory.default">
+				<div class="elementor-widget-container">
+							<div class="cate-lines">
+			<div class="cate-item">
+				<a href="#">				<img decoding="async" width="750" height="422" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate1.jpg" class="attachment-full size-full wp-image-2639 entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate1.jpg 750w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate1-300x169.jpg 300w" data-lazy-sizes="(max-width: 750px) 100vw, 750px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate1.jpg" data-ll-status="loaded" sizes="(max-width: 750px) 100vw, 750px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate1.jpg 750w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate1-300x169.jpg 300w">				</a>		        <div class="cate-item_content">
+			        <a href="#">			        	<h2>Office Spaces<span class="number-stroke">01</span></h2>
+			        </a>				</div>
+			</div>
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-88934a3 ot-flex-column-vertical" data-id="88934a3" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-cb3f453 elementor-widget elementor-widget-imagecategory" data-id="cb3f453" data-element_type="widget" data-widget_type="imagecategory.default">
+				<div class="elementor-widget-container">
+							<div class="cate-lines">
+			<div class="cate-item">
+				<a href="#">				<img decoding="async" width="750" height="422" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate2.jpg" class="attachment-full size-full wp-image-358 entered lazyloaded" alt=""achment-full size-full wp-image-358 entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate2.jpg 750w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate2-300x169.jpg 300w" data-lazy-sizes="(max-width: 750px) 100vw, 750px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate2.jpg" data-ll-status="loaded" sizes="(max-width: 750px) 100vw, 750px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate2.jpg 750w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate2-300x169.jpg 300w">				</a>		        <div class="cate-item_content">
+			        <a href="#">			        	<h2>Public Spaces<span class="number-stroke">02</span></h2>
+			        </a>				</div>
+			</div>
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-1e99f32 ot-flex-column-vertical" data-id="1e99f32" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-5680069 elementor-widget elementor-widget-imagecategory" data-id="5680069" data-element_type="widget" data-widget_type="imagecategory.default">
+				<div class="elementor-widget-container">
+							<div class="cate-lines">
+			<div class="cate-item">
+				<a href="#">				<img decoding="async" width="750" height="422" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate3.jpg" class="attachment-full size-full wp-image-359 entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate3.jpg 750w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate3-300x169.jpg 300w" data-lazy-sizes="(max-width: 750px) 100vw, 750px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate3.jpg" data-ll-status="loaded" sizes="(max-width: 750px) 100vw, 750px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate3.jpg 750w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/cate3-300x169.jpg 300w">				</a>		        <div class="cate-item_content">
+			        <a href="#">			        	<h2>Residential Spaces<span class="number-stroke">03</span></h2>
+			        </a>				</div>
+			</div>
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-1dfb2f2 has-lines-vertical has-lines-vertical-center elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="1dfb2f2" data-element_type="section"><div class="grid-lines grid-lines-vertical"><span class="g-line-vertical line-left"></span><span class="g-line-vertical line-center"></span><span class="g-line-vertical line-right"></span></div>
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-18abd70 ot-flex-column-vertical" data-id="18abd70" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-03ca9c0 theratio-align-center elementor-widget elementor-widget-iheading" data-id="03ca9c0" data-element_type="widget" data-widget_type="iheading.default">
+				<div class="elementor-widget-container">
+							<div class="ot-heading is-dots">
+	        <span>[ OUR SERVICES ]</span>	        <h2 class="main-heading">What Can We Offer</h2>	    </div>
+	    				</div>
+				</div>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-2dd6bd3 elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="2dd6bd3" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-extended">
+					<div class="elementor-column elementor-col-33 elementor-inner-column elementor-element elementor-element-326654a ot-flex-column-vertical" data-id="326654a" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-ce2f1b6 elementor-widget elementor-widget-iiconbox1" data-id="ce2f1b6" data-element_type="widget" data-widget_type="iiconbox1.default">
+				<div class="elementor-widget-container">
+							<div class="icon-box icon-box--bg-img icon-box--icon-top icon-box--is-line-hover">
+			<div class="icon-main">
+		        			    <img decoding="async" width="74" height="84" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/iconbox1.2.png" class="attachment-full size-full wp-image-362 entered lazyloaded" alt="" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/iconbox1.2.png" data-ll-status="loaded">		        	        </div>
+	        <div class="content-box">
+		        <h5 class="icon-box-title"><a href="http://wpdemo.archiwp.com/theratio/our-services/design-planning/" target="_blank">Design &amp; Planning</a></h5>		        <p>We will help you to get the result you dreamed of.</p>
+			</div>
+				        	<div class="link-box">
+	        		<a href="http://wpdemo.archiwp.com/theratio/our-services/design-planning/" target="_blank" class="btn-details" aria-label="read more">READ MORE</a>
+	        	</div>
+	        	
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-inner-column elementor-element elementor-element-c1c7435 ot-flex-column-vertical" data-id="c1c7435" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-7fd4b0b elementor-widget elementor-widget-iiconbox1" data-id="7fd4b0b" data-element_type="widget" data-widget_type="iiconbox1.default">
+				<div class="elementor-widget-container">
+							<div class="icon-box icon-box--bg-img icon-box--icon-top icon-box--is-line-hover">
+			<div class="icon-main">
+		        			    <img decoding="async" width="81" height="70" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/iconbox2.png" class="attachment-full size-full wp-image-368 entered lazyloaded" alt="" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/iconbox2.png" data-ll-status="loaded">		        	        </div>
+	        <div class="content-box">
+		        <h5 class="icon-box-title"><a href="http://wpdemo.archiwp.com/theratio/our-services/custom-solutions/">Custom Solutions</a></h5>		        <p>Individual, aesthetically stunning solutions for customers.</p>
+			</div>
+				        	<div class="link-box">
+	        		<a href="http://wpdemo.archiwp.com/theratio/our-services/custom-solutions/" class="btn-details" aria-label="read more">READ MORE</a>
+	        	</div>
+	        	
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-inner-column elementor-element elementor-element-d2c8159 ot-flex-column-vertical" data-id="d2c8159" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-a9fb2c1 elementor-widget elementor-widget-iiconbox1" data-id="a9fb2c1" data-element_type="widget" data-widget_type="iiconbox1.default">
+				<div class="elementor-widget-container">
+							<div class="icon-box icon-box--bg-img icon-box--icon-top icon-box--is-line-hover">
+			<div class="icon-main">
+		        			    <img decoding="async" width="72" height="80" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/iconbox3.png" class="attachment-full size-full wp-image-369 entered lazyloaded" alt="" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/iconbox3.png" data-ll-status="loaded">		        	        </div>
+	        <div class="content-box">
+		        <h5 class="icon-box-title"><a href="http://wpdemo.archiwp.com/theratio/our-services/furniture-decor/">Furniture &amp; Decor</a></h5>		        <p>We create and produce our product design lines.</p>
+			</div>
+				        	<div class="link-box">
+	        		<a href="http://wpdemo.archiwp.com/theratio/our-services/furniture-decor/" class="btn-details" aria-label="read more">READ MORE</a>
+	        	</div>
+	        	
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-c964d7c elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="c964d7c" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-extended">
+					<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-cd4d1e0 ot-flex-column-vertical" data-id="cd4d1e0" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-e8c5768 elementor-widget elementor-widget-icounter" data-id="e8c5768" data-element_type="widget" data-widget_type="icounter.default">
+				<div class="elementor-widget-container">
+					    	<div class="ot-counter">
+        	<div>
+        		<span>[</span>
+        		<span class="num" data-to="180" data-time="2000">180</span>
+        		<span>+]</span>
+        	</div>
+        	<h6 class="counter-title">Current Clients</h6>    				        
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-cec17af ot-flex-column-vertical" data-id="cec17af" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-9a2e097 elementor-widget elementor-widget-icounter" data-id="9a2e097" data-element_type="widget" data-widget_type="icounter.default">
+				<div class="elementor-widget-container">
+					    	<div class="ot-counter">
+        	<div>
+        		<span>[</span>
+        		<span class="num" data-to="10" data-time="2000">10</span>
+        		<span>+]</span>
+        	</div>
+        	<h6 class="counter-title">years of experience</h6>    				        
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-e8dc12f ot-flex-column-vertical" data-id="e8dc12f" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-3606344 elementor-widget elementor-widget-icounter" data-id="3606344" data-element_type="widget" data-widget_type="icounter.default">
+				<div class="elementor-widget-container">
+					    	<div class="ot-counter">
+        	<div>
+        		<span>[</span>
+        		<span class="num" data-to="35" data-time="2000">35</span>
+        		<span>+]</span>
+        	</div>
+        	<h6 class="counter-title">awards winning</h6>    				        
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-69b12ed ot-flex-column-vertical" data-id="69b12ed" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-62ab05f elementor-widget elementor-widget-icounter" data-id="62ab05f" data-element_type="widget" data-widget_type="icounter.default">
+				<div class="elementor-widget-container">
+					    	<div class="ot-counter">
+        	<div>
+        		<span>[</span>
+        		<span class="num" data-to="5" data-time="2000">5</span>
+        		<span>+]</span>
+        	</div>
+        	<h6 class="counter-title">Offices Worldwide</h6>    				        
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-7af3b21 elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="7af3b21" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-3af81bf ot-flex-column-vertical" data-id="3af81bf" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-3436375 elementor-widget elementor-widget-ipfilter_metro" data-id="3436375" data-element_type="widget" data-widget_type="ipfilter_metro.default">
+				<div class="elementor-widget-container">
+					
+		<div class="project-filter-wrapper">
+							        <div id="projects-grid" class="projects-grid pf_4_cols style-2 img-scale w-auto" data-load="" data-count="12" style="position: relative; height: 822.5px;">
+			<div class="grid-sizer"></div>
+	            <div class="project-item category-19 thumb2x" style="position: absolute; left: 0px; top: 0px;">
+	<div class="projects-box">
+		<div class="projects-thumbnail" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1.jpg" data-sub-html="Stylish Family Appartment">
+			<a href="https://wpdemo.archiwp.com/theratio/portfolio/stylish-family-appartment/">
+				<img decoding="async" width="1440" height="720" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1.jpg" class="attachment-theratio-portfolio-thumbnail-grid2x size-theratio-portfolio-thumbnail-grid2x wp-post-image entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1.jpg 1440w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1-300x150.jpg 300w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1-1024x512.jpg 1024w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1-768x384.jpg 768w" data-lazy-sizes="(max-width: 1440px) 100vw, 1440px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1.jpg" data-ll-status="loaded" sizes="(max-width: 1440px) 100vw, 1440px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1.jpg 1440w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1-300x150.jpg 300w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1-1024x512.jpg 1024w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1-768x384.jpg 768w">			</a>
+			
+		</div>
+		<div class="portfolio-info">
+			<div class="portfolio-info-inner">
+				<h5><a class="title-link" href="https://wpdemo.archiwp.com/theratio/portfolio/stylish-family-appartment/" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project1.jpg" data-sub-html="Stylish Family Appartment">Stylish Family Appartment</a></h5>
+				<p class="portfolio-cates"><a href="https://wpdemo.archiwp.com/theratio/portfolio-cat/interior/">Interior</a></p> 
+			</div>
+			
+		</div>
+	</div>
+</div><div class="project-item category-15 category-19 " style="position: absolute; left: 822.5px; top: 0px;">
+	<div class="projects-box">
+		<div class="projects-thumbnail" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project2.jpg" data-sub-html="Minimal Guests House">
+			<a href="https://wpdemo.archiwp.com/theratio/portfolio/minimal-guests-house/">
+				<img decoding="async" width="720" height="720" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project2-720x720.jpg" class="attachment-theratio-portfolio-thumbnail-grid size-theratio-portfolio-thumbnail-grid wp-post-image entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project2-720x720.jpg 720w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project2-150x150.jpg 150w" data-lazy-sizes="(max-width: 720px) 100vw, 720px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project2-720x720.jpg" data-ll-status="loaded" sizes="(max-width: 720px) 100vw, 720px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project2-720x720.jpg 720w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project2-150x150.jpg 150w">			</a>
+			
+		</div>
+		<div class="portfolio-info">
+			<div class="portfolio-info-inner">
+				<h5><a class="title-link" href="https://wpdemo.archiwp.com/theratio/portfolio/minimal-guests-house/" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project2.jpg" data-sub-html="Minimal Guests House">Minimal Guests House</a></h5>
+				<p class="portfolio-cates"><a href="https://wpdemo.archiwp.com/theratio/portfolio-cat/decor/">Decor</a><a href="https://wpdemo.archiwp.com/theratio/portfolio-cat/interior/">Interior</a></p> 
+			</div>
+			
+		</div>
+	</div>
+</div><div class="project-item category-14 " style="position: absolute; left: 1233.75px; top: 0px;">
+	<div class="projects-box">
+		<div class="projects-thumbnail" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3.jpg" data-sub-html="Art Family Residence">
+			<a href="https://wpdemo.archiwp.com/theratio/portfolio/art-family-residence/">
+				<img decoding="async" width="720" height="720" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3.jpg" class="attachment-theratio-portfolio-thumbnail-grid size-theratio-portfolio-thumbnail-grid wp-post-image entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3.jpg 720w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3-300x300.jpg 300w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3-150x150.jpg 150w" data-lazy-sizes="(max-width: 720px) 100vw, 720px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3.jpg" data-ll-status="loaded" sizes="(max-width: 720px) 100vw, 720px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3.jpg 720w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3-300x300.jpg 300w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3-150x150.jpg 150w">			</a>
+			
+		</div>
+		<div class="portfolio-info">
+			<div class="portfolio-info-inner">
+				<h5><a class="title-link" href="https://wpdemo.archiwp.com/theratio/portfolio/art-family-residence/" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project3.jpg" data-sub-html="Art Family Residence">Art Family Residence</a></h5>
+				<p class="portfolio-cates"><a href="https://wpdemo.archiwp.com/theratio/portfolio-cat/architecture/">Architecture</a></p> 
+			</div>
+			
+		</div>
+	</div>
+</div><div class="project-item category-20 " style="position: absolute; left: 0px; top: 411.25px;">
+	<div class="projects-box">
+		<div class="projects-thumbnail" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project4.jpg" data-sub-html="Private House in Spain">
+			<a href="https://wpdemo.archiwp.com/theratio/portfolio/private-house-in-spain/">
+				<img decoding="async" width="720" height="720" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project4-720x720.jpg" class="attachment-theratio-portfolio-thumbnail-grid size-theratio-portfolio-thumbnail-grid wp-post-image entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project4-720x720.jpg 720w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project4-150x150.jpg 150w" data-lazy-sizes="(max-width: 720px) 100vw, 720px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project4-720x720.jpg" data-ll-status="loaded" sizes="(max-width: 720px) 100vw, 720px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project4-720x720.jpg 720w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project4-150x150.jpg 150w">			</a>
+			
+		</div>
+		<div class="portfolio-info">
+			<div class="portfolio-info-inner">
+				<h5><a class="title-link" href="https://wpdemo.archiwp.com/theratio/portfolio/private-house-in-spain/" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project4.jpg" data-sub-html="Private House in Spain">Private House in Spain</a></h5>
+				<p class="portfolio-cates"><a href="https://wpdemo.archiwp.com/theratio/portfolio-cat/furniture/">Furniture</a></p> 
+			</div>
+			
+		</div>
+	</div>
+</div><div class="project-item category-20 " style="position: absolute; left: 411.25px; top: 411.25px;">
+	<div class="projects-box">
+		<div class="projects-thumbnail" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project5.jpg" data-sub-html="Modern Villa in Belgium">
+			<a href="https://wpdemo.archiwp.com/theratio/portfolio/modern-villa-in-belgium/">
+				<img decoding="async" width="720" height="720" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project5-720x720.jpg" class="attachment-theratio-portfolio-thumbnail-grid size-theratio-portfolio-thumbnail-grid wp-post-image entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project5-720x720.jpg 720w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project5-150x150.jpg 150w" data-lazy-sizes="(max-width: 720px) 100vw, 720px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project5-720x720.jpg" data-ll-status="loaded" sizes="(max-width: 720px) 100vw, 720px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project5-720x720.jpg 720w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project5-150x150.jpg 150w">			</a>
+			
+		</div>
+		<div class="portfolio-info">
+			<div class="portfolio-info-inner">
+				<h5><a class="title-link" href="https://wpdemo.archiwp.com/theratio/portfolio/modern-villa-in-belgium/" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project5.jpg" data-sub-html="Modern Villa in Belgium">Modern Villa in Belgium</a></h5>
+				<p class="portfolio-cates"><a href="https://wpdemo.archiwp.com/theratio/portfolio-cat/furniture/">Furniture</a></p> 
+			</div>
+			
+		</div>
+	</div>
+</div><div class="project-item category-20 category-19 thumb2x" style="position: absolute; left: 822.5px; top: 411.25px;">
+	<div class="projects-box">
+		<div class="projects-thumbnail" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6.jpg" data-sub-html="Minimalistic Style Appartment">
+			<a href="https://wpdemo.archiwp.com/theratio/portfolio/minimalistic-style-appartment/">
+				<img decoding="async" width="1440" height="720" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6.jpg" class="attachment-theratio-portfolio-thumbnail-grid2x size-theratio-portfolio-thumbnail-grid2x wp-post-image entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6.jpg 1440w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6-300x150.jpg 300w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6-1024x512.jpg 1024w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6-768x384.jpg 768w" data-lazy-sizes="(max-width: 1440px) 100vw, 1440px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6.jpg" data-ll-status="loaded" sizes="(max-width: 1440px) 100vw, 1440px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6.jpg 1440w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6-300x150.jpg 300w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6-1024x512.jpg 1024w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6-768x384.jpg 768w">			</a>
+			
+		</div>
+		<div class="portfolio-info">
+			<div class="portfolio-info-inner">
+				<h5><a class="title-link" href="https://wpdemo.archiwp.com/theratio/portfolio/minimalistic-style-appartment/" data-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2019/11/project6.jpg" data-sub-html="Minimalistic Style Appartment">Minimalistic Style Appartment</a></h5>
+				<p class="portfolio-cates"><a href="https://wpdemo.archiwp.com/theratio/portfolio-cat/furniture/">Furniture</a><a href="https://wpdemo.archiwp.com/theratio/portfolio-cat/interior/">Interior</a></p> 
+			</div>
+			
+		</div>
+	</div>
+</div>			</div>
+
+				    </div>
+										
+	    				</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-06075b1 elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="06075b1" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+						<div class="elementor-container elementor-column-gap-extended">
+					<div class="elementor-column elementor-col-66 elementor-top-column elementor-element elementor-element-fb37e6a ot-flex-column-vertical" data-id="fb37e6a" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-015f211 elementor-widget elementor-widget-heading" data-id="015f211" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">Get Incredible Interior Design Right Now!</h2>				</div>
+				</div>
+				<div class="elementor-element elementor-element-4edb545 elementor-widget elementor-widget-text-editor" data-id="4edb545" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									<p>At every stage, we could supervise your project – controlling all the details and consulting the builders.</p>								</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-75452f1 ot-flex-column-vertical" data-id="75452f1" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-b916b3a elementor-align-right elementor-mobile-align-center elementor-widget elementor-widget-ibutton" data-id="b916b3a" data-element_type="widget" data-widget_type="ibutton.default">
+				<div class="elementor-widget-container">
+							<div class="ot-button">
+			<a href="http://wpdemo.archiwp.com/theratio/contacts/" class="octf-btn octf-btn-light">get in touch</a>
+	    </div>
+	    				</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-6b311c1 elementor-section-content-middle has-lines-vertical has-lines-vertical-center elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="6b311c1" data-element_type="section"><div class="grid-lines grid-lines-vertical"><span class="g-line-vertical line-left"></span><span class="g-line-vertical line-center"></span><span class="g-line-vertical line-right"></span></div>
+						<div class="elementor-container elementor-column-gap-extended">
+					<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-cda7b3a ot-flex-column-vertical" data-id="cda7b3a" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-d32dfe5 theratio-mobile-align-left elementor-widget elementor-widget-iheading" data-id="d32dfe5" data-element_type="widget" data-widget_type="iheading.default">
+				<div class="elementor-widget-container">
+							<div class="ot-heading is-dots">
+	        <span>[ our skills ]</span>	        <h2 class="main-heading">The Core Company Values</h2>	    </div>
+	    				</div>
+				</div>
+				<div class="elementor-element elementor-element-248b638 elementor-widget elementor-widget-text-editor" data-id="248b638" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									<p>We are constantly growing, learning, and improving and our partners are steadily increasing. 200 projects is a sizable number.</p>								</div>
+				</div>
+				<div class="elementor-element elementor-element-14775c0 elementor-widget elementor-widget-iprogress" data-id="14775c0" data-element_type="widget" data-widget_type="iprogress.default">
+				<div class="elementor-widget-container">
+					
+				<div class="ot-progress" data-percent="65" data-processed="true">
+			<div class="overflow">
+	        	<span class="pname f-left">interior sketch</span>	        </div>
+	        <div class="iprogress">
+				<div class="progress-bar" style="width: 325px;">
+					<span class="ppercent">65%</span>				</div>
+			</div>
+	    </div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-e365f36 elementor-widget elementor-widget-iprogress" data-id="e365f36" data-element_type="widget" data-widget_type="iprogress.default">
+				<div class="elementor-widget-container">
+					
+				<div class="ot-progress" data-percent="85" data-processed="true">
+			<div class="overflow">
+	        	<span class="pname f-left">3D Modeling</span>	        </div>
+	        <div class="iprogress">
+				<div class="progress-bar" style="width: 425px;">
+					<span class="ppercent">85%</span>				</div>
+			</div>
+	    </div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-8cc0fa5 elementor-widget elementor-widget-iprogress" data-id="8cc0fa5" data-element_type="widget" data-widget_type="iprogress.default">
+				<div class="elementor-widget-container">
+					
+				<div class="ot-progress" data-percent="55" data-processed="true">
+			<div class="overflow">
+	        	<span class="pname f-left">2D Planning</span>	        </div>
+	        <div class="iprogress">
+				<div class="progress-bar" style="width: 275px;">
+					<span class="ppercent">55%</span>				</div>
+			</div>
+	    </div>
+						</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-31efd52 ot-flex-column-vertical" data-id="31efd52" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-855f31d elementor-widget elementor-widget-image" data-id="855f31d" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="860" height="645" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image3-home1.png" class="attachment-full size-full wp-image-1870 entered lazyloaded" alt="" data-lazy-srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image3-home1.png 860w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image3-home1-300x225.png 300w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image3-home1-768x576.png 768w" data-lazy-sizes="(max-width: 860px) 100vw, 860px" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image3-home1.png" data-ll-status="loaded" sizes="(max-width: 860px) 100vw, 860px" srcset="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image3-home1.png 860w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image3-home1-300x225.png 300w, https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/image3-home1-768x576.png 768w">															</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-top-section elementor-element elementor-element-5947146 elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="5947146" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-7a748f5 ot-flex-column-vertical" data-id="7a748f5" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated e-swiper-container">
+						<div class="elementor-element elementor-element-27d9c60 theratio-align-center elementor-widget elementor-widget-iheading" data-id="27d9c60" data-element_type="widget" data-widget_type="iheading.default">
+				<div class="elementor-widget-container">
+							<div class="ot-heading is-dots">
+	        <span>[ our professionals ]</span>	        <h2 class="main-heading">Meet Our Skilled Team</h2>	    </div>
+	    				</div>
+				</div>
+				<div class="elementor-element elementor-element-a3bdf7d elementor-widget elementor-widget-imembercarousel e-widget-swiper" data-id="a3bdf7d" data-element_type="widget" data-widget_type="imembercarousel.default">
+				<div class="elementor-widget-container">
+					
+		<div class="team-slider swiper swiper-container swiper-initialized swiper-horizontal swiper-pointer-events" data-slider_options="{&quot;slides_show_desktop&quot;:5,&quot;slides_show_tablet&quot;:2,&quot;slides_show_mobile&quot;:1,&quot;slides_scroll_desktop&quot;:3,&quot;slides_scroll_tablet&quot;:2,&quot;slides_scroll_mobile&quot;:1,&quot;margin_desktop&quot;:0,&quot;arrows&quot;:false,&quot;dots&quot;:true}" data-item-slider="ot_slider_a3bdf7d">
+			<div class="swiper-wrapper" id="swiper-wrapper-e8b310bf092721e10f" aria-live="polite" style="transform: translate3d(-987px, 0px, 0px); transition-duration: 0ms;"><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="3" role="group" aria-label="4 / 8" style="width: 329px;">
+					<div class="team-wrap">
+												<div class="team-thumb">
+							<img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Katie Doyle" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/member7.jpg"> 
+						</div>
+												<div class="team-text-overlay">
+							<div class="team-info dtable">
+																<div class="dcell">
+									<h4 class="m_name">Katie Doyle</h4>
+													                    <div class="team-social flex-middle">
+				                    	<span class="ot-flaticon-add"></span>
+				                       	<a rel="nofollow" href="" style="transition-delay: 0ms">
+				                             <i class="fab fab fa-twitter"></i>
+				                        </a>
+				                        				                        <a rel="nofollow" href="" style="transition-delay: 100ms">
+				                             <i class="fab fab fa-facebook-f"></i>
+				                        </a>
+				                        				                        				                        <a rel="nofollow" href="" style="transition-delay: 200ms">
+				                             <i class="fab fab fa-pinterest-p"></i>
+				                        </a>
+				                        				                    </div>  
+					                								</div>
+																<div class="m_extra">
+									<span>[ Interior Designer ]</span>								</div>
+							</div>
+						</div>
+					</div>
+				</div><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="4" role="group" aria-label="5 / 8" style="width: 329px;">
+					<div class="team-wrap">
+												<div class="team-thumb">
+							<img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Andrew Kinzer" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/member10.jpg"> 
+						</div>
+												<div class="team-text-overlay">
+							<div class="team-info dtable">
+																<div class="dcell">
+									<h4 class="m_name">Andrew Kinzer</h4>
+													                    <div class="team-social flex-middle">
+				                    	<span class="ot-flaticon-add"></span>
+				                       	<a rel="nofollow" href="" style="transition-delay: 0ms">
+				                             <i class="fab fab fa-twitter"></i>
+				                        </a>
+				                        				                        <a rel="nofollow" href="" style="transition-delay: 100ms">
+				                             <i class="fab fab fa-facebook-f"></i>
+				                        </a>
+				                        				                        				                        <a rel="nofollow" href="" style="transition-delay: 200ms">
+				                             <i class="fab fab fa-pinterest-p"></i>
+				                        </a>
+				                        				                    </div>  
+					                								</div>
+																<div class="m_extra">
+									<span>[ CEO of Company ]</span>								</div>
+							</div>
+						</div>
+					</div>
+				</div><div class="swiper-slide swiper-slide-duplicate swiper-slide-prev" data-swiper-slide-index="5" role="group" aria-label="6 / 8" style="width: 329px;">
+					<div class="team-wrap">
+												<div class="team-thumb">
+							<img decoding="async" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Anna Richmond" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/member6.jpg"> 
+						</div>
+												<div class="team-text-overlay">
+							<div class="team-info dtable">
+																<div class="dcell">
+									<h4 class="m_name">Anna Richmond</h4>
+													                    <div class="team-social flex-middle">
+				                    	<span class="ot-flaticon-add"></span>
+				                       	<a rel="nofollow" href="" style="transition-delay: 0ms">
+				                             <i class="fab fab fa-twitter"></i>
+				                        </a>
+				                        				                        <a rel="nofollow" href="" style="transition-delay: 100ms">
+				                             <i class="fab fab fa-facebook-f"></i>
+				                        </a>
+				                        				                        				                        <a rel="nofollow" href="" style="transition-delay: 200ms">
+				                             <i class="fab fab fa-pinterest-p"></i>
+				                        </a>
+				                        				                    </div>  
+					                								</div>
+																<div class="m_extra">
+									<span>[ Marketing Manager ]</span>								</div>
+							</div>
+						</div>
+					</div>
+				</div><div class="swiper-slide swiper-slide-duplicate swiper-slide-active" data-swiper-slide-index="6" role="group" aria-label="7 / 8" style="width: 329px;">
+					<div class="team-wrap">
+												<div class="team-thumb">
+							<img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member1.jpg" alt="Christina Torres" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member1.jpg" data-ll-status="loaded" class="entered lazyloaded"> 
+						</div>
+												<div class="team-text-overlay">
+							<div class="team-info dtable">
+																<div class="dcell">
+									<h4 class="m_name">Christina Torres</h4>
+													                    <div class="team-social flex-middle">
+				                    	<span class="ot-flaticon-add"></span>
+				                       	<a rel="nofollow" href="https://twitter.com" style="transition-delay: 0ms">
+				                             <i class="fab fab fa-twitter"></i>
+				                        </a>
+				                        				                        <a rel="nofollow" href="https://linkedin.com" style="transition-delay: 100ms">
+				                             <i class="fab fab fa-linkedin-in"></i>
+				                        </a>
+				                        				                        				                        <a rel="nofollow" href="https://instagram.com" style="transition-delay: 200ms">
+				                             <i class="fab fab fa-instagram"></i>
+				                        </a>
+				                        				                    </div>  
+					                								</div>
+																<div class="m_extra">
+									<span>[ Company Founder ]</span>								</div>
+							</div>
+						</div>
+					</div>
+				</div><div class="swiper-slide swiper-slide-duplicate swiper-slide-next" data-swiper-slide-index="7" role="group" aria-label="8 / 8" style="width: 329px;">
+					<div class="team-wrap">
+												<div class="team-thumb">
+							<img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member2.jpg" alt="Jesica Lina" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member2.jpg" data-ll-status="loaded" class="entered lazyloaded"> 
+						</div>
+												<div class="team-text-overlay">
+							<div class="team-info dtable">
+																<div class="dcell">
+									<h4 class="m_name">Jesica Lina</h4>
+													                    <div class="team-social flex-middle">
+				                    	<span class="ot-flaticon-add"></span>
+				                       	<a rel="nofollow" href="#" style="transition-delay: 0ms">
+				                             <i class="fab fab fa-twitter"></i>
+				                        </a>
+				                        				                        <a rel="nofollow" href="#" style="transition-delay: 100ms">
+				                             <i class="fab fab fa-linkedin-in"></i>
+				                        </a>
+				                        				                        				                        <a rel="nofollow" href="#" style="transition-delay: 200ms">
+				                             <i class="fab fab fa-instagram"></i>
+				                        </a>
+				                        				                    </div>  
+					                								</div>
+																<div class="m_extra">
+									<span>[ Marketing Manager ]</span>								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="swiper-slide" data-swiper-slide-index="0" role="group" aria-label="1 / 8" style="width: 329px;">
+					<div class="team-wrap">
+												<div class="team-thumb">
+							<img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member3.jpg" alt="Robert Cooper" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member3.jpg" data-ll-status="loaded" class="entered lazyloaded"> 
+						</div>
+												<div class="team-text-overlay">
+							<div class="team-info dtable">
+																<div class="dcell">
+									<h4 class="m_name">Robert Cooper</h4>
+													                    <div class="team-social flex-middle">
+				                    	<span class="ot-flaticon-add"></span>
+				                       	<a rel="nofollow" href="" style="transition-delay: 0ms">
+				                             <i class="fab fab fa-twitter"></i>
+				                        </a>
+				                        				                        <a rel="nofollow" href="" style="transition-delay: 100ms">
+				                             <i class="fab fab fa-facebook-f"></i>
+				                        </a>
+				                        				                        				                        <a rel="nofollow" href="" style="transition-delay: 200ms">
+				                             <i class="fab fab fa-pinterest-p"></i>
+				                        </a>
+				                        				                    </div>  
+					                								</div>
+																<div class="m_extra">
+									<span>[ Finance Manager ]</span>								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="swiper-slide" data-swiper-slide-index="1" role="group" aria-label="2 / 8" style="width: 329px;">
+					<div class="team-wrap">
+												<div class="team-thumb">
+							<img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member4.jpg" alt="Olivia Peterson" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member4.jpg" data-ll-status="loaded" class="entered lazyloaded"> 
+						</div>
+												<div class="team-text-overlay">
+							<div class="team-info dtable">
+																<div class="dcell">
+									<h4 class="m_name">Olivia Peterson</h4>
+													                    <div class="team-social flex-middle">
+				                    	<span class="ot-flaticon-add"></span>
+				                       	<a rel="nofollow" href="" style="transition-delay: 0ms">
+				                             <i class="fab fab fa-twitter"></i>
+				                        </a>
+				                        				                        <a rel="nofollow" href="" style="transition-delay: 100ms">
+				                             <i class="fab fab fa-facebook-f"></i>
+				                        </a>
+				                        				                        				                        <a rel="nofollow" href="" style="transition-delay: 200ms">
+				                             <i class="fab fab fa-pinterest-p"></i>
+				                        </a>
+				                        				                    </div>  
+					                								</div>
+																<div class="m_extra">
+									<span>[ CEO of Company ]</span>								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="swiper-slide" data-swiper-slide-index="2" role="group" aria-label="3 / 8" style="width: 329px;">
+					<div class="team-wrap">
+												<div class="team-thumb">
+							<img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member5.jpg" alt="Amalia Bruno" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/04/member5.jpg" data-ll-status="loaded" class="entered lazyloaded"> 
+						</div>
+												<div class="team-text-overlay">
+							<div class="team-info dtable">
+																<div class="dcell">
+									<h4 class="m_name">Amalia Bruno</h4>
+													                    <div class="team-social flex-middle">
+				                    	<span class="ot-flaticon-add"></span>
+				                       	<a rel="nofollow" href="" style="transition-delay: 0ms">
+				                             <i class="fab fab fa-twitter"></i>
+				                        </a>
+				                        				                        <a rel="nofollow" href="" style="transition-delay: 100ms">
+				                             <i class="fab fab fa-facebook-f"></i>
+				                        </a>
+				                        				                        				                        <a rel="nofollow" href="" style="transition-delay: 200ms">
+				                             <i class="fab fab fa-pinterest-p"></i>
+				                        </a>
+				                        				                    </div>  
+					                								</div>
+																<div class="m_extra">
+									<span>[ Interior Designer ]</span>								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="swiper-slide" data-swiper-slide-index="3" role="group" aria-label="4 / 8" style="width: 329px;">
+					<div class="team-wrap">
+												<div class="team-thumb">
+							<img decoding="async" src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/member7.jpg" alt="Katie Doyle" data-lazy-src="https://wpdemo.archiwp.com/theratio/wp-content/uploads/sites/5/2020/05/member7.jpg" data-ll-status="loaded" class="entered lazyloaded"> 
+						</div>
+												<div class="team-text-overlay">
+							<div class="team-info dtable">
+																<div class="dcell">
+									<h4 class="m_name">Katie Doyle</h4>
+													                    <div class="team-social flex-middle">
+				                    	<span class="ot-flaticon-add"></span>
+				                       	<a rel="nofollow" href="" style="transition-delay: 0ms">
+				                             <i class="fab fab fa-twitter"></i>
+				                        </a>
+				                        				                        <a rel="nofollow" href="" style="transition-delay: 100ms">
+				                             <i class="fab fab fa-facebook-f"></i>
+				                        </a>
+				                        				                        				                        <a rel="nofollow" href="" style="transition-delay: 200ms">
+				                             <i class="fab fab fa-pinterest-p"></i>
+				                        </a>
+				                        				                    </div>  
+					                								</div>
+																<div class="m_extra">
+									<span>[ Interior Designer ]</span>								</div>
+							</div>"

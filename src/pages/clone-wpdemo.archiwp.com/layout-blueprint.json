@@ -1,0 +1,156 @@
+[
+  {
+    "index": 0,
+    "dataId": "c1c1f2c",
+    "sectionName": "Side Panel / Gallery",
+    "layout": "boxed",
+    "padding": "0px 20px",
+    "backgroundColor": "rgb(42, 42, 42)",
+    "container": { "maxWidth": "1200px", "display": "flex" },
+    "columns": [{ "width": "100%", "widgets": ["ilogo", "iheading", "image-gallery", "icon-list", "social-icons"] }]
+  },
+  {
+    "index": 1,
+    "dataId": "c760ec6",
+    "sectionName": "Hero - Revolution Slider",
+    "layout": "full_width",
+    "padding": "0px",
+    "backgroundColor": "transparent",
+    "container": { "maxWidth": "none", "display": "flex" },
+    "columns": [{ "width": "100%", "widgets": ["slider_revolution", "icon-list", "icon-list"] }]
+  },
+  {
+    "index": 2,
+    "dataId": "00c2934",
+    "sectionName": "About / Welcome",
+    "layout": "boxed",
+    "padding": "90px 0px",
+    "backgroundColor": "transparent",
+    "backgroundImage": "bg1-home1.jpg",
+    "container": { "maxWidth": "1200px", "display": "flex" },
+    "columns": [
+      { "width": "50%", "className": "elementor-col-50", "widgets": ["text-editor"] },
+      { "width": "50%", "className": "elementor-col-50", "widgets": ["image-box"] }
+    ]
+  },
+  {
+    "index": 3,
+    "dataId": "cdf7ef1",
+    "sectionName": "From Sketch to Life",
+    "layout": "boxed",
+    "padding": "110px 0px",
+    "backgroundColor": "transparent",
+    "container": { "maxWidth": "1200px", "display": "flex" },
+    "columns": [
+      { "width": "50%", "className": "elementor-col-50", "widgets": ["image"] },
+      { "width": "50%", "className": "elementor-col-50", "widgets": ["iheading", "text-editor", "ibutton"] }
+    ]
+  },
+  {
+    "index": 4,
+    "dataId": "74bd402",
+    "sectionName": "Client Logo Carousel",
+    "layout": "full_width",
+    "padding": "71px 0px",
+    "backgroundColor": "rgb(244, 244, 244)",
+    "container": { "maxWidth": "none", "display": "flex" },
+    "columns": [{ "width": "100%", "widgets": ["theratio-image-carousel (Swiper)"] }]
+  },
+  {
+    "index": 5,
+    "dataId": "92eb555",
+    "sectionName": "Portfolio Categories (3-column grid)",
+    "layout": "full_width",
+    "padding": "0px",
+    "backgroundColor": "transparent",
+    "container": { "maxWidth": "none", "display": "flex" },
+    "columns": [
+      { "width": "33.33%", "className": "elementor-col-33", "widgets": ["imagecategory"] },
+      { "width": "33.33%", "className": "elementor-col-33", "widgets": ["imagecategory"] },
+      { "width": "33.33%", "className": "elementor-col-33", "widgets": ["imagecategory"] }
+    ]
+  },
+  {
+    "index": 6,
+    "dataId": "1dfb2f2",
+    "sectionName": "What Can We Offer (Services + Counters)",
+    "layout": "boxed",
+    "padding": "110px 0px",
+    "backgroundColor": "transparent",
+    "container": { "maxWidth": "1200px", "display": "flex" },
+    "columns": [{
+      "width": "100%",
+      "widgets": ["iheading", "iiconbox1 x3 (3-column inner)", "icounter x4 (4-column inner)"]
+    }],
+    "innerSections": [
+      {
+        "name": "Services Row",
+        "columns": 3,
+        "widgets": ["iiconbox1", "iiconbox1", "iiconbox1"]
+      },
+      {
+        "name": "Counters Row",
+        "columns": 4,
+        "widgets": ["icounter (180+)", "icounter (10+)", "icounter (35+)", "icounter (5+)"]
+      }
+    ]
+  },
+  {
+    "index": 7,
+    "dataId": "7af3b21",
+    "sectionName": "Portfolio Metro Grid",
+    "layout": "full_width",
+    "padding": "0px 0px 120px",
+    "backgroundColor": "transparent",
+    "container": { "maxWidth": "none", "display": "flex" },
+    "columns": [{ "width": "100%", "widgets": ["ipfilter_metro (filterable portfolio grid)"] }]
+  },
+  {
+    "index": 8,
+    "dataId": "06075b1",
+    "sectionName": "CTA Banner - Get Interior Design",
+    "layout": "boxed",
+    "padding": "73px 0px",
+    "backgroundColor": "transparent",
+    "backgroundImage": "bg1-home1.jpg",
+    "container": { "maxWidth": "1200px", "display": "flex" },
+    "columns": [
+      { "width": "66.66%", "className": "elementor-col-66", "widgets": ["heading", "text-editor"] },
+      { "width": "33.33%", "className": "elementor-col-33", "widgets": ["ibutton"] }
+    ]
+  },
+  {
+    "index": 9,
+    "dataId": "6b311c1",
+    "sectionName": "Core Company Values (Progress Bars)",
+    "layout": "boxed",
+    "padding": "80px 0px 120px",
+    "backgroundColor": "transparent",
+    "container": { "maxWidth": "1200px", "display": "flex" },
+    "columns": [
+      { "width": "50%", "className": "elementor-col-50", "widgets": ["iheading", "text-editor", "iprogress x3"] },
+      { "width": "50%", "className": "elementor-col-50", "widgets": ["image"] }
+    ]
+  },
+  {
+    "index": 10,
+    "dataId": "5947146",
+    "sectionName": "Meet Our Skilled Team (Carousel)",
+    "layout": "full_width",
+    "padding": "105px 0px 86px",
+    "backgroundColor": "transparent",
+    "backgroundImage": "bg2-home1.jpg",
+    "container": { "maxWidth": "none", "display": "flex" },
+    "columns": [{ "width": "100%", "widgets": ["iheading", "imembercarousel (Swiper team slider)"] }]
+  },
+  {
+    "index": 11,
+    "dataId": "170af73",
+    "sectionName": "Read Our Latest News (Blog Carousel)",
+    "layout": "boxed",
+    "padding": "110px 0px 120px",
+    "backgroundColor": "transparent",
+    "container": { "maxWidth": "1200px", "display": "flex" },
+    "columns": [{ "width": "100%", "widgets": ["iheading + ibutton (header row)", "ipost_carousel (Swiper blog slider)"] }]
+  }
+]
