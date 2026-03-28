@@ -1875,6 +1875,115 @@ function generateModelSetupScript(injections, dynamicBlockDir, outputFile) {
 }
 
 // ═══════════════════════════════════════════════════════════
+//  Generate inline version (FTL embedded in HTML)
+// ═══════════════════════════════════════════════════════════
+
+function generateInlineModelSetupScript(injections) {
+  const lines = [];
+  lines.push(`<!-- Dynamic Module Model Setup Script (Inline) -->`);
+  lines.push(`<script>`);
+  lines.push(`(function() {`);
+  lines.push(`  var FTL_CONTENTS = {};`);
+
+  for (const inj of injections) {
+    if (!inj.success || !inj.freemakerContent) continue;
+    const escaped = JSON.stringify(inj.freemakerContent).replace(/<\//g, '<\\/');
+    lines.push(`  FTL_CONTENTS["${inj.uuid}"] = ${escaped};`);
+  }
+
+  lines.push('');
+  lines.push(`  window.__DYNAMIC_MODULES__ = {`);
+  lines.push(`    ftlContents: FTL_CONTENTS,`);
+  lines.push(`    modules: [`);
+
+  for (const inj of injections) {
+    if (!inj.success) continue;
+    lines.push(`      {`);
+    lines.push(`        uuid: "${inj.uuid}",`);
+    lines.push(`        blockType: "${inj.blockType}",`);
+    lines.push(`        appId: "${inj.appId}",`);
+    lines.push(`        templateFile: "${inj.templateFile}",`);
+    lines.push(`      },`);
+  }
+
+  lines.push(`    ],`);
+  lines.push(`    inject: function(editor) {`);
+  lines.push(`      if (!editor) return;`);
+  lines.push(`      for (var i = 0; i < this.modules.length; i++) {`);
+  lines.push(`        var mod = this.modules[i];`);
+  lines.push(`        var ftlContent = this.ftlContents[mod.uuid];`);
+  lines.push(`        if (!ftlContent) continue;`);
+  lines.push(`        var nodeEls = editor.DomComponents.getWrapper().find('[data-block-uuid="' + mod.uuid + '"]');`);
+  lines.push(`        if (nodeEls.length > 0) {`);
+  lines.push(`          var nodeModel = nodeEls[0];`);
+  lines.push(`          nodeModel.set('freemakerHtml', ftlContent);`);
+  lines.push(`          nodeModel.set('appId', mod.appId);`);
+  lines.push(`          nodeModel.set('appIsDev', true);`);
+  lines.push(`        }`);
+  lines.push(`      }`);
+  lines.push(`    }`);
+  lines.push(`  };`);
+  lines.push(`})();`);
+  lines.push(`</script>`);
+
+  return lines.join('\n');
+}
+
+function extractFtlInnerContent(ftlContent, uuid) {
+  const marker = `data-block-uuid="${uuid}"`;
+  const markerPos = ftlContent.indexOf(marker);
+  if (markerPos === -1) return ftlContent;
+
+  const tagEndPos = ftlContent.indexOf('>', markerPos);
+  if (tagEndPos === -1) return ftlContent;
+
+  const innerStart = tagEndPos + 1;
+  const tagName = findOpeningTag(ftlContent, markerPos);
+  const closeIdx = findMatchingCloseTag(ftlContent, innerStart, tagName);
+  if (closeIdx === -1) return ftlContent;
+
+  return ftlContent.substring(innerStart, closeIdx);
+}
+
+function generateInlineHtml(outputHtml, injections) {
+  let html = outputHtml;
+
+  for (const inj of injections) {
+    if (!inj.success || !inj.freemakerContent) continue;
+
+    const ftlInner = extractFtlInnerContent(inj.freemakerContent, inj.uuid);
+
+    const uuidAttr = `data-block-uuid="${inj.uuid}"`;
+    const nodeStart = html.indexOf(uuidAttr);
+    if (nodeStart === -1) continue;
+
+    const tagClose = html.indexOf('>', nodeStart);
+    if (tagClose === -1) continue;
+
+    const afterTag = tagClose + 1;
+    const tagName = findOpeningTag(html, nodeStart);
+    const closeIdx = findMatchingCloseTag(html, afterTag, tagName);
+    if (closeIdx === -1) continue;
+
+    html = html.substring(0, afterTag) + ftlInner + html.substring(closeIdx);
+  }
+
+  const oldScriptMarker = '<!-- Dynamic Module Model Setup Script -->';
+  const oldScriptStart = html.indexOf(oldScriptMarker);
+  if (oldScriptStart !== -1) {
+    const scriptEndTag = '</script>';
+    const scriptEnd = html.indexOf(scriptEndTag, oldScriptStart);
+    if (scriptEnd !== -1) {
+      const afterScript = scriptEnd + scriptEndTag.length;
+      const inlineScript = generateInlineModelSetupScript(injections);
+      html = html.substring(0, oldScriptStart) + inlineScript + html.substring(afterScript);
+    }
+  }
+
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════════
 //  Phase 5 helpers: API rendering
 // ═══════════════════════════════════════════════════════════
 
@@ -2193,6 +2302,12 @@ async function main() {
   fs.writeFileSync(outputFile, outputHtml, 'utf-8');
   console.log(`[OUTPUT] 已生成: ${outputFile}`);
 
+  // ─── Generate inline version (FTL embedded in HTML) ───
+  const inlineHtml = generateInlineHtml(outputHtml, injections);
+  const inlineFile = outputFile.replace(/\.html$/, '_inline.html');
+  fs.writeFileSync(inlineFile, inlineHtml, 'utf-8');
+  console.log(`[OUTPUT] 已生成内联版: ${inlineFile}`);
+
   const reportFileName = path.basename(outputFile).replace(/\.html$/, '_report.json');
   const reportsDir = path.join(dateDir, 'reports');
   fs.mkdirSync(reportsDir, { recursive: true });
@@ -2273,7 +2388,7 @@ async function main() {
   }
   console.log('╠════════════════════════════════════════════════════════╣');
   console.log(`║  输出目录: ${path.relative(process.cwd(), dateDir).replace(/\\/g, '/')}`);
-  console.log(`║  ├── pages/   → dynamic_page.html`);
+  console.log(`║  ├── pages/   → dynamic_page.html + _inline.html`);
   console.log(`║  ├── blocks/  → ${ftlCount} 个 .ftl 文件`);
   console.log(`║  └── reports/ → report.json`);
   console.log('╚════════════════════════════════════════════════════════╝');

@@ -11,7 +11,8 @@
     "verify:edge": "node .claude/skills/dynamic-module-converter/scripts/test-edge-cases.mjs",
     "verify:all": "npm run verify && npm run verify:js && npm run verify:visual && npm run verify:export && npm run verify:edge",
     "convert:verify": "npm run convert && npm run verify:all",
-    "test": "npm run convert:verify"
+    "test": "npm run convert:verify",
+    "render-server": "node src/tools/page-renderer.mjs"
   },
   "keywords": [],
   "author": "",

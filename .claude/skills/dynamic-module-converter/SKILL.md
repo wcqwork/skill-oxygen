@@ -33,6 +33,10 @@ npm run verify:visual   # 视觉结构对比 (25项)
 npm run verify:export   # Export路径模拟 (41项)
 npm run verify:edge     # 边界场景测试 (9项)
 npm run verify:all      # 全部验证
+
+# 启动页面渲染服务 (FTL → 真实 HTML)
+npm run render-server
+# 访问: http://localhost:3457/render?file=src/Generate/<timestamp>/pages/dynamic_preview_inline.html
 ```
 
 **参数说明**:
@@ -343,12 +347,22 @@ src/                                 -- Project source files
     clone-wpdemo.archiwp.com/
       preview.html                   -- Original static HTML (cloned page)
       previewNoDesc.html             -- Alternative version without descriptions
-  blocks/                            -- Independent FTL files per dynamic module
-    {uuid}.ftl                       -- FreeMarker template (one per module)
-  reports/                           -- Conversion reports
-    dynamic_page_report.json         -- Detection + injection + validation report
+  Generate/                          -- Timestamped conversion output
+    YYYY-MM-DD_HH-mm-ss/
+      pages/
+        dynamic_preview.html         -- Standard output (static preview + external .ftl refs)
+        dynamic_preview_inline.html  -- Inline version (FTL embedded in HTML)
+      blocks/
+        {uuid}.ftl                   -- Independent FreeMarker template per module
+      reports/
+        dynamic_preview_report.json  -- Detection + injection + validation report
   fetch_config/                      -- Template fetch configurations
-  tools/                             -- Dev tools (API tester, CORS proxy)
+  tools/                             -- Dev tools
+    api-tester.html                  -- renderFreemarker API tester (browser)
+    proxy-server.mjs                 -- CORS proxy + local file server (port 3456)
+    page-renderer.mjs                -- Page render server: FTL → HTML via API (port 3457)
+    .render-config.json              -- Credentials for page-renderer (token, cookie, etc.)
+    .render-config.example.json      -- Template for .render-config.json
   docs/                              -- Project documentation
 ```
 
@@ -365,7 +379,8 @@ Main conversion script. Accepts any static HTML and outputs a dynamic version wi
 | `--auto` | off | Skip user confirmation, auto-apply all detections |
 
 Outputs (生成到 `src/Generate/YYYY-MM-DD_HH-mm-ss/` 下):
-- `pages/dynamic_<input>.html` — Converted HTML with dynamic module markers (templates referenced, not inlined)
+- `pages/dynamic_<input>.html` — Standard output: static preview HTML + external .ftl references via fetch()
+- `pages/dynamic_<input>_inline.html` — Inline version: FTL content embedded directly in HTML + ftlContents in script
 - `reports/dynamic_<input>_report.json` — Detection + injection + validation report (includes ftlOutputPath)
 - `blocks/{uuid}.ftl` — Independent FreeMarker template file per dynamic module
 
@@ -392,6 +407,40 @@ Simulates the GrapesJS editor export flow: verifies `blocks/` directory and .ftl
 ### `test-edge-cases.mjs`
 
 Tests 9 boundary scenarios: empty file, no sections, all static, pure product list, article list, mixed content, insufficient items, inline script with `$`, and 20-section stress test.
+
+### `page-renderer.mjs` (src/tools/)
+
+Node.js HTTP server that renders inline HTML pages by calling the renderFreemarker API.
+
+```bash
+# Start the server
+npm run render-server
+# Or: node src/tools/page-renderer.mjs
+
+# Access rendered page in browser:
+# http://localhost:3457/render?file=src/Generate/<timestamp>/pages/dynamic_preview_inline.html
+```
+
+**Endpoints:**
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /render?file=<path>` | Read inline HTML, render FTL via API, return complete HTML document |
+| `GET /local?file=<path>` | Serve local project file |
+| `GET /list?dir=<path>` | List directory contents |
+| `GET /` | Service status + endpoints |
+
+**Credentials** (required for `/render`):
+- Config file: `src/tools/.render-config.json` (copy from `.render-config.example.json`)
+- Request headers: `Authorization`, `X-Cookie`, `X-Page-Id`, `X-Relation-Id`
+- Query params: `?token=...&cookie=...&pageId=...`
+
+**Render flow:**
+1. Read the `_inline.html` file
+2. Parse `__DYNAMIC_MODULES__` from embedded script (extracts `ftlContents`)
+3. For each module, call renderFreemarker API with the FTL content
+4. Replace FTL in HTML with API-rendered HTML
+5. Remove setup script, return clean rendered document
 
 ## Integration with clone-website
 
