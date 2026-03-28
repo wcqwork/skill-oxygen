@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-03-20T07:52:53.738Z",
-  "inputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\mixed.html",
-  "outputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\mixed_out.html",
-  "dynamicBlockDir": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks",
+  "timestamp": "2026-03-25T08:40:08.941Z",
+  "inputFile": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\mixed.html",
+  "outputFile": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\mixed_out.html",
+  "dynamicBlockDir": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks",
   "totalSections": 1,
   "dynamicSections": 1,
   "staticSections": 0,
@@ -33,16 +33,16 @@
     {
       "success": true,
       "blockType": "phoenix_blocks_prodlist",
-      "uuid": "c3e3a466f196",
-      "appId": "eRKAfpUNFbOE",
-      "templateFile": "phoenix_blocks_prodlist_35644.ftl",
-      "freemakerHtmlLength": 11709,
-      "ftlOutputPath": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks\\c3e3a466f196.ftl"
+      "uuid": "45546f1062c2",
+      "appId": "fkfpUKANEHRt",
+      "templateFile": "phoenix_blocks_prodlist_34774.ftl",
+      "freemakerHtmlLength": 9788,
+      "ftlOutputPath": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks\\45546f1062c2.ftl"
     }
   ],
   "validations": [
     {
-      "uuid": "c3e3a466f196",
+      "uuid": "45546f1062c2",
       "blockType": "phoenix_blocks_prodlist",
       "checks": [
         {
@@ -77,8 +77,8 @@
         },
         {
           "name": "FTL-空数据处理",
-          "pass": true,
-          "detail": "no-data 处理 ✓"
+          "pass": false,
+          "detail": "缺少 templist-no-data 处理"
         },
         {
           "name": "FTL-初始化脚本",
@@ -87,8 +87,8 @@
         },
         {
           "name": "FTL-initScript位置",
-          "pass": true,
-          "detail": "init script 在 [/@api] 外部 ✓"
+          "pass": false,
+          "detail": "init script 应在 [/@api] 关闭后"
         },
         {
           "name": "FTL-外层容器",

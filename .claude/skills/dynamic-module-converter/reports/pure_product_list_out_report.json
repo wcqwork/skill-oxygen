@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-03-20T07:52:52.442Z",
-  "inputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\pure_product_list.html",
-  "outputFile": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\pure_product_list_out.html",
-  "dynamicBlockDir": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks",
+  "timestamp": "2026-03-25T08:40:08.237Z",
+  "inputFile": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\pure_product_list.html",
+  "outputFile": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\pure_product_list_out.html",
+  "dynamicBlockDir": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks",
   "totalSections": 1,
   "dynamicSections": 1,
   "staticSections": 0,
@@ -33,16 +33,16 @@
     {
       "success": true,
       "blockType": "phoenix_blocks_prodlist",
-      "uuid": "ec213ebadf3a",
-      "appId": "eRKAfpUNFbOE",
-      "templateFile": "phoenix_blocks_prodlist_35644.ftl",
-      "freemakerHtmlLength": 11709,
-      "ftlOutputPath": "E:\\lea_project\\independentProject\\ai-gender\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks\\ec213ebadf3a.ftl"
+      "uuid": "dd59305f603a",
+      "appId": "fkfpUKANEHRt",
+      "templateFile": "phoenix_blocks_prodlist_34774.ftl",
+      "freemakerHtmlLength": 9788,
+      "ftlOutputPath": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks\\dd59305f603a.ftl"
     }
   ],
   "validations": [
     {
-      "uuid": "ec213ebadf3a",
+      "uuid": "dd59305f603a",
       "blockType": "phoenix_blocks_prodlist",
       "checks": [
         {
@@ -77,8 +77,8 @@
         },
         {
           "name": "FTL-空数据处理",
-          "pass": true,
-          "detail": "no-data 处理 ✓"
+          "pass": false,
+          "detail": "缺少 templist-no-data 处理"
         },
         {
           "name": "FTL-初始化脚本",
@@ -87,8 +87,8 @@
         },
         {
           "name": "FTL-initScript位置",
-          "pass": true,
-          "detail": "init script 在 [/@api] 外部 ✓"
+          "pass": false,
+          "detail": "init script 应在 [/@api] 关闭后"
         },
         {
           "name": "FTL-外层容器",

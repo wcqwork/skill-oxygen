@@ -97,6 +97,561 @@ function loadTemplate(blockType) {
   }
 }
 
+// ═══════════════════════════════════════════════════════════
+//  Module B: Intelligent Template Selection
+// ═══════════════════════════════════════════════════════════
+
+function loadAllTemplates(blockType) {
+  const entries = registry.filter(r => r.blockType === blockType && r.status === 'ok');
+  const results = [];
+  for (const entry of entries) {
+    try {
+      const content = fs.readFileSync(path.join(TEMPLATES_DIR, entry.fileName), 'utf-8');
+      results.push({ content, entry });
+    } catch { /* skip */ }
+  }
+  return results;
+}
+
+/**
+ * Extract tag skeleton from a DOM element (ignoring class names).
+ * Returns an array of paths like ["div>a>img", "div>div>h3>a", "div>span"]
+ */
+function extractTagSkeleton($, el, prefix, paths, maxDepth) {
+  if (!el || !el.tagName) return;
+  if ((maxDepth || 0) > 10) return;
+  const tag = el.tagName.toLowerCase();
+  if (EXCLUDED_TAGS.has(tag)) return;
+  const currentPath = prefix ? `${prefix}>${tag}` : tag;
+  const children = $(el).children();
+  if (children.length === 0) {
+    paths.push(currentPath);
+  } else {
+    children.each((_, child) => {
+      extractTagSkeleton($, child, currentPath, paths, (maxDepth || 0) + 1);
+    });
+  }
+}
+
+/**
+ * Extract list item DOM from a FTL template's [#list] loop body.
+ */
+function extractTemplateListItem(templateContent) {
+  // Try to extract the first list item from [#list]...[/#list]
+  const simpleMatch = templateContent.match(/\[#list\s+\S+\s+as\s+\w+\]\s*\n?([\s\S]*?)\[\/#list\]/);
+  if (!simpleMatch || !simpleMatch[1]) return null;
+  const rawContent = simpleMatch[1].trim();
+  if (!rawContent) return null;
+
+  // Find the top-level [#else] (not nested inside [#if]...[/#if])
+  const topLevelElseIdx = findTopLevelElse(rawContent);
+  const itemBlock = topLevelElseIdx !== -1 ? rawContent.substring(0, topLevelElseIdx).trim() : rawContent;
+  if (!itemBlock) return null;
+
+  // Find the first opening HTML tag — that's the list item wrapper
+  const tagMatch = itemBlock.match(/<(\w+)[\s>]/);
+  if (!tagMatch) return null;
+  const tag = tagMatch[1];
+
+  // Use balanced tag matching to find the correct closing tag
+  const openIdx = itemBlock.indexOf(tagMatch[0]);
+  const closeTag = `</${tag}>`;
+  const itemHtml = extractBalancedTag(itemBlock, openIdx, tag);
+  return itemHtml || itemBlock.substring(openIdx);
+}
+
+/**
+ * Find a top-level [#else] that is NOT nested inside [#if]...[/#if].
+ */
+function findTopLevelElse(content) {
+  let depth = 0;
+  let i = 0;
+  while (i < content.length) {
+    if (content.startsWith('[#if', i) || content.startsWith('[#if ', i)) {
+      depth++;
+      i += 4;
+    } else if (content.startsWith('[/#if]', i)) {
+      depth--;
+      i += 6;
+    } else if (content.startsWith('[#else]', i) && depth === 0) {
+      return i;
+    } else {
+      i++;
+    }
+  }
+  return -1;
+}
+
+/**
+ * Extract a balanced HTML tag starting at openIdx.
+ * Handles nested tags of the same name correctly.
+ */
+function extractBalancedTag(html, openIdx, tagName) {
+  const openRe = new RegExp(`<${tagName}[\\s>]`, 'gi');
+  const closeRe = new RegExp(`</${tagName}>`, 'gi');
+  let depth = 0;
+  let i = openIdx;
+
+  // Skip past the opening tag
+  openRe.lastIndex = i;
+  const firstOpen = openRe.exec(html);
+  if (!firstOpen || firstOpen.index !== openIdx) return null;
+  depth = 1;
+  i = firstOpen.index + firstOpen[0].length;
+
+  while (i < html.length && depth > 0) {
+    openRe.lastIndex = i;
+    closeRe.lastIndex = i;
+    const nextOpen = openRe.exec(html);
+    const nextClose = closeRe.exec(html);
+
+    if (!nextClose) return null; // unbalanced
+
+    if (nextOpen && nextOpen.index < nextClose.index) {
+      depth++;
+      i = nextOpen.index + nextOpen[0].length;
+    } else {
+      depth--;
+      if (depth === 0) {
+        return html.substring(openIdx, nextClose.index + nextClose[0].length);
+      }
+      i = nextClose.index + nextClose[0].length;
+    }
+  }
+  return null;
+}
+
+/**
+ * Compute structural similarity between two tag skeleton arrays.
+ * Returns a score between 0 and 1.
+ */
+function computeStructuralSimilarity(skeletonA, skeletonB) {
+  if (skeletonA.length === 0 && skeletonB.length === 0) return 1;
+  if (skeletonA.length === 0 || skeletonB.length === 0) return 0;
+
+  // Normalize paths: strip prefixes to just keep depth + tag sequence
+  function normalizePath(p) {
+    return p.split('>').map(s => s.trim()).join('>');
+  }
+  const setA = new Set(skeletonA.map(normalizePath));
+  const setB = new Set(skeletonB.map(normalizePath));
+
+  // Jaccard similarity
+  let intersection = 0;
+  for (const p of setA) {
+    if (setB.has(p)) intersection++;
+  }
+  const union = new Set([...setA, ...setB]).size;
+  const jaccard = union > 0 ? intersection / union : 0;
+
+  // Also compare depth distribution similarity
+  function depthHist(skeleton) {
+    const hist = {};
+    for (const p of skeleton) {
+      const d = p.split('>').length;
+      hist[d] = (hist[d] || 0) + 1;
+    }
+    return hist;
+  }
+  const histA = depthHist(skeletonA);
+  const histB = depthHist(skeletonB);
+  const allDepths = new Set([...Object.keys(histA), ...Object.keys(histB)]);
+  let depthSim = 0;
+  let depthTotal = 0;
+  for (const d of allDepths) {
+    const a = histA[d] || 0;
+    const b = histB[d] || 0;
+    depthSim += Math.min(a, b);
+    depthTotal += Math.max(a, b);
+  }
+  const depthScore = depthTotal > 0 ? depthSim / depthTotal : 0;
+
+  return jaccard * 0.7 + depthScore * 0.3;
+}
+
+/**
+ * Select the best matching template for the given original HTML section.
+ * Falls back to loadTemplate() if no good match found.
+ */
+function selectBestTemplate($, $section, blockType, detection) {
+  const allTemplates = loadAllTemplates(blockType);
+  if (allTemplates.length === 0) return null;
+  if (allTemplates.length === 1) return allTemplates[0];
+
+  // Extract original HTML list item skeleton
+  const container = findRepeatingContainer($, $section);
+  if (!container) return allTemplates[0];
+
+  const children = $(container).children();
+  if (children.length < 1) return allTemplates[0];
+
+  const firstChild = children.first()[0];
+  const origPaths = [];
+  extractTagSkeleton($, firstChild, '', origPaths);
+
+  // Also collect original HTML class names for bonus matching
+  const origClasses = [];
+  $section.find('*').each((_, el) => {
+    const cls = el.attribs?.class;
+    if (cls) origClasses.push(cls);
+  });
+  const origClassStr = origClasses.join(' ').toLowerCase();
+
+  let bestTemplate = allTemplates[0];
+  let bestScore = -1;
+
+  for (const tmpl of allTemplates) {
+    const listItemHtml = extractTemplateListItem(tmpl.content);
+    if (!listItemHtml) continue;
+
+    // Parse template list item and extract skeleton
+    const $tmpl = load(listItemHtml, { decodeEntities: false, xmlMode: false });
+    const tmplRoot = $tmpl('body').children().first()[0];
+    if (!tmplRoot) continue;
+
+    const tmplPaths = [];
+    extractTagSkeleton($tmpl, tmplRoot, '', tmplPaths);
+
+    let score = computeStructuralSimilarity(origPaths, tmplPaths);
+
+    // Bonus: class name matches from template
+    const tmplClasses = [];
+    $tmpl('*').each((_, el) => {
+      const cls = el.attribs?.class;
+      if (cls) tmplClasses.push(cls);
+    });
+    const tmplClassStr = tmplClasses.join(' ').toLowerCase();
+
+    // Check for shared significant class fragments
+    const tmplClassTokens = tmplClassStr.split(/\s+/).filter(c => c.length > 4);
+    let classHits = 0;
+    for (const token of tmplClassTokens) {
+      if (origClassStr.includes(token)) classHits++;
+    }
+    if (tmplClassTokens.length > 0) {
+      score += (classHits / tmplClassTokens.length) * 0.3;
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestTemplate = tmpl;
+    }
+  }
+
+  console.log(`   [模板选择] 从 ${allTemplates.length} 个候选中选择 ${bestTemplate.entry.fileName} (相似度: ${bestScore.toFixed(3)})`);
+  return bestTemplate;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  Module A: Structure-Aligned Field Mapping
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * Extract a variable table from a template list item HTML.
+ * Each entry: { tagPath, attr, variable, tagName }
+ *   tagPath: simplified path like "div>a>img"
+ *   attr: "src", "href", "text", "alt", "title"
+ *   variable: the FreeMarker expression like "${product.prodName!?html}"
+ */
+function extractVariableTable(templateListItemHtml) {
+  const variables = [];
+  const fmVarRe = /\$\{[^}]+\}/g;
+
+  const $ = load(templateListItemHtml, { decodeEntities: false, xmlMode: false });
+
+  function getTagPath(el) {
+    const parts = [];
+    let cur = el;
+    while (cur && cur.tagName) {
+      parts.unshift(cur.tagName.toLowerCase());
+      cur = cur.parent;
+      if (cur && (cur.tagName === 'body' || cur.tagName === 'html' || cur.tagName === '[document]')) break;
+    }
+    return parts.join('>');
+  }
+
+  // Scan all elements for FreeMarker variables in attributes and text
+  $('*').each((_, el) => {
+    const tagPath = getTagPath(el);
+    const tag = el.tagName?.toLowerCase();
+    if (!tag) return;
+
+    // Check attributes
+    for (const [attr, val] of Object.entries(el.attribs || {})) {
+      if (typeof val === 'string' && fmVarRe.test(val)) {
+        fmVarRe.lastIndex = 0;
+        let m;
+        while ((m = fmVarRe.exec(val)) !== null) {
+          // Classify the variable semantically
+          const varName = m[0];
+          const semantic = classifyVariable(varName);
+          variables.push({ tagPath, attr, variable: varName, tagName: tag, semantic });
+        }
+        fmVarRe.lastIndex = 0;
+      }
+    }
+
+    // Check direct text content (not children's text)
+    const directText = $(el).contents().filter((_, node) => node.type === 'text').text().trim();
+    if (directText && fmVarRe.test(directText)) {
+      fmVarRe.lastIndex = 0;
+      let m;
+      while ((m = fmVarRe.exec(directText)) !== null) {
+        const varName = m[0];
+        const semantic = classifyVariable(varName);
+        variables.push({ tagPath, attr: 'text', variable: varName, tagName: tag, semantic });
+      }
+      fmVarRe.lastIndex = 0;
+    }
+  });
+
+  return variables;
+}
+
+/**
+ * Classify a FreeMarker variable by its semantic role.
+ */
+function classifyVariable(varExpr) {
+  const lower = varExpr.toLowerCase();
+  if (/photourllist|photourlnormal|photo.*url/i.test(lower)) return 'img';
+  if (/photoalt|photo.*alt/i.test(lower)) return 'imgAlt';
+  if (/phototitle|photo.*title/i.test(lower)) return 'imgTitle';
+  if (/produrl|articleurl|groupurl|prod_url|article_url/i.test(lower)) return 'url';
+  if (/prodname|articleTitle|groupname/i.test(lower)) return 'title';
+  if (/prodprice|shopprodprice|proddiscountprice|prodmaxprice|prodminprice/i.test(lower)) return 'price';
+  if (/prodbri|articlesummary|articlebrief/i.test(lower)) return 'desc';
+  if (/publishtime|createtime|updatetime/i.test(lower)) return 'date';
+  if (/catename|cateurl/i.test(lower)) return 'category';
+  if (/coinsymbol|currency/i.test(lower)) return 'currency';
+  return 'other';
+}
+
+/**
+ * Build a simplified tag path for a DOM element (class-agnostic).
+ */
+function buildTagPath($, el) {
+  const parts = [];
+  let cur = el;
+  while (cur && cur.tagName) {
+    const tag = cur.tagName.toLowerCase();
+    if (tag === 'body' || tag === 'html' || tag === '[document]') break;
+    parts.unshift(tag);
+    cur = cur.parent;
+  }
+  return parts.join('>');
+}
+
+/**
+ * Structure-aligned field mapping: align template variable positions
+ * to original HTML DOM positions and replace values.
+ *
+ * Strategy priority:
+ *   1. Exact tag path match
+ *   2. Fuzzy tag path match (same tag sequence, depth differs by 1-2)
+ *   3. Semantic fallback (attribute value characteristics)
+ *   4. Legacy FIELD_MAPPING fallback
+ */
+function alignAndMapFields($local, $item, variableTable, detectedType) {
+  if (!variableTable || variableTable.length === 0) {
+    // Fallback to legacy mapping
+    const mapping = FIELD_MAPPING[detectedType];
+    if (mapping) return applyFieldMapping($local, $item, mapping);
+    return $local.html($item);
+  }
+
+  // Build index of all elements in original HTML item
+  const origElements = [];
+  $item.find('*').each((_, el) => {
+    origElements.push({
+      el,
+      tagPath: buildTagPath($local, el),
+      tagName: el.tagName?.toLowerCase(),
+    });
+  });
+  // Also include the item root itself
+  origElements.unshift({
+    el: $item[0],
+    tagPath: buildTagPath($local, $item[0]),
+    tagName: $item[0].tagName?.toLowerCase(),
+  });
+
+  const applied = new Set();
+
+  // Pass 1: Exact tag path match
+  for (const v of variableTable) {
+    if (applied.has(v)) continue;
+    const match = origElements.find(oe => oe.tagPath === v.tagPath && oe.tagName === v.tagName);
+    if (match) {
+      if (applyVariable($local, match.el, v)) applied.add(v);
+    }
+  }
+
+  // Pass 2: Fuzzy path match — same leaf tags, depth difference ≤ 2
+  const HEADING_TAGS = new Set(['h1','h2','h3','h4','h5','h6']);
+  function tagsEquivalent(a, b) {
+    if (a === b) return true;
+    // Treat all heading levels as equivalent
+    if (HEADING_TAGS.has(a) && HEADING_TAGS.has(b)) return true;
+    return false;
+  }
+
+  for (const v of variableTable) {
+    if (applied.has(v)) continue;
+    const vParts = v.tagPath.split('>');
+    const vLeaf = vParts[vParts.length - 1];
+    const candidates = origElements.filter(oe => {
+      const oParts = oe.tagPath.split('>');
+      const oLeaf = oParts[oParts.length - 1];
+      if (!tagsEquivalent(oLeaf, vLeaf)) return false;
+      if (Math.abs(oParts.length - vParts.length) > 2) return false;
+      // Check at least 50% tags in common from the tail (with heading equivalence)
+      const minLen = Math.min(oParts.length, vParts.length);
+      let commonTail = 0;
+      for (let i = 1; i <= minLen; i++) {
+        if (tagsEquivalent(oParts[oParts.length - i], vParts[vParts.length - i])) commonTail++;
+        else break;
+      }
+      return commonTail >= Math.ceil(minLen * 0.5);
+    });
+    if (candidates.length > 0) {
+      // Pick candidate with closest depth
+      candidates.sort((a, b) => {
+        const da = Math.abs(a.tagPath.split('>').length - vParts.length);
+        const db = Math.abs(b.tagPath.split('>').length - vParts.length);
+        return da - db;
+      });
+      if (applyVariable($local, candidates[0].el, v)) applied.add(v);
+    }
+  }
+
+  // Pass 3: Semantic fallback — match by attribute value characteristics
+  for (const v of variableTable) {
+    if (applied.has(v)) continue;
+    if (v.semantic === 'other') continue;
+
+    const match = findBySemantic($local, $item, origElements, v);
+    if (match) {
+      if (applyVariable($local, match.el, v)) applied.add(v);
+    }
+  }
+
+  // Report coverage
+  const total = variableTable.filter(v => v.semantic !== 'other' && v.semantic !== 'currency').length;
+  const mapped = [...applied].filter(v => v.semantic !== 'other' && v.semantic !== 'currency').length;
+  if (total > 0) {
+    console.log(`   [字段映射] 覆盖率: ${mapped}/${total} (${(mapped/total*100).toFixed(0)}%)`);
+  }
+
+  // Reconstruct outer tag
+  const outerTag = $item[0].tagName;
+  const outerAttrs = $item[0].attribs || {};
+  let outerAttrStr = '';
+  for (const [k, val] of Object.entries(outerAttrs)) {
+    outerAttrStr += ` ${k}="${val}"`;
+  }
+  return `<${outerTag}${outerAttrStr}>${$item.html()}</${outerTag}>`;
+}
+
+/**
+ * Apply a FreeMarker variable to a DOM element at the specified attribute.
+ */
+function applyVariable($, el, v) {
+  const $el = $(el);
+  if (v.attr === 'text') {
+    const elTag = el.tagName?.toLowerCase();
+    const isLeafLike = $el.children().length === 0 || (elTag === 'a' && $el.find('img').length === 0);
+    const isAllowedTag = elTag === 'a' || ['h1','h2','h3','h4','h5','h6','p','span','div','time','li'].includes(elTag);
+    // Skip if has complex children (images, links, headings) unless it's a leaf-like element
+    if (!isLeafLike && !isAllowedTag) return false;
+    if ($el.find('a, img').length > 0 && elTag !== 'a') {
+      // Has links or images inside — skip text replacement to avoid destroying structure
+      return false;
+    }
+    const currentText = $el.text().trim();
+    if (!currentText && $el.children().length > 0) return false;
+    $el.html(v.variable);
+    return true;
+  } else if (v.attr === 'src' || v.attr === 'href' || v.attr === 'alt' || v.attr === 'title' || v.attr === 'srcset' || v.attr === 'data-srcset') {
+    if ($el.attr(v.attr) !== undefined || v.attr === 'alt' || v.attr === 'title') {
+      $el.attr(v.attr, v.variable);
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Find an element by semantic role when path matching fails.
+ */
+function findBySemantic($, $item, origElements, v) {
+  switch (v.semantic) {
+    case 'img': {
+      // Find img elements with src containing http
+      const imgs = origElements.filter(oe => oe.tagName === 'img');
+      if (imgs.length > 0 && v.attr === 'src') return imgs[0];
+      return null;
+    }
+    case 'imgAlt': {
+      const imgs = origElements.filter(oe => oe.tagName === 'img');
+      if (imgs.length > 0 && v.attr === 'alt') return imgs[0];
+      return null;
+    }
+    case 'imgTitle': {
+      const imgs = origElements.filter(oe => oe.tagName === 'img');
+      if (imgs.length > 0 && v.attr === 'title') return imgs[0];
+      return null;
+    }
+    case 'url': {
+      if (v.attr !== 'href') return null;
+      const links = origElements.filter(oe => oe.tagName === 'a' && $(oe.el).attr('href'));
+      // Match by position: if the variable's template path includes 'img', find link wrapping img
+      if (v.tagPath.includes('img') || (v.tagPath.split('>').length <= 3)) {
+        const imgLink = links.find(l => $(l.el).find('img').length > 0);
+        if (imgLink) return imgLink;
+      }
+      if (links.length > 0) return links[0];
+      return null;
+    }
+    case 'title': {
+      // Find heading or link with text
+      const headings = origElements.filter(oe => ['h1','h2','h3','h4','h5','h6'].includes(oe.tagName));
+      if (headings.length > 0) {
+        if (v.attr === 'text') return headings[0];
+        // Check for link inside heading
+        const hLink = origElements.find(oe => oe.tagName === 'a' && headings.some(h => $(h.el).find('a').length > 0) && oe.tagPath.includes(headings[0].tagPath));
+        if (hLink && v.attr === 'text') return hLink;
+      }
+      return null;
+    }
+    case 'price': {
+      // Find element containing price-like text
+      const priceEl = origElements.find(oe => {
+        const text = $(oe.el).text().trim();
+        return /[\$€¥£₹]\s*\d|^\d+\.\d{2}$/.test(text);
+      });
+      return priceEl || null;
+    }
+    case 'date': {
+      const dateEl = origElements.find(oe => {
+        return oe.tagName === 'time' || /date|time|artime/i.test($(oe.el).attr('class') || '');
+      });
+      return dateEl || null;
+    }
+    case 'desc': {
+      // Find paragraph-like element with substantial text
+      const descEl = origElements.find(oe => {
+        if (!['p', 'div', 'span'].includes(oe.tagName)) return false;
+        const text = $(oe.el).text().trim();
+        const cls = ($(oe.el).attr('class') || '').toLowerCase();
+        return (text.length > 20 && text.length < 500) || /desc|brief|summary|excerpt/i.test(cls);
+      });
+      return descEl || null;
+    }
+    default:
+      return null;
+  }
+}
+
 // ─── Detection Configuration ───
 const URL_PATTERNS = {
   prodList:     [/\/product\b/i, /\/p\//i, /\/item\b/i, /\/shop\b/i, /\/goods\b/i, /\/catalog\b/i, /\/products\b/i],
@@ -806,8 +1361,6 @@ function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
     return templateData.content;
   }
 
-  const mapping = FIELD_MAPPING[detection.detectedType];
-
   const sectionHtml = $.html($section);
   const $local = load(sectionHtml, { decodeEntities: false, xmlMode: false });
   const $body = $local('body');
@@ -830,9 +1383,19 @@ function synthesizeFtl($, $section, detection, templateData, uuid, blockType) {
   });
   if (sameTagChildren.length < 2) return templateData.content;
 
-  const dynamicItemHtml = mapping
-    ? applyFieldMapping($local, $local(sameTagChildren[0]), mapping)
-    : $local.html($local(sameTagChildren[0]));
+  // Module A: Structure-aligned field mapping
+  const templateListItemHtml = extractTemplateListItem(templateData.content);
+  let dynamicItemHtml;
+  if (templateListItemHtml) {
+    const variableTable = extractVariableTable(templateListItemHtml);
+    dynamicItemHtml = alignAndMapFields($local, $local(sameTagChildren[0]), variableTable, detection.detectedType);
+  } else {
+    // Fallback to legacy mapping
+    const mapping = FIELD_MAPPING[detection.detectedType];
+    dynamicItemHtml = mapping
+      ? applyFieldMapping($local, $local(sameTagChildren[0]), mapping)
+      : $local.html($local(sameTagChildren[0]));
+  }
 
   for (let i = sameTagChildren.length - 1; i >= 1; i--) {
     $local(sameTagChildren[i]).remove();
@@ -1081,9 +1644,19 @@ function injectMarkers($, $section, detection) {
   const blockType = BLOCK_TYPE_MAP[detection.detectedType];
   if (!blockType) return { success: false, reason: `未知动态类型: ${detection.detectedType}` };
 
-  const templateData = loadTemplate(blockType);
-  if (!templateData) return { success: false, reason: `未找到模板: ${blockType}` };
+  // Module B: Intelligent template selection
+  const templateData = selectBestTemplate($, $section, blockType, detection);
+  if (!templateData) {
+    // Fallback to legacy single template loading
+    const fallback = loadTemplate(blockType);
+    if (!fallback) return { success: false, reason: `未找到模板: ${blockType}` };
+    return injectMarkersWithTemplate($, $section, detection, fallback, blockType);
+  }
 
+  return injectMarkersWithTemplate($, $section, detection, templateData, blockType);
+}
+
+function injectMarkersWithTemplate($, $section, detection, templateData, blockType) {
   const uuid = uuidv4().replace(/-/g, '').substring(0, 12);
   const appId = templateData.entry.appId || '';
 

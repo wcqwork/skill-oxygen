@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node .claude/skills/dynamic-module-converter/scripts/test-edge-cases.mjs)",
+      "Bash(node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs --input src/pages/clone-wpdemo.archiwp.com/preview.html --auto)",
+      "Bash(node -e \":*)",
+      "Bash(cat \"E:/dev_project/skill-oxygen/src/Generate/2026-03-25_16-40-34/blocks/\"*.ftl)"
+    ]
+  }
+}
