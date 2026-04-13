@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-25T08:40:08.621Z",
+  "timestamp": "2026-03-28T12:43:59.390Z",
   "inputFile": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\article_list.html",
   "outputFile": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\_test_tmp\\article_list_out.html",
   "dynamicBlockDir": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks",
@@ -33,16 +33,16 @@
     {
       "success": true,
       "blockType": "phoenix_blocks_Articlelist",
-      "uuid": "940b2b6d86af",
+      "uuid": "d89f9b3da164",
       "appId": "hNfKUApskSzj",
       "templateFile": "phoenix_blocks_Articlelist_35894.ftl",
       "freemakerHtmlLength": 4850,
-      "ftlOutputPath": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks\\940b2b6d86af.ftl"
+      "ftlOutputPath": "E:\\dev_project\\skill-oxygen\\.claude\\skills\\dynamic-module-converter\\blocks\\d89f9b3da164.ftl"
     }
   ],
   "validations": [
     {
-      "uuid": "940b2b6d86af",
+      "uuid": "d89f9b3da164",
       "blockType": "phoenix_blocks_Articlelist",
       "checks": [
         {

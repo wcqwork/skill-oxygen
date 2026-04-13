@@ -4,7 +4,16 @@
       "Bash(node .claude/skills/dynamic-module-converter/scripts/test-edge-cases.mjs)",
       "Bash(node .claude/skills/dynamic-module-converter/scripts/convert-dynamic.mjs --input src/pages/clone-wpdemo.archiwp.com/preview.html --auto)",
       "Bash(node -e \":*)",
-      "Bash(cat \"E:/dev_project/skill-oxygen/src/Generate/2026-03-25_16-40-34/blocks/\"*.ftl)"
+      "Bash(cat \"E:/dev_project/skill-oxygen/src/Generate/2026-03-25_16-40-34/blocks/\"*.ftl)",
+      "Bash(code --install-extension bierner.markdown-mermaid --force)",
+      "Bash(code --install-extension bpruitt-goddard.mermaid-markdown-syntax-highlighting --force)",
+      "Bash(code --install-extension gera2ld.markmap-vscode --force)",
+      "Bash(code.cmd --install-extension bierner.markdown-mermaid)",
+      "Bash(code.cmd --install-extension bpruitt-goddard.mermaid-markdown-syntax-highlighting)",
+      "Bash(code.cmd --install-extension gera2ld.markmap-vscode)",
+      "Bash(code.cmd \"e:\\\\dev_project\\\\skill-oxygen\\\\MINDMAP.md\")",
+      "Bash(code.cmd --command \"markmap.open\" \"e:\\\\dev_project\\\\skill-oxygen\\\\MINDMAP.md\")",
+      "Bash(code.cmd \"e:\\\\dev_project\\\\skill-oxygen\\\\mindmap.markmap.md\")"
     ]
   }
 }

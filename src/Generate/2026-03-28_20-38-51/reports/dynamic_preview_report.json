@@ -1,0 +1,257 @@
+{
+  "timestamp": "2026-03-28T12:38:51.245Z",
+  "inputFile": "E:\\dev_project\\skill-oxygen\\src\\pages\\clone-wpdemo.archiwp.com\\preview.html",
+  "outputFile": "E:\\dev_project\\skill-oxygen\\src\\Generate\\2026-03-28_20-38-51\\pages\\dynamic_preview.html",
+  "dynamicBlockDir": "E:\\dev_project\\skill-oxygen\\src\\Generate\\2026-03-28_20-38-51\\blocks",
+  "totalSections": 8,
+  "dynamicSections": 1,
+  "staticSections": 7,
+  "detections": [
+    {
+      "sectionIndex": 0,
+      "sectionDescription": "portfolio-grid",
+      "detectedType": null,
+      "confidence": 0.3181818181818182,
+      "scores": {
+        "structural": 35,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "classSignature": 0,
+        "total": 35
+      },
+      "evidence": [
+        "结构检测: 6 个重复子元素 (35/40)"
+      ],
+      "itemCount": 6,
+      "isDynamic": false,
+      "repeatingContainer": "portfolio-grid",
+      "repeatingItemTag": "div"
+    },
+    {
+      "sectionIndex": 1,
+      "sectionDescription": "swiper-wrapper",
+      "detectedType": null,
+      "confidence": 0.3181818181818182,
+      "scores": {
+        "structural": 35,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "classSignature": 0,
+        "total": 35
+      },
+      "evidence": [
+        "结构检测: 5 个重复子元素 (35/40)"
+      ],
+      "itemCount": 5,
+      "isDynamic": false,
+      "repeatingContainer": "swiper-wrapper",
+      "repeatingItemTag": "div"
+    },
+    {
+      "sectionIndex": 2,
+      "sectionDescription": "counters-grid",
+      "detectedType": null,
+      "confidence": 0.22727272727272727,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "classSignature": 0,
+        "total": 25
+      },
+      "evidence": [
+        "结构检测: 4 个重复子元素 (25/40)"
+      ],
+      "itemCount": 4,
+      "isDynamic": false,
+      "repeatingContainer": "counters-grid",
+      "repeatingItemTag": "div"
+    },
+    {
+      "sectionIndex": 3,
+      "sectionDescription": "High-end Interior Design",
+      "detectedType": null,
+      "confidence": 0.22727272727272727,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "classSignature": 0,
+        "total": 25
+      },
+      "evidence": [
+        "结构检测: 3 个重复子元素 (25/40)"
+      ],
+      "itemCount": 3,
+      "isDynamic": false,
+      "repeatingContainer": "swiper-wrapper",
+      "repeatingItemTag": "div"
+    },
+    {
+      "sectionIndex": 4,
+      "sectionDescription": "Office Spaces01",
+      "detectedType": null,
+      "confidence": 0.22727272727272727,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "classSignature": 0,
+        "total": 25
+      },
+      "evidence": [
+        "结构检测: 3 个重复子元素 (25/40)"
+      ],
+      "itemCount": 3,
+      "isDynamic": false,
+      "repeatingContainer": "section-categories",
+      "repeatingItemTag": "section"
+    },
+    {
+      "sectionIndex": 5,
+      "sectionDescription": "services-grid",
+      "detectedType": null,
+      "confidence": 0.3181818181818182,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 10,
+        "classSignature": 0,
+        "total": 35
+      },
+      "evidence": [
+        "结构检测: 3 个重复子元素 (25/40)",
+        "内容启发: 检测到 articleList 特征 (10/20)"
+      ],
+      "itemCount": 3,
+      "isDynamic": false,
+      "repeatingContainer": "services-grid",
+      "repeatingItemTag": "div"
+    },
+    {
+      "sectionIndex": 6,
+      "sectionDescription": "The Core Company Values",
+      "detectedType": null,
+      "confidence": 0.22727272727272727,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 0,
+        "classSignature": 0,
+        "total": 25
+      },
+      "evidence": [
+        "结构检测: 3 个重复子元素 (25/40)"
+      ],
+      "itemCount": 3,
+      "isDynamic": false,
+      "repeatingContainer": "values-content",
+      "repeatingItemTag": "div"
+    },
+    {
+      "sectionIndex": 7,
+      "sectionDescription": "swiper-wrapper",
+      "detectedType": "articleList",
+      "confidence": 0.39090909090909093,
+      "scores": {
+        "structural": 25,
+        "urlPattern": 0,
+        "contentHeuristic": 18,
+        "classSignature": 0,
+        "total": 43
+      },
+      "evidence": [
+        "结构检测: 3 个重复子元素 (25/40)",
+        "内容启发: 检测到 articleList 特征 (18/20)"
+      ],
+      "itemCount": 3,
+      "isDynamic": true,
+      "repeatingContainer": "swiper-wrapper",
+      "repeatingItemTag": "div"
+    }
+  ],
+  "injections": [
+    {
+      "success": true,
+      "blockType": "phoenix_blocks_Articlelist",
+      "uuid": "a2dabc6e16bc",
+      "appId": "SLAUKpfYZlfO",
+      "templateFile": "phoenix_blocks_Articlelist_34604.ftl",
+      "freemakerHtmlLength": 4637,
+      "ftlOutputPath": "E:\\dev_project\\skill-oxygen\\src\\Generate\\2026-03-28_20-38-51\\blocks\\a2dabc6e16bc.ftl"
+    }
+  ],
+  "validations": [
+    {
+      "uuid": "a2dabc6e16bc",
+      "blockType": "phoenix_blocks_Articlelist",
+      "checks": [
+        {
+          "name": "DOM层级",
+          "pass": true,
+          "detail": "developer-component > developer-node-component > 原始HTML ✓"
+        },
+        {
+          "name": "属性完整性",
+          "pass": true,
+          "detail": "block-type:true gjs-type:true auto-uuid:true"
+        },
+        {
+          "name": "FreeMarker标记",
+          "pass": true,
+          "detail": "freemakerHtml 标记已设置 ✓"
+        },
+        {
+          "name": "原始内容保留",
+          "pass": true,
+          "detail": "内容完整 (1884 chars) ✓"
+        },
+        {
+          "name": "FTL-@api标签",
+          "pass": true,
+          "detail": "[@api]...[/@api] 完整 ✓"
+        },
+        {
+          "name": "FTL-列表循环",
+          "pass": true,
+          "detail": "[#list] 循环存在 ✓"
+        },
+        {
+          "name": "FTL-空数据处理",
+          "pass": true,
+          "detail": "no-data 处理 ✓"
+        },
+        {
+          "name": "FTL-hiddenInputs位置",
+          "pass": true,
+          "detail": "hidden inputs 在 [/@api] 内 ✓"
+        },
+        {
+          "name": "FTL-JSON-LD",
+          "pass": true,
+          "detail": "JSON-LD 结构化数据 ✓"
+        },
+        {
+          "name": "FTL-初始化脚本",
+          "pass": true,
+          "detail": "block init script ✓"
+        },
+        {
+          "name": "FTL-initScript位置",
+          "pass": true,
+          "detail": "init script 在 [/@api] 外部 ✓"
+        },
+        {
+          "name": "FTL-外层容器",
+          "pass": true,
+          "detail": "phoenix-container 外层 ✓"
+        },
+        {
+          "name": "FTL-内层节点组件",
+          "pass": true,
+          "detail": "developer-node-component ✓"
+        }
+      ]
+    }
+  ]
+}

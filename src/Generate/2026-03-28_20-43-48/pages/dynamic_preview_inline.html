@@ -1,0 +1,1952 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TheRatio - Architecture &amp; Interior Design</title>
+<style>
+:root {
+  --color-primary: #1a1a1a;
+  --color-secondary: #555555;
+  --color-accent: #b99272;
+  --color-bg-dark: rgb(42, 42, 42);
+  --color-bg-light: #f4f4f4;
+  --color-bg-white: #ffffff;
+  --color-text-dark: rgb(35, 35, 35);
+  --color-text-body: rgb(85, 85, 85);
+  --color-text-light: rgb(208, 207, 207);
+  --color-text-white: rgb(255, 255, 255);
+  --font-heading: "Titillium Web", -apple-system, "Segoe UI", sans-serif;
+  --font-body: Raleway, -apple-system, "Segoe UI", sans-serif;
+  --font-button: "Titillium Web", -apple-system, "Segoe UI", sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 30px;
+  color: var(--color-text-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0 0 20px;
+  color: var(--color-primary);
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 48px;
+}
+
+h4 {
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+h5 {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 33.6px;
+}
+
+h6 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 25.2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+p {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26.25px;
+  margin: 0 0 15px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ========== BUTTON STYLES ========== */
+.octf-btn {
+  display: inline-block;
+  font-family: var(--font-button);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.42857;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  padding: 18px 41px;
+  background: var(--color-primary);
+  color: var(--color-text-white);
+  border: 1px solid transparent;
+  border-radius: 0px;
+  cursor: pointer;
+  position: relative;
+  transition: 0.3s linear;
+}
+
+.octf-btn::before,
+.octf-btn::after {
+  content: "";
+  position: absolute;
+  background: var(--color-primary);
+  transition: 0.3s linear;
+}
+
+.octf-btn::before {
+  width: calc(100% + 2px);
+  height: 1px;
+  bottom: -6px;
+  left: 10px;
+}
+
+.octf-btn::after {
+  width: 1px;
+  height: calc(100% + 2px);
+  top: 10px;
+  right: -6px;
+}
+
+.octf-btn:hover {
+  background: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.octf-btn:hover::before { width: 0; }
+.octf-btn:hover::after { height: 0; }
+
+.octf-btn-light {
+  background: var(--color-text-white);
+  color: var(--color-primary);
+}
+
+.octf-btn-light::before,
+.octf-btn-light::after {
+  background: var(--color-text-white);
+}
+
+.octf-btn-light:hover {
+  background: var(--color-primary);
+  color: var(--color-text-white);
+  border-color: var(--color-primary);
+}
+
+.octf-btn-dark {
+  background: var(--color-primary);
+  color: var(--color-text-white);
+}
+
+.octf-btn-dark::before,
+.octf-btn-dark::after {
+  background: var(--color-primary);
+}
+
+.octf-btn-dark:hover {
+  background: var(--color-text-white);
+  color: var(--color-primary);
+  border-color: var(--color-text-white);
+}
+
+/* ========== OT-HEADING COMPONENT ========== */
+.ot-heading span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 5px;
+}
+
+.ot-heading .main-heading {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 48px;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.ot-heading.is-dots::after {
+  content: "...............";
+  display: block;
+  font-size: 24px;
+  letter-spacing: 5px;
+  color: var(--color-accent);
+  margin-top: 5px;
+  line-height: 1;
+}
+
+.ot-heading.center { text-align: center; }
+
+/* ========== GRID LINES DECORATION ========== */
+.has-grid-lines {
+  position: relative;
+}
+
+.grid-lines-vertical {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1200px;
+  max-width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.grid-lines-vertical .g-line {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.grid-lines-vertical .line-left { left: 0; }
+.grid-lines-vertical .line-center { left: 50%; }
+.grid-lines-vertical .line-right { right: 0; }
+
+/* ========== SECTION 1: HERO ========== */
+.section-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  max-height: 1080px;
+  overflow: hidden;
+  background: #111;
+}
+
+.section-hero .hero-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.section-hero .hero-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.section-hero .hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-bg-text {
+  font-family: var(--font-heading);
+  font-size: 200px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  letter-spacing: 100px;
+  line-height: 200px;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  pointer-events: none;
+}
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-size: 90px;
+  font-weight: 200;
+  line-height: 80px;
+  color: var(--color-text-white);
+  margin-bottom: 30px;
+  white-space: nowrap;
+}
+
+.hero-desc {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 32px;
+  color: var(--color-text-white);
+  max-width: 818px;
+  margin-bottom: 40px;
+}
+
+.hero-btn {
+  display: inline-block;
+  font-family: var(--font-button);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 25px;
+  text-transform: uppercase;
+  padding: 15px 39px;
+  background: var(--color-primary);
+  color: var(--color-text-white);
+  border: 1px solid transparent;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: 0.3s linear;
+}
+
+.hero-btn:hover {
+  background: #fff;
+  color: var(--color-primary);
+}
+
+.hero-social {
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.hero-social a {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--color-text-white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  transition: 0.3s;
+}
+
+.hero-social a:hover { color: var(--color-accent); }
+
+.hero-arrows {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  z-index: 3;
+  display: flex;
+  gap: 0;
+}
+
+.hero-arrows span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: var(--color-text-white);
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.hero-arrows span:hover { background: rgba(255,255,255,0.1); }
+
+/* ========== SECTION 2: ABOUT / WELCOME ========== */
+.section-about {
+  background-color: var(--color-bg-dark);
+  background-image: url('https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png');
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+  padding: 90px 0;
+  position: relative;
+}
+
+.section-about::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(42, 42, 42, 0.92);
+}
+
+.section-about .container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.about-quote {
+  flex: 1;
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 48px;
+  color: var(--color-text-white);
+  font-style: italic;
+}
+
+.about-person {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.about-person-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.about-person-info h5 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 33.6px;
+  color: var(--color-text-white);
+  margin-bottom: 5px;
+}
+
+.about-person-info p {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26.25px;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ========== SECTION 3: FROM SKETCH TO LIFE ========== */
+.section-sketch {
+  padding: 110px 0;
+  position: relative;
+}
+
+.section-sketch .container {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.sketch-image {
+  flex: 1;
+  min-width: 0;
+}
+
+.sketch-image img {
+  width: 100%;
+  max-width: 670px;
+}
+
+.sketch-content {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.sketch-content .ot-heading .main-heading {
+  font-size: 36px;
+  color: var(--color-primary);
+}
+
+.sketch-content p {
+  color: var(--color-text-body);
+  margin-bottom: 30px;
+}
+
+/* ========== SECTION 4: LOGO CAROUSEL (FLAT GRID) ========== */
+.section-logos {
+  background: var(--color-bg-light);
+  padding: 71px 0;
+}
+
+.logos-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+.logos-grid .logo-item {
+  flex: 0 0 auto;
+  opacity: 0.5;
+  transition: 0.3s;
+}
+
+.logos-grid .logo-item:hover { opacity: 1; }
+
+.logos-grid .logo-item img {
+  height: 60px;
+  width: auto;
+  filter: grayscale(100%);
+}
+
+/* ========== SECTION 5: PORTFOLIO CATEGORIES ========== */
+.section-categories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.cate-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.cate-item img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.cate-item:hover img { transform: scale(1.05); }
+
+.cate-item-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.5));
+}
+
+.cate-item-content h2 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 48px;
+  color: var(--color-text-white);
+  margin: 0;
+  position: relative;
+  display: inline-block;
+}
+
+.cate-item-content .number-stroke {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 80px;
+  line-height: 1;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.5);
+  color: transparent;
+  position: absolute;
+  right: -60px;
+  bottom: -10px;
+}
+
+/* ========== SECTION 6: SERVICES + COUNTERS ========== */
+.section-services {
+  padding: 110px 0;
+  position: relative;
+}
+
+.section-services .container {
+  position: relative;
+  z-index: 1;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 60px;
+  margin-bottom: 80px;
+}
+
+.service-box {
+  text-align: center;
+  padding: 40px 30px;
+  border: 1px solid #eee;
+  transition: 0.3s;
+}
+
+.service-box:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.service-box .icon-main {
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.service-box .icon-main img {
+  max-height: 84px;
+  width: auto;
+}
+
+.service-box h5 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 33.6px;
+  color: var(--color-primary);
+  margin-bottom: 15px;
+}
+
+.service-box h5 a { color: inherit; }
+
+.service-box p {
+  color: var(--color-text-body);
+  margin-bottom: 20px;
+}
+
+.btn-details {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 3px;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.btn-details:hover { color: var(--color-accent); border-color: var(--color-accent); }
+
+.counters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  text-align: center;
+}
+
+.ot-counter {
+  text-align: center;
+}
+
+.ot-counter .num-wrap {
+  font-family: var(--font-heading);
+  font-size: 48px;
+  font-weight: 200;
+  line-height: 1.2;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.ot-counter .num-wrap span {
+  font-weight: 200;
+}
+
+.ot-counter h6 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 25.2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-dark);
+  margin: 0;
+}
+
+/* ========== SECTION 7: PORTFOLIO METRO GRID ========== */
+.section-portfolio {
+  padding: 0 0 120px;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(200px, auto);
+  gap: 0;
+  max-width: 100%;
+}
+
+.portfolio-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.portfolio-item:hover img { transform: scale(1.05); }
+
+.portfolio-item.span-2 { grid-column: span 2; }
+
+.portfolio-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 25px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  opacity: 0;
+  transition: 0.4s;
+  transform: translateY(10px);
+}
+
+.portfolio-item:hover .portfolio-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.portfolio-info h5 {
+  font-size: 20px;
+  color: var(--color-text-white);
+  margin-bottom: 5px;
+}
+
+.portfolio-info h5 a { color: inherit; }
+
+.portfolio-info .portfolio-cates {
+  font-size: 13px;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.portfolio-info .portfolio-cates a { color: var(--color-accent); }
+
+/* ========== SECTION 8: CTA BANNER ========== */
+.section-cta {
+  background-color: var(--color-bg-dark);
+  background-image: url('https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png');
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+  padding: 73px 0;
+  position: relative;
+}
+
+.section-cta::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(42, 42, 42, 0.9);
+}
+
+.section-cta .container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.cta-text {
+  flex: 2;
+}
+
+.cta-text h2 {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 48px;
+  color: var(--color-text-white);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.cta-text p {
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.cta-action {
+  flex: 1;
+  text-align: right;
+}
+
+/* ========== SECTION 9: COMPANY VALUES ========== */
+.section-values {
+  padding: 80px 0 120px;
+  position: relative;
+}
+
+.section-values .container {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.values-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.values-content .ot-heading .main-heading {
+  font-size: 36px;
+  color: var(--color-primary);
+}
+
+.values-content > p {
+  margin-bottom: 40px;
+}
+
+.values-image {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.values-image img {
+  width: 100%;
+  max-width: 860px;
+}
+
+.ot-progress {
+  margin-bottom: 25px;
+}
+
+.ot-progress .overflow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.ot-progress .pname {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-primary);
+}
+
+.ot-progress .ppercent {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.ot-progress .iprogress {
+  width: 100%;
+  height: 2px;
+  background: #e5e5e5;
+  position: relative;
+}
+
+.ot-progress .progress-bar {
+  height: 100%;
+  background: var(--color-primary);
+  position: relative;
+  transition: width 0.6s ease;
+}
+
+.ot-progress .progress-bar::after {
+  content: "";
+  position: absolute;
+  right: -4px;
+  top: -4px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid var(--color-primary);
+  transform: rotate(-90deg);
+}
+
+/* ========== SECTION 10: TEAM ========== */
+.section-team {
+  background-color: var(--color-bg-light);
+  background-image: url('https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png');
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+  padding: 105px 0 86px;
+  position: relative;
+}
+
+.section-team::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(244, 244, 244, 0.92);
+}
+
+.section-team .ot-heading,
+.section-team .team-grid {
+  position: relative;
+  z-index: 1;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  margin-top: 40px;
+}
+
+.team-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.team-card img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.team-card:hover img { transform: scale(1.05); }
+
+.team-text-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: rgba(26, 26, 26, 0.8);
+  opacity: 0;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.team-card:hover .team-text-overlay { opacity: 1; }
+
+.team-text-overlay h4 {
+  font-family: var(--font-heading);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--color-text-white);
+  margin-bottom: 10px;
+}
+
+.team-text-overlay .m-extra {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text-light);
+}
+
+.team-pagination {
+  text-align: center;
+  margin-top: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.team-pagination .dot {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  position: relative;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.team-pagination .dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: rgb(50, 50, 50);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.team-pagination .dot.active {
+  border-color: rgb(50, 50, 50);
+}
+
+/* ========== SECTION 11: BLOG ========== */
+.section-blog {
+  padding: 110px 0 120px;
+  position: relative;
+}
+
+.section-blog .container {
+  position: relative;
+  z-index: 1;
+}
+
+.blog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.blog-card {
+  background: var(--color-bg-white);
+}
+
+.blog-card-thumb {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.blog-card-thumb img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.blog-card:hover .blog-card-thumb img { transform: scale(1.05); }
+
+.blog-card-thumb .category-tag {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-white);
+  background: var(--color-primary);
+  padding: 6px 14px;
+}
+
+.blog-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-accent);
+  margin-bottom: 12px;
+}
+
+.blog-card-meta .sep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.blog-card h5 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 33.6px;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.blog-card h5 a { color: inherit; transition: 0.3s; }
+.blog-card h5 a:hover { color: var(--color-accent); }
+
+.blog-card p {
+  color: var(--color-text-body);
+}
+
+/* ========== SECTION 3: CIRCULAR TEXT BADGE ========== */
+.circular-badge {
+  position: absolute;
+  top: 5px;
+  right: -20px;
+  width: 130px;
+  height: 130px;
+  animation: rotateBadge 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateBadge {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ========== SECTION 7: PORTFOLIO FILTER TABS ========== */
+.portfolio-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 0 15px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.portfolio-filter-tab {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #999;
+  cursor: pointer;
+  padding-bottom: 8px;
+  border-bottom: 2px solid transparent;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+.portfolio-filter-tab:hover {
+  color: var(--color-primary);
+}
+
+.portfolio-filter-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-accent);
+}
+
+/* ========== SECTION 9: KEYWORD LABELS ========== */
+.values-keyword-label {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.values-keyword-label .kw-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.values-keyword-label .kw-dot::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.values-keyword-label.kw-quality {
+  top: -25px;
+  right: 140px;
+}
+
+.values-keyword-label.kw-experience {
+  top: 45%;
+  right: -80px;
+  transform: translateY(-50%);
+}
+
+.values-keyword-label.kw-hardskills {
+  bottom: 15px;
+  right: 20px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .hero-title { font-size: 55px; line-height: 60px; }
+  .hero-bg-text { font-size: 120px; letter-spacing: 60px; line-height: 120px; }
+  .hero-desc { font-size: 17px; max-width: 600px; }
+  .hero-social { display: none; }
+
+  .section-about .container { flex-direction: column; gap: 30px; text-align: center; }
+  .about-person { justify-content: center; }
+
+  .section-sketch .container { flex-direction: column; }
+  .sketch-image { order: -1; }
+
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .counters-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .portfolio-item.span-2 { grid-column: span 2; }
+
+  .section-cta .container { flex-direction: column; text-align: center; }
+  .cta-action { text-align: center; }
+
+  .section-values .container { flex-direction: column; }
+
+  .team-grid { grid-template-columns: repeat(3, 1fr); }
+
+  .blog-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .section-categories { grid-template-columns: repeat(2, 1fr); }
+
+  .circular-badge { width: 100px; height: 100px; right: -10px; }
+  .portfolio-filters { gap: 20px; flex-wrap: wrap; }
+  .values-keyword-label.kw-experience { right: -40px; }
+}
+
+@media (max-width: 767px) {
+  .hero-title { font-size: 36px; line-height: 44px; white-space: normal; }
+  .hero-bg-text { font-size: 80px; letter-spacing: 30px; line-height: 80px; }
+  .hero-desc { font-size: 16px; line-height: 28px; max-width: 100%; }
+  .hero-btn { padding: 12px 25px; }
+  .hero-arrows { bottom: 20px; right: 20px; }
+  .hero-arrows span { width: 45px; height: 45px; }
+
+  .section-about { padding: 60px 0; }
+  .about-quote { font-size: 20px; line-height: 36px; }
+  .about-person { flex-direction: column; text-align: center; }
+  .about-person-img { width: 100px; height: 100px; }
+
+  .section-sketch { padding: 60px 0; }
+
+  .octf-btn { padding: 12px 20px; }
+
+  .logos-grid { gap: 40px; }
+  .logos-grid .logo-item img { height: 40px; }
+
+  .section-categories { grid-template-columns: 1fr; }
+
+  .section-services { padding: 60px 0; }
+  .services-grid { grid-template-columns: 1fr; }
+  .counters-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .portfolio-item.span-2 { grid-column: span 2; }
+
+  .section-cta { padding: 50px 0; }
+  .cta-text h2 { font-size: 24px; line-height: 36px; }
+
+  .section-values { padding: 60px 0; }
+  .section-values .container { gap: 40px; }
+
+  .section-team { padding: 60px 0; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-card img { height: 280px; }
+
+  .section-blog { padding: 60px 0; }
+  .blog-header { flex-direction: column; gap: 20px; }
+  .blog-grid { grid-template-columns: 1fr; }
+
+  .circular-badge { display: none; }
+  .portfolio-filters { gap: 15px; padding-bottom: 30px; }
+  .portfolio-filter-tab { font-size: 12px; letter-spacing: 0.5px; }
+  .values-keyword-label { display: none; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: 28px; line-height: 36px; }
+  .hero-bg-text { display: none; }
+
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .portfolio-item.span-2 { grid-column: span 1; }
+
+  .counters-grid { grid-template-columns: 1fr; }
+
+  .team-grid { grid-template-columns: 1fr; }
+
+  .portfolio-filters { gap: 10px; }
+  .portfolio-filter-tab { font-size: 11px; padding-bottom: 6px; }
+}
+
+/* ========== SWIPER OVERRIDES ========== */
+.hero-swiper { width: 100%; height: 100%; }
+.hero-swiper .swiper-slide { position: relative; width: 100%; height: 100vh; min-height: 600px; max-height: 1080px; overflow: hidden; }
+.hero-pagination { position: absolute !important; bottom: 30px !important; left: 50% !important; transform: translateX(-50%); z-index: 5; }
+.hero-pagination .swiper-pagination-bullet { width: 12px; height: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.5); opacity: 1; }
+.hero-pagination .swiper-pagination-bullet-active { background: #fff; border-color: #fff; }
+
+.logos-swiper { max-width: 1200px; margin: 0 auto; padding: 0 30px; }
+.logos-swiper .swiper-slide { width: auto; display: flex; align-items: center; justify-content: center; padding: 0 40px; }
+
+.team-swiper { margin-top: 40px; overflow: hidden; }
+.team-dots { text-align: center; margin-top: 60px; }
+.team-dots .swiper-pagination-bullet { width: 30px; height: 30px; border-radius: 50%; border: 1px solid transparent; background: transparent; opacity: 1; position: relative; }
+.team-dots .swiper-pagination-bullet::before { content: ''; position: absolute; top: 50%; left: 50%; width: 4px; height: 4px; background: rgb(50,50,50); border-radius: 50%; transform: translate(-50%,-50%); }
+.team-dots .swiper-pagination-bullet-active { border-color: rgb(50,50,50); }
+
+.blog-swiper { overflow: hidden; }
+.blog-swiper .swiper-slide { padding: 0 15px; box-sizing: border-box; }
+.blog-dots { text-align: center; margin-top: 40px; }
+.blog-dots .swiper-pagination-bullet { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #999; background: transparent; opacity: 1; }
+.blog-dots .swiper-pagination-bullet-active { background: var(--color-primary); border-color: var(--color-primary); }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+</head>
+<body>
+
+<!-- ==================== SECTION 1: HERO SLIDER (Swiper 3-slide) ==================== -->
+<section class="section-hero">
+  <div class="swiper hero-swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Hero 1" class="hero-bg">
+        <div class="hero-overlay"></div>
+        <div class="hero-bg-text">quality</div>
+        <div class="hero-content">
+          <h1 class="hero-title">High-end Interior Design</h1>
+          <div class="hero-desc">We pride ourselves on being builders — creating architectural and creative solutions to help people realize their vision and make them a reality.</div>
+          <a href="#" class="hero-btn">VIEW PROJECTS</a>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Hero 2" class="hero-bg">
+        <div class="hero-overlay"></div>
+        <div class="hero-bg-text">design</div>
+        <div class="hero-content">
+          <h1 class="hero-title">Modern Architecture</h1>
+          <div class="hero-desc">Creating architectural and creative solutions to help people realize their vision and make them a reality. Wanna work with us?</div>
+          <a href="#" class="hero-btn">OUR SERVICES</a>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Hero 3" class="hero-bg">
+        <div class="hero-overlay"></div>
+        <div class="hero-bg-text">studio</div>
+        <div class="hero-content">
+          <h1 class="hero-title">Creative Solutions</h1>
+          <div class="hero-desc">Individual, aesthetically stunning solutions for our customers by lightning-fast development of projects employing unique styles.</div>
+          <a href="#" class="hero-btn">CONTACT US</a>
+        </div>
+      </div>
+    </div>
+    <div class="swiper-pagination hero-pagination"></div>
+  </div>
+  <div class="hero-social">
+    <a href="#">pinterest</a>
+    <a href="#">twitter</a>
+    <a href="#">facebook</a>
+    <a href="#">instagram</a>
+  </div>
+  <div class="hero-arrows">
+    <span class="hero-prev">←</span>
+    <span class="hero-next">→</span>
+  </div>
+</section>
+
+<!-- ==================== SECTION 2: ABOUT / WELCOME ==================== -->
+<section class="section-about">
+  <div class="container">
+    <div class="about-quote">
+      “Even if you don’t have a ready sketch of what you want – we will help you to get the result you dreamed of.”
+    </div>
+    <div class="about-person">
+      <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="David Oswald" class="about-person-img">
+      <div class="about-person-info">
+        <h5>David Oswald</h5>
+        <p>founder of company</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 3: FROM SKETCH TO LIFE ==================== -->
+<section class="section-sketch has-grid-lines">
+  <div class="grid-lines-vertical">
+    <span class="g-line line-left"></span>
+    <span class="g-line line-center"></span>
+    <span class="g-line line-right"></span>
+  </div>
+  <div class="container">
+    <div class="sketch-image">
+      <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="From Sketch to Life" width="670" height="642">
+    </div>
+    <div class="sketch-content">
+      <div class="circular-badge" aria-hidden="true">
+        <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <path id="circlePath" d="M 70,70 m -55,0 a 55,55 0 1,1 110,0 a 55,55 0 1,1 -110,0"></path>
+          </defs>
+          <text fill="#999" font-family="'Titillium Web', sans-serif" font-size="10.5" letter-spacing="3" font-weight="400">
+            <textPath href="#circlePath">THERATIO INTERIOR STUDIO SINCE 2012</textPath>
+          </text>
+        </svg>
+      </div>
+      <div class="ot-heading is-dots">
+        <span>[ about company ]</span>
+        <h2 class="main-heading">From Sketch to Life</h2>
+      </div>
+      <p>The basic philosophy of our studio is to create individual, aesthetically stunning solutions for our customers by lightning-fast development of projects employing unique styles and architecture. Even if you don’t have a ready sketch of what you want – we will help you to get the result you dreamed of.</p>
+      <a href="#" class="octf-btn octf-btn-dark">View Projects</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 4: CLIENT LOGO CAROUSEL (Flat Grid) ==================== -->
+<section class="section-logos">
+  <div class="swiper logos-swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide logo-item"><img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Partner 1" style="width:111px;height:40px;object-fit:contain"></div>
+      <div class="swiper-slide logo-item"><img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Partner 2" style="width:111px;height:40px;object-fit:contain"></div>
+      <div class="swiper-slide logo-item"><img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Partner 3" style="width:111px;height:40px;object-fit:contain"></div>
+      <div class="swiper-slide logo-item"><img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Partner 4" style="width:111px;height:40px;object-fit:contain"></div>
+      <div class="swiper-slide logo-item"><img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Partner 5" style="width:111px;height:40px;object-fit:contain"></div>
+      <div class="swiper-slide logo-item"><img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Partner 6" style="width:111px;height:40px;object-fit:contain"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 5: PORTFOLIO CATEGORIES ==================== -->
+<section class="section-categories">
+  <div class="cate-item">
+    <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Office Spaces" width="750" height="422">
+    <div class="cate-item-content">
+      <h2>Office Spaces<span class="number-stroke">01</span></h2>
+    </div>
+  </div>
+  <div class="cate-item">
+    <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Public Spaces" width="750" height="422">
+    <div class="cate-item-content">
+      <h2>Public Spaces<span class="number-stroke">02</span></h2>
+    </div>
+  </div>
+  <div class="cate-item">
+    <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Residential Spaces" width="750" height="422">
+    <div class="cate-item-content">
+      <h2>Residential Spaces<span class="number-stroke">03</span></h2>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 6: SERVICES + COUNTERS ==================== -->
+<section class="section-services has-grid-lines">
+  <div class="grid-lines-vertical">
+    <span class="g-line line-left"></span>
+    <span class="g-line line-center"></span>
+    <span class="g-line line-right"></span>
+  </div>
+  <div class="container">
+    <div class="ot-heading center is-dots">
+      <span>[ OUR SERVICES ]</span>
+      <h2 class="main-heading">What Can We Offer</h2>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-box">
+        <div class="icon-main">
+          <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Design &amp; Planning" style="width:74px;height:84px;object-fit:contain">
+        </div>
+        <h5><a href="#">Design &amp; Planning</a></h5>
+        <p>We will help you to get the result you dreamed of.</p>
+        <a href="#" class="btn-details">READ MORE</a>
+      </div>
+      <div class="service-box">
+        <div class="icon-main">
+          <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Custom Solutions" style="width:81px;height:70px;object-fit:contain">
+        </div>
+        <h5><a href="#">Custom Solutions</a></h5>
+        <p>Individual, aesthetically stunning solutions for customers.</p>
+        <a href="#" class="btn-details">READ MORE</a>
+      </div>
+      <div class="service-box">
+        <div class="icon-main">
+          <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Furniture &amp; Decor" style="width:72px;height:80px;object-fit:contain">
+        </div>
+        <h5><a href="#">Furniture &amp; Decor</a></h5>
+        <p>We create and produce our product design lines.</p>
+        <a href="#" class="btn-details">READ MORE</a>
+      </div>
+    </div>
+
+    <div class="counters-grid">
+      <div class="ot-counter">
+        <div class="num-wrap"><span>[</span><span class="counter-num" data-count="180">0</span><span>+]</span></div>
+        <h6>Current Clients</h6>
+      </div>
+      <div class="ot-counter">
+        <div class="num-wrap"><span>[</span><span class="counter-num" data-count="10">0</span><span>+]</span></div>
+        <h6>years of experience</h6>
+      </div>
+      <div class="ot-counter">
+        <div class="num-wrap"><span>[</span><span class="counter-num" data-count="35">0</span><span>+]</span></div>
+        <h6>awards winning</h6>
+      </div>
+      <div class="ot-counter">
+        <div class="num-wrap"><span>[</span><span class="counter-num" data-count="5">0</span><span>+]</span></div>
+        <h6>Offices Worldwide</h6>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 7: PORTFOLIO METRO GRID ==================== -->
+<section class="section-portfolio">
+  <div class="portfolio-filters">
+    <span class="portfolio-filter-tab active" data-filter="all">All</span>
+    <span class="portfolio-filter-tab" data-filter="architecture">Architecture</span>
+    <span class="portfolio-filter-tab" data-filter="decor">Decor</span>
+    <span class="portfolio-filter-tab" data-filter="furniture">Furniture</span>
+    <span class="portfolio-filter-tab" data-filter="interior">Interior</span>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-item span-2" data-category="interior">
+      <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Stylish Family Appartment">
+      <div class="portfolio-info">
+        <h5><a href="#">Stylish Family Appartment</a></h5>
+        <p class="portfolio-cates"><a href="#">Interior</a></p>
+      </div>
+    </div>
+    <div class="portfolio-item" data-category="decor interior">
+      <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Minimal Guests House">
+      <div class="portfolio-info">
+        <h5><a href="#">Minimal Guests House</a></h5>
+        <p class="portfolio-cates"><a href="#">Decor</a> <a href="#">Interior</a></p>
+      </div>
+    </div>
+    <div class="portfolio-item" data-category="architecture">
+      <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Art Family Residence">
+      <div class="portfolio-info">
+        <h5><a href="#">Art Family Residence</a></h5>
+        <p class="portfolio-cates"><a href="#">Architecture</a></p>
+      </div>
+    </div>
+    <div class="portfolio-item" data-category="furniture">
+      <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Private House in Spain">
+      <div class="portfolio-info">
+        <h5><a href="#">Private House in Spain</a></h5>
+        <p class="portfolio-cates"><a href="#">Furniture</a></p>
+      </div>
+    </div>
+    <div class="portfolio-item" data-category="furniture">
+      <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Modern Villa in Belgium">
+      <div class="portfolio-info">
+        <h5><a href="#">Modern Villa in Belgium</a></h5>
+        <p class="portfolio-cates"><a href="#">Furniture</a></p>
+      </div>
+    </div>
+    <div class="portfolio-item span-2" data-category="furniture interior">
+      <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Minimalistic Style Appartment">
+      <div class="portfolio-info">
+        <h5><a href="#">Minimalistic Style Appartment</a></h5>
+        <p class="portfolio-cates"><a href="#">Furniture</a> <a href="#">Interior</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 8: CTA BANNER ==================== -->
+<section class="section-cta">
+  <div class="container">
+    <div class="cta-text">
+      <h2>Get Incredible Interior Design Right Now!</h2>
+      <p>At every stage, we could supervise your project – controlling all the details and consulting the builders.</p>
+    </div>
+    <div class="cta-action">
+      <a href="#" class="octf-btn octf-btn-light">get in touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 9: COMPANY VALUES ==================== -->
+<section class="section-values has-grid-lines">
+  <div class="grid-lines-vertical">
+    <span class="g-line line-left"></span>
+    <span class="g-line line-center"></span>
+    <span class="g-line line-right"></span>
+  </div>
+  <div class="container">
+    <div class="values-content">
+      <div class="ot-heading is-dots">
+        <span>[ our skills ]</span>
+        <h2 class="main-heading">The Core Company Values</h2>
+      </div>
+      <p>We are constantly growing, learning, and improving and our partners are steadily increasing. 200 projects is a sizable number.</p>
+
+      <div class="ot-progress" data-token-check="progress-65">
+        <div class="overflow">
+          <span class="pname">interior sketch</span>
+          <span class="ppercent">65%</span>
+        </div>
+        <div class="iprogress">
+          <div class="progress-bar" data-progress="65%" style="width: 0%"></div>
+        </div>
+      </div>
+      <div class="ot-progress" data-token-check="progress-85">
+        <div class="overflow">
+          <span class="pname">3D Modeling</span>
+          <span class="ppercent">85%</span>
+        </div>
+        <div class="iprogress">
+          <div class="progress-bar" data-progress="85%" style="width: 0%"></div>
+        </div>
+      </div>
+      <div class="ot-progress" data-token-check="progress-55">
+        <div class="overflow">
+          <span class="pname">2D Planning</span>
+          <span class="ppercent">55%</span>
+        </div>
+        <div class="iprogress">
+          <div class="progress-bar" data-progress="55%" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="values-image">
+      <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Company Values" width="860" height="645">
+      <div class="values-keyword-label kw-quality">
+        <span>Quality</span>
+        <span class="kw-dot"></span>
+      </div>
+      <div class="values-keyword-label kw-experience">
+        <span class="kw-dot"></span>
+        <span>Experience</span>
+      </div>
+      <div class="values-keyword-label kw-hardskills">
+        <span class="kw-dot"></span>
+        <span>Hard Skills</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 10: TEAM (Flat Grid) ==================== -->
+<section class="section-team">
+  <div class="ot-heading center is-dots" style="padding: 0 15px;">
+    <span>[ our professionals ]</span>
+    <h2 class="main-heading">Meet Our Skilled Team</h2>
+  </div>
+  <div class="swiper team-swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide team-card">
+        <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Robert Cooper">
+        <div class="team-text-overlay">
+          <h4>Robert Cooper</h4>
+          <div class="m-extra">[ Finance Manager ]</div>
+        </div>
+      </div>
+      <div class="swiper-slide team-card">
+        <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Olivia Peterson">
+        <div class="team-text-overlay">
+          <h4>Olivia Peterson</h4>
+          <div class="m-extra">[ CEO of Company ]</div>
+        </div>
+      </div>
+      <div class="swiper-slide team-card">
+        <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Amalia Bruno">
+        <div class="team-text-overlay">
+          <h4>Amalia Bruno</h4>
+          <div class="m-extra">[ Interior Designer ]</div>
+        </div>
+      </div>
+      <div class="swiper-slide team-card">
+        <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Katie Doyle">
+        <div class="team-text-overlay">
+          <h4>Katie Doyle</h4>
+          <div class="m-extra">[ Interior Designer ]</div>
+        </div>
+      </div>
+      <div class="swiper-slide team-card">
+        <img src="https://g3.leadongcdn.cn/cloud/jiBpjKiilpSRikimnnjrjo/default_img.png" alt="Andrew Kinzer">
+        <div class="team-text-overlay">
+          <h4>Andrew Kinzer</h4>
+          <div class="m-extra">[ CEO of Company ]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="team-pagination">
+    <div class="swiper-pagination team-dots"></div>
+  </div>
+</section>
+
+<!-- ==================== SECTION 11: BLOG / NEWS (Flat Grid) ==================== -->
+<section class="section-blog has-grid-lines">
+  <div class="grid-lines-vertical">
+    <span class="g-line line-left"></span>
+    <span class="g-line line-center"></span>
+    <span class="g-line line-right"></span>
+  </div>
+  <div class="container">
+    <div class="blog-header">
+      <div class="ot-heading is-dots">
+        <span>[ OUR BLOG ]</span>
+        <h2 class="main-heading">Read Our Latest News</h2>
+      </div>
+      <a href="#" class="octf-btn octf-btn-dark">VIEW ALL</a>
+    </div>
+
+    <div class="swiper blog-swiper">
+      <div class="developer-component" data-gjs-type="developer-component"><div class="backstage-blocksEditor-wrap developer-node-component developer-component-newedit block_5ff2c105ed95" data-gjs-type="developer-node-component" data-block-type="phoenix_blocks_Articlelist" data-block-uuid="5ff2c105ed95" data-new-auto-uuid="5ff2c105ed95" data-app-id="SLAUKpfYZlfO" data-freemaker-html-available="true">
+<div class="swiper-wrapper">
+[@api method="post" url="/phoenix2/composite/graphql" page="${pageNum!1}" limit="${pageSize!'10'}"
+            selectArticleCateType="${dataType!'0'}" selectCateIds="${dataGroupId!''}" selectArticleIds="${dataIds!''}"
+            orderBy="${orderBy!'0'}" expandIds="${expandIds!''}" articleId="${infoId!-1}" articlePageId="${infoGroupId!-1}"
+			query='{
+				articleList(
+                    conditionDto:{
+                    page: $page
+                    limit: $limit
+                    optionsParam: $optionsParam
+                    selectCateIds: $selectCateIds
+                    selectArticleIds: $selectArticleIds
+                    selectArticleCateType: "$selectArticleCateType"
+                    orderBy: "$orderBy"
+                    articleRelatedId: "$articleId"
+                    articlePageId: "$articlePageId"
+                    }) {
+                    totalRow
+                    pageSize
+                    pageNumber
+                    extraData{
+                        articleStructureData
+                        paginationUrl
+                    }
+                    list{
+                        encodeId
+                        articleTitle
+                        publishTime
+                        articleUrl
+                        articleSummary
+                        topFlag
+                        photoUrlNormal
+                        photoUrlDefine
+                        cateName
+                        cateUrl
+                        showFieldList
+                        $showField
+                        photoSeoList{
+                            photoId
+                            photoUrlNormal
+                            photoAlt
+                            photoTitle
+                        }
+                    }
+                }
+			}']
+
+        
+[#if data?? && data.articleList?? && data.articleList.list?? && (data.articleList.list?size > 0)]
+[#list data.articleList.list as article]
+<div class="swiper-slide blog-card">
+          <div class="blog-card-thumb">
+            <img src="${article.photoUrlNormal!}" alt="${article.photoSeoList[0].photoAlt!}" title="${article.photoSeoList[0].photoTitle!}">
+            <span class="category-tag">${article.publishTime?date("yyyy-MM-dd")?string('yyyy')}</span>
+          </div>
+          <div class="blog-card-meta">
+            <span>MARCH 20, 2020</span>
+            <span class="sep"></span>
+            <span>TOM BLACK</span>
+          </div>
+          <h5><a href="${article.articleUrl!''}" title="${article.articleTitle!?html}">${article.articleTitle!?html}</a></h5>
+          <p>${article.articleSummary!''}</p>
+        </div>
+[/#list]
+[#else]
+<div class="templist-no-data">[@s.m "phoenix_no_content" /]</div>
+[/#if]
+
+        
+        
+      
+<input type="hidden" name="totalRow" value="${data.articleList.totalRow!'0'}">
+<input type="hidden" name="pageNumber" value="${data.articleList.pageNumber!'1'}">
+<input type="hidden" name="pageSize" value="${data.articleList.pageSize!'10'}">
+<script type="application/ld+json">${data.articleList.extraData.articleStructureData!""}</script>
+[/@api]
+</div>
+        <script>
+            $(function () {
+                window._block_namespaces_['block_5ff2c105ed95'].init({ 'relationId': '${relationId}', 'relationType': '${relationType}', 'pageId': '${pageId}', 'pageNodeId': '${pageNodeId!""}', 'appId': '${appId!}', 'appIsDev': '${appIsDev!"0"}', 'appVersion': '${appVersion}' });
+            });
+        </script>
+    </div></div>
+      <div class="swiper-pagination blog-dots"></div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+/* === S1 Hero Swiper === */
+new Swiper('.hero-swiper', {
+  slidesPerView: 1,
+  effect: 'fade',
+  fadeEffect: { crossFade: true },
+  loop: true,
+  autoplay: { delay: 5000, disableOnInteraction: false },
+  speed: 800,
+  pagination: { el: '.hero-pagination', clickable: true },
+  navigation: { prevEl: '.hero-prev', nextEl: '.hero-next' }
+});
+
+/* === S4 Logo Swiper (continuous scroll) === */
+new Swiper('.logos-swiper', {
+  slidesPerView: 'auto',
+  loop: true,
+  speed: 1000,
+  autoplay: { delay: 0, disableOnInteraction: false },
+  freeMode: true,
+  freeModeMomentum: false
+});
+
+/* === S6 CountUp Animation === */
+(function() {
+  var counters = document.querySelectorAll('.counter-num');
+  if (!counters.length) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var end = parseInt(el.getAttribute('data-count'), 10) || 0;
+        var duration = 2000;
+        var start = 0;
+        var startTime = null;
+        function step(timestamp) {
+          if (!startTime) startTime = timestamp;
+          var progress = Math.min((timestamp - startTime) / duration, 1);
+          el.textContent = Math.floor(progress * (end - start) + start);
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+  counters.forEach(function(el) { observer.observe(el); });
+})();
+
+/* === S7 Portfolio Filter === */
+(function() {
+  var tabs = document.querySelectorAll('.portfolio-filter-tab');
+  var items = document.querySelectorAll('.portfolio-item');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      var filter = tab.getAttribute('data-filter');
+      items.forEach(function(item) {
+        if (filter === 'all') { item.style.display = ''; }
+        else {
+          var cats = (item.getAttribute('data-category') || '').split(' ');
+          item.style.display = cats.indexOf(filter) >= 0 ? '' : 'none';
+        }
+      });
+    });
+  });
+})();
+
+/* === S9 Progress Bar Scroll Animation === */
+(function() {
+  var bars = document.querySelectorAll('.progress-bar[data-progress]');
+  if (!bars.length) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var bar = entry.target;
+        bar.style.transition = 'width 1.5s ease-in-out';
+        bar.style.width = bar.getAttribute('data-progress');
+        observer.unobserve(bar);
+      }
+    });
+  }, { threshold: 0.3 });
+  bars.forEach(function(bar) { observer.observe(bar); });
+})();
+
+/* === S10 Team Swiper === */
+new Swiper('.team-swiper', {
+  slidesPerView: 3,
+  spaceBetween: 0,
+  loop: true,
+  autoplay: { delay: 3000, disableOnInteraction: false },
+  speed: 1000,
+  pagination: { el: '.team-dots', clickable: true },
+  breakpoints: {
+    0: { slidesPerView: 1 },
+    481: { slidesPerView: 2 },
+    768: { slidesPerView: 3 }
+  }
+});
+
+/* === S11 Blog Swiper === */
+new Swiper('.blog-swiper', {
+  slidesPerView: 2,
+  spaceBetween: 30,
+  pagination: { el: '.blog-dots', clickable: true },
+  breakpoints: {
+    0: { slidesPerView: 1 },
+    768: { slidesPerView: 2 }
+  }
+});
+</script>
+
+
+
+<!-- Dynamic Module Model Setup Script (Inline) -->
+<script>
+(function() {
+  var FTL_CONTENTS = {};
+  FTL_CONTENTS["5ff2c105ed95"] = "<div class=\"block_5ff2c105ed95\" data-gjs-type=\"phoenix-container\" data-strong=\"1\">\n    <div class=\"backstage-blocksEditor-wrap block34604\" data-block-uuid=\"5ff2c105ed95\" data-gjs-type=\"developer-node-component\" data-block-list-setting=\"dataSelect,loadMethod,pageNumber,refreshMethod,dataOrderBy,showDate,jumpMethod\" data-block-type=\"phoenix_blocks_Articlelist\" data-default-setting={\"pageSize\":8,\"page\":1,\"dataType\":\"0\",\"dataIds\":[],\"dataGroupId\":[],\"orderBy\":\"0\",\"loadMethod\":\"1\",\"refreshMethod\":\"0\",\"jumpMethod\":\"1\",\"expandIds\":{\"showField\":{\"label\":\"显示字段\",\"key\":\"showField\",\"draggable\":false,\"data\":[{\"fieldName\":\"文章标题\",\"fieldId\":\"articleTitle\",\"fieldType\":\"0\",\"value\":\"1\",\"checked\":false},{\"fieldName\":\"文章简介\",\"fieldId\":\"articleSummary\",\"fieldType\":\"0\",\"value\":\"2\",\"checked\":false},{\"fieldName\":\"日期\",\"fieldId\":\"publishTime\",\"fieldType\":\"0\",\"value\":\"3\",\"checked\":false},{\"fieldName\":\"文章分类\",\"fieldId\":\"cateName\",\"fieldType\":\"0\",\"value\":\"4\",\"checked\":false}]}},\"expandSort\":[\"showField\"],\"layoutStyle\":\"0\",\"showDate\":\"1\",\"relatedTypes\":\"0\",\"translationEntry\":[]}>\n<div class=\"swiper-wrapper\">\n[@api method=\"post\" url=\"/phoenix2/composite/graphql\" page=\"${pageNum!1}\" limit=\"${pageSize!'10'}\"\r\n            selectArticleCateType=\"${dataType!'0'}\" selectCateIds=\"${dataGroupId!''}\" selectArticleIds=\"${dataIds!''}\"\r\n            orderBy=\"${orderBy!'0'}\" expandIds=\"${expandIds!''}\" articleId=\"${infoId!-1}\" articlePageId=\"${infoGroupId!-1}\"\r\n\t\t\tquery='{\r\n\t\t\t\tarticleList(\r\n                    conditionDto:{\r\n                    page: $page\r\n                    limit: $limit\r\n                    optionsParam: $optionsParam\r\n                    selectCateIds: $selectCateIds\r\n                    selectArticleIds: $selectArticleIds\r\n                    selectArticleCateType: \"$selectArticleCateType\"\r\n                    orderBy: \"$orderBy\"\r\n                    articleRelatedId: \"$articleId\"\r\n                    articlePageId: \"$articlePageId\"\r\n                    }) {\r\n                    totalRow\r\n                    pageSize\r\n                    pageNumber\r\n                    extraData{\r\n                        articleStructureData\r\n                        paginationUrl\r\n                    }\r\n                    list{\r\n                        encodeId\r\n                        articleTitle\r\n                        publishTime\r\n                        articleUrl\r\n                        articleSummary\r\n                        topFlag\r\n                        photoUrlNormal\r\n                        photoUrlDefine\r\n                        cateName\r\n                        cateUrl\r\n                        showFieldList\r\n                        $showField\r\n                        photoSeoList{\r\n                            photoId\r\n                            photoUrlNormal\r\n                            photoAlt\r\n                            photoTitle\r\n                        }\r\n                    }\r\n                }\r\n\t\t\t}']\n\n        \n[#if data?? && data.articleList?? && data.articleList.list?? && (data.articleList.list?size > 0)]\n[#list data.articleList.list as article]\n<div class=\"swiper-slide blog-card\">\n          <div class=\"blog-card-thumb\">\n            <img src=\"${article.photoUrlNormal!}\" alt=\"${article.photoSeoList[0].photoAlt!}\" title=\"${article.photoSeoList[0].photoTitle!}\">\n            <span class=\"category-tag\">${article.publishTime?date(\"yyyy-MM-dd\")?string('yyyy')}<\/span>\n          <\/div>\n          <div class=\"blog-card-meta\">\n            <span>MARCH 20, 2020<\/span>\n            <span class=\"sep\"><\/span>\n            <span>TOM BLACK<\/span>\n          <\/div>\n          <h5><a href=\"${article.articleUrl!''}\" title=\"${article.articleTitle!?html}\">${article.articleTitle!?html}<\/a><\/h5>\n          <p>${article.articleSummary!''}<\/p>\n        <\/div>\n[/#list]\n[#else]\n<div class=\"templist-no-data\">[@s.m \"phoenix_no_content\" /]<\/div>\n[/#if]\n\n        \n        \n      \n<input type=\"hidden\" name=\"totalRow\" value=\"${data.articleList.totalRow!'0'}\">\n<input type=\"hidden\" name=\"pageNumber\" value=\"${data.articleList.pageNumber!'1'}\">\n<input type=\"hidden\" name=\"pageSize\" value=\"${data.articleList.pageSize!'10'}\">\n<script type=\"application/ld+json\">\r${data.articleList.extraData.articleStructureData!\"\"}\r<\/script>\n[/@api]\n<\/div>\n        <script>\n            $(function () {\n                window._block_namespaces_['block_5ff2c105ed95'].init({ 'relationId': '${relationId}', 'relationType': '${relationType}', 'pageId': '${pageId}', 'pageNodeId': '${pageNodeId!\"\"}', 'appId': '${appId!}', 'appIsDev': '${appIsDev!\"0\"}', 'appVersion': '${appVersion}' });\n            });\n        <\/script>\n    <\/div>\n<\/div>";
+
+  window.__DYNAMIC_MODULES__ = {
+    ftlContents: FTL_CONTENTS,
+    modules: [
+      {
+        uuid: "5ff2c105ed95",
+        blockType: "phoenix_blocks_Articlelist",
+        appId: "SLAUKpfYZlfO",
+        templateFile: "phoenix_blocks_Articlelist_34604.ftl",
+      },
+    ],
+    inject: function(editor) {
+      if (!editor) return;
+      for (var i = 0; i < this.modules.length; i++) {
+        var mod = this.modules[i];
+        var ftlContent = this.ftlContents[mod.uuid];
+        if (!ftlContent) continue;
+        var nodeEls = editor.DomComponents.getWrapper().find('[data-block-uuid="' + mod.uuid + '"]');
+        if (nodeEls.length > 0) {
+          var nodeModel = nodeEls[0];
+          nodeModel.set('freemakerHtml', ftlContent);
+          nodeModel.set('appId', mod.appId);
+          nodeModel.set('appIsDev', true);
+        }
+      }
+    }
+  };
+})();
+</script>
+</body></html>

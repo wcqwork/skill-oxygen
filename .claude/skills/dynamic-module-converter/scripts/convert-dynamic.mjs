@@ -12,6 +12,7 @@ import fs from 'fs';
 import path from 'path';
 import http from 'http';
 import { fileURLToPath } from 'url';
+import inquirer from 'inquirer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -2088,6 +2089,237 @@ function findMatchingCloseTag(html, startPos, tagName) {
 }
 
 // ═══════════════════════════════════════════════════════════
+//  Interactive Block Confirmation (Phase 2)
+// ═══════════════════════════════════════════════════════════
+
+const AVAILABLE_TYPES = [
+  { value: 'prodList', name: '📦 产品列表 (prodList)' },
+  { value: 'groupProduct', name: '🗂️ 产品分类 (groupProduct)' },
+  { value: 'articleList', name: '📝 文章列表 (articleList)' },
+  { value: 'groupArticle', name: '📑 文章分类 (groupArticle)' },
+  { value: 'galleryList', name: '🖼️ 图库列表 (galleryList)' },
+  { value: 'videoList', name: '🎬 视频列表 (videoList)' },
+  { value: 'downloadList', name: '📥 下载列表 (downloadList)' },
+  { value: 'FAQList', name: '❓ FAQ列表 (FAQList)' },
+  { value: 'commentList', name: '💬 评价列表 (commentList)' },
+];
+
+/**
+ * 打印区块摘要卡片
+ */
+function printBlockCard(det, $) {
+  const width = 60;
+  const line = '─'.repeat(width - 2);
+
+  console.log('\n' + `┌${line}┐`);
+
+  // 标题行
+  const title = `区块 ${det.sectionIndex}: ${det.sectionDescription || '未命名'}`;
+  console.log(`│ ${title.padEnd(width - 4)} │`);
+
+  console.log(`├${line}┤`);
+
+  // 检测类型
+  const typeLabel = det.detectedType ? (TYPE_LABELS[det.detectedType] || det.detectedType) : '静态';
+  const typeIcon = det.isDynamic ? '🔶' : '⬜';
+  console.log(`│ ${typeIcon} 检测类型: ${(typeLabel + ' '.repeat(20)).substring(0, 20)} │`);
+
+  // 置信度条
+  const conf = Math.round(det.confidence * 100);
+  const filledLen = Math.round(conf / 5);
+  const barFill = '█'.repeat(filledLen);
+  const barEmpty = '░'.repeat(20 - filledLen);
+  console.log(`│ 置信度:   [${barFill}${barEmpty}] ${String(conf).padStart(3)}% │`);
+
+  // 评分明细
+  const { structural, urlPattern, contentHeuristic, classSignature, total } = det.scores;
+  console.log(`│ 评分:     结构(${structural}) + URL(${urlPattern}) + 内容(${contentHeuristic}) + 类名(${classSignature}) = ${total} │`);
+
+  // 重复项数量
+  console.log(`│ 重复项:   ${det.itemCount || '?'} 个 ${(det.repeatingItemTag || 'div') + ' '.repeat(20)}.substring(0, 20) │`);
+
+  // 证据
+  if (det.evidence && det.evidence.length > 0) {
+    console.log(`├${line}┤`);
+    console.log(`│ 证据:`.padEnd(width - 1) + '│');
+    det.evidence.slice(0, 3).forEach(e => {
+      const truncated = e.length > width - 6 ? e.substring(0, width - 9) + '...' : e;
+      console.log(`│   • ${(truncated + ' '.repeat(width - 6 - truncated.length)).substring(0, width - 6)} │`);
+    });
+  }
+
+  console.log(`└${line}┘`);
+}
+
+/**
+ * 预览区块 HTML (截取前 500 字符)
+ */
+function getBlockPreview($, $el, maxLength = 800) {
+  const html = $el.html() || '';
+  if (html.length <= maxLength) return html;
+  return html.substring(0, maxLength) + '\n... (已截断)';
+}
+
+/**
+ * 交互式区块确认
+ * @param {Array} detections - 所有检测结果
+ * @param {CheerioAPI} $ - cheerio 实例
+ * @returns {Promise<Array>} - 用户确认后的检测结果
+ */
+async function interactiveBlockConfirmation(detections, $) {
+  console.log('\n╔════════════════════════════════════════════════════════╗');
+  console.log('║  Phase 2: 交互式确认                                    ║');
+  console.log('║  逐个确认区块类型，或保持静态                            ║');
+  console.log('╚════════════════════════════════════════════════════════╝\n');
+
+  const confirmedDetections = [];
+  let currentIndex = 0;
+
+  for (const det of detections) {
+    currentIndex++;
+    console.log(`\n[ ${currentIndex}/${detections.length} ]`);
+
+    // 打印区块卡片
+    printBlockCard(det, $);
+
+    // 构建选项
+    const defaultType = det.detectedType || 'static';
+    const choices = [
+      {
+        value: 'confirm',
+        name: `✓ 确认: ${det.detectedType ? TYPE_LABELS[det.detectedType] || det.detectedType : '保持静态'}`,
+      },
+      {
+        value: 'dynamic',
+        name: '🔶 标记为动态 (修改类型...)',
+      },
+      {
+        value: 'static',
+        name: '⬜ 保持静态 (不转换)',
+      },
+      {
+        value: 'preview',
+        name: '👁 预览 HTML 片段',
+      },
+      {
+        value: 'details',
+        name: '📋 查看完整评分',
+      },
+    ];
+
+    let decision = null;
+    let selectedType = det.detectedType;
+
+    while (decision === null || decision === 'preview' || decision === 'details') {
+      const answer = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'action',
+          message: '请选择操作:',
+          choices,
+          default: 'confirm',
+          pageSize: 6,
+        },
+      ]);
+
+      decision = answer.action;
+
+      if (decision === 'preview') {
+        console.log('\n── HTML 预览 ──────────────────────────────────────────');
+        const preview = getBlockPreview($, det.$el);
+        console.log(preview);
+        console.log('───────────────────────────────────────────────────────');
+        continue;
+      }
+
+      if (decision === 'details') {
+        console.log('\n── 完整评分详情 ────────────────────────────────────────');
+        console.log(`  结构评分 (structural):     ${det.scores.structural}/40`);
+        console.log(`  URL模式 (urlPattern):      ${det.scores.urlPattern}/25`);
+        console.log(`  内容启发 (contentHeuristic): ${det.scores.contentHeuristic}/20`);
+        console.log(`  类名签名 (classSignature): ${det.scores.classSignature}/25`);
+        console.log(`  总分:                      ${det.scores.total}/110`);
+        console.log(`  置信度:                    ${(det.confidence * 100).toFixed(1)}%`);
+        console.log(`  重复子元素:                ${det.itemCount} 个`);
+        console.log(`  重复容器类名:              ${det.repeatingContainer || '未知'}`);
+        console.log('───────────────────────────────────────────────────────');
+        continue;
+      }
+
+      if (decision === 'dynamic') {
+        // 选择动态类型
+        const typeAnswer = await inquirer.prompt([
+          {
+            type: 'list',
+            name: 'blockType',
+            message: '选择动态类型:',
+            choices: AVAILABLE_TYPES,
+            pageSize: 10,
+            default: det.detectedType || 'prodList',
+          },
+        ]);
+        selectedType = typeAnswer.blockType;
+        decision = 'dynamic';
+      }
+    }
+
+    // 应用用户决策
+    if (decision === 'static') {
+      confirmedDetections.push({
+        ...det,
+        isDynamic: false,
+        userDecision: 'static',
+      });
+      console.log(`  ⬜ 已标记为静态`);
+    } else if (decision === 'confirm') {
+      // 保持原检测状态
+      confirmedDetections.push({
+        ...det,
+        userDecision: det.isDynamic ? 'confirm-dynamic' : 'confirm-static',
+      });
+      console.log(`  ${det.isDynamic ? '✅' : '⬜'} 已确认${det.isDynamic ? '动态' : '静态'}`);
+    } else if (decision === 'dynamic') {
+      confirmedDetections.push({
+        ...det,
+        detectedType: selectedType,
+        isDynamic: true,
+        userDecision: 'override-dynamic',
+      });
+      console.log(`  ✅ 已标记为动态类型: ${TYPE_LABELS[selectedType] || selectedType}`);
+    }
+  }
+
+  // 汇总
+  const dynamicCount = confirmedDetections.filter(d => d.isDynamic).length;
+  const staticCount = confirmedDetections.length - dynamicCount;
+
+  console.log('\n╔════════════════════════════════════════════════════════╗');
+  console.log('║  确认结果汇总                                           ║');
+  console.log('╠════════════════════════════════════════════════════════╣');
+  console.log(`║  动态区块: ${String(dynamicCount).padStart(2)} 个                                        ║`);
+  console.log(`║  静态区块: ${String(staticCount).padStart(2)} 个                                        ║`);
+  console.log(`║  总计:     ${String(confirmedDetections.length).padStart(2)} 个                                        ║`);
+  console.log('╚════════════════════════════════════════════════════════╝\n');
+
+  // 最终确认
+  const finalConfirm = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'proceed',
+      message: '确认以上选择，开始转换?',
+      default: true,
+    },
+  ]);
+
+  if (!finalConfirm.proceed) {
+    console.log('[INFO] 用户取消操作');
+    process.exit(0);
+  }
+
+  return confirmedDetections;
+}
+
+// ═══════════════════════════════════════════════════════════
 //  Generate separate JSON report
 // ═══════════════════════════════════════════════════════════
 
@@ -2167,13 +2399,29 @@ async function main() {
     console.log('');
   }
 
-  const dynamicDetections = detections.filter(d => d.isDynamic);
-  console.log(`[RESULT] 共 ${dynamicDetections.length} / ${detections.length} 个区块被识别为动态\n`);
+  const dynamicDetectionsPreview = detections.filter(d => d.isDynamic);
+  console.log(`[RESULT] 共 ${dynamicDetectionsPreview.length} / ${detections.length} 个区块被识别为动态\n`);
+
+  // ─── Phase 2: Interactive Confirmation (or auto mode) ───
+  let confirmedDetections;
+  if (!AUTO_MODE) {
+    // 交互模式: 逐一确认
+    confirmedDetections = await interactiveBlockConfirmation(detections, $);
+  } else {
+    // 自动模式: 接受所有检测结果
+    confirmedDetections = detections;
+    console.log('[INFO] 自动模式: 接受所有检测结果');
+  }
+
+  // 更新动态区块列表
+  const dynamicDetections = confirmedDetections.filter(d => d.isDynamic);
+  console.log(`[RESULT] 确认后共 ${dynamicDetections.length} / ${confirmedDetections.length} 个动态区块\n`);
 
   if (dynamicDetections.length === 0) {
-    console.log('[INFO] 未检测到动态区块，输出原始 HTML');
+    console.log('[INFO] 无动态区块需要转换，输出原始 HTML');
     fs.mkdirSync(path.dirname(outputFile), { recursive: true });
     fs.writeFileSync(outputFile, html, 'utf-8');
+    console.log(`[OUTPUT] ${outputFile}`);
     return;
   }
 
@@ -2183,7 +2431,7 @@ async function main() {
     const entry = Object.entries(BLOCK_TYPE_MAP).find(([_, v]) => v === bt);
     return entry ? `${entry[0]}(${bt})` : bt;
   });
-  console.log(`[INFO] 可用参考模板类型: ${availableTypeLabels.join(', ') || '无'}`);
+  console.log(`[INFO] 可用参考模板类型: ${availableTypeLabels.slice(0, 5).join(', ')}${availableTypeLabels.length > 5 ? '...' : ''}`);
 
   const noTemplateDets = dynamicDetections.filter(d => {
     const bt = BLOCK_TYPE_MAP[d.detectedType];
@@ -2193,16 +2441,10 @@ async function main() {
     console.log('');
     for (const d of noTemplateDets) {
       const bt = BLOCK_TYPE_MAP[d.detectedType] || '?';
-      console.log(`⚠️  [WARN] Section ${d.sectionIndex} "${d.sectionDescription}" 类型 ${d.detectedType}(${bt}) 无可用参考模板，将跳过 FTL 生成`);
-      console.log(`   请先运行 /fetch-templates 获取该类型的参考模板`);
+      console.log(`⚠️  [WARN] Section ${d.sectionIndex} "${d.sectionDescription}" 类型 ${d.detectedType}(${bt}) 无可用参考模板`);
+      console.log(`   将跳过 FTL 生成，请先运行 /fetch-templates 获取该类型的参考模板`);
     }
-  }
-  console.log('');
-
-  // ─── Phase 2: In auto mode, accept all detected ───
-  if (!AUTO_MODE) {
-    console.log('[INFO] 交互模式: 以上检测结果将全部应用（当前版本等同 --auto）');
-    console.log('[TIP] 后续版本将支持逐一确认/修改类型/保持静态\n');
+    console.log('');
   }
 
   // ─── Phase 3: Marker Injection ───

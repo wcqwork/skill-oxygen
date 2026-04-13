@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill Oxygen - 项目思维导图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #1a1a2e; }
+  #mindmap { width: 100%; height: 100%; }
+  #mindmap svg { width: 100%; height: 100%; }
+
+  /* markmap 节点样式 */
+  .markmap-node-circle { cursor: pointer; }
+  .markmap-node-text { fill: #e0e0f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif; }
+  .markmap-link { fill: none; stroke-width: 2px; opacity: 0.6; }
+  .markmap-foreign body { background: transparent; }
+  .markmap-foreign a { color: #6c7cff; }
+
+  /* 工具栏 */
+  .toolbar {
+    position: fixed; top: 16px; right: 16px; z-index: 100;
+    display: flex; gap: 8px;
+  }
+  .toolbar button {
+    background: rgba(44, 46, 78, 0.9); color: #e0e0f0; border: 1px solid #3a3d5c;
+    padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;
+    backdrop-filter: blur(8px);
+  }
+  .toolbar button:hover { background: rgba(108, 124, 255, 0.3); border-color: #6c7cff; }
+
+  /* 水印标题 */
+  .watermark {
+    position: fixed; bottom: 16px; left: 16px; z-index: 100;
+    color: rgba(224, 224, 240, 0.3); font-size: 12px;
+    font-family: -apple-system, sans-serif;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18"></script>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="mm.rescale(); mm.fit()">适应窗口</button>
+  <button onclick="mm.setData({ ...mm.getData(), color: mm.getData().color })">重新着色</button>
+  <button onclick="svgEl.querySelectorAll('.markmap-node').forEach(n => n.classList.remove('markmap-folded')); mm.setData(mm.getData())">全部展开</button>
+</div>
+
+<div class="watermark">Skill Oxygen - 思维导图 | 鼠标滚轮缩放 · 拖拽移动 · 点击节点折叠</div>
+
+<div id="mindmap">
+<script type="text/template">
+- Skill Oxygen
+  - **核心定位**
+    - 静态HTML转动态模块
+    - 标记注入而非结构替换
+    - 100%保留原始样式
+    - FreeMarker模板合成
+  - **核心Skills**
+    - 📦 Dynamic Module Converter
+      - 四阶段转换流程
+        - Phase 1: 通用动态区域识别
+          - 自底向上检测
+          - 三层评分算法
+            - 结构 40%
+            - URL 25%
+            - 内容 20%
+        - Phase 2: 用户确认
+          - 逐一确认区块类型
+          - 零自动转换
+        - Phase 3: 标记注入
+          - developer-component包装
+          - data-block-type属性
+          - Model Setup Script
+        - Phase 3.5: FTL模板合成
+          - 保留原始HTML结构
+          - @api查询块
+          - [#list]循环
+        - Phase 4: 渲染验证
+          - DOM层级检查 73项
+          - JS语法验证
+          - 视觉结构对比 25项
+          - 导出路径模拟 41项
+      - 支持22+区块类型
+        - 产品列表/分组
+        - 文章列表/详情
+        - 图库/视频/下载
+        - FAQ/搜索/站点地图
+      - 输出产物
+        - dynamic_preview.html
+        - blocks/uuid.ftl
+        - 报告JSON
+    - 🔄 Template Fetcher
+      - 抓取平台模板
+        - Playwright自动登录
+        - 分页扫描应用列表
+        - 提取view_default文件
+      - 过滤选项
+        - 按类型 -t
+        - 按关键词 -k
+        - 按JSON配置 -j
+      - 输出产物
+        - *.ftl模板文件
+        - _registry.json索引
+    - 💪 PUA Skill
+      - 三条铁律
+        - 穷尽一切方案
+        - 先做后问
+        - 主动出击
+      - 五步方法论
+        - 闻味道-诊断卡壳
+        - 揪头发-拉高视角
+        - 照镜子-自检
+        - 执行新方案
+        - 复盘
+      - 压力等级L1-L4
+      - 七项检查清单
+  - **技术栈**
+    - Node.js >=18
+    - Cheerio HTML解析
+    - Inquirer 交互CLI
+    - Playwright 浏览器自动化
+    - FreeMarker 模板引擎
+    - UUID 唯一标识
+  - **项目结构**
+    - .claude/skills/
+      - dynamic-module-converter/
+        - scripts/ 转换脚本
+        - references/ 参考文档
+        - templates/ 模板文件
+        - blocks/ 输出区块
+      - template-fetcher/
+        - scripts/ 抓取脚本
+      - pua/
+    - src/
+      - pages/ 页面文件
+      - Generate/ 转换输出
+      - tools/ 开发工具
+        - api-tester.html
+        - proxy-server.mjs
+        - page-renderer.mjs
+      - fetch_config/ 抓取配置
+      - docs/ 项目文档
+  - **开发工具**
+    - API测试器
+      - renderFreemarker接口
+    - 代理服务器
+      - CORS代理 :3456
+    - 页面渲染器
+      - FTL渲染服务 :3457
+  - **NPM脚本**
+    - npm test 转换+验证
+    - npm run convert 执行转换
+    - npm run verify:all 全部验证
+    - npm run render-server 渲染服务
+  - **工作流程**
+    - 1. /fetch-templates 获取模板
+    - 2. /convert-dynamic 转换HTML
+    - 3. verify:all 验证结果
+</script>
+</div>
+
+<script>
+  let mm;
+  const svgEl = document.querySelector('#mindmap');
+  const scriptEl = document.querySelector('script[type="text/template"]');
+  const content = scriptEl.textContent.trim();
+  scriptEl.remove();
+
+  window.markmap = window.markmap || {};
+  window.markmap.autoLoader = {
+    manual: true,
+    onReady: () => {
+      const { Markmap } = window.markmap;
+      mm = Markmap.create(svgEl, {
+        color: (node) => {
+          const colors = ['#6c7cff', '#4cdf8b', '#ffb84d', '#ff6b7a', '#b66cff', '#4dc9f6', '#f67019', '#ffcd56'];
+          return colors[node.state?.depth % colors.length] || colors[0];
+        },
+        duration: 300,
+        embedGlobalCSS: true,
+        zoom: true,
+        pan: true,
+        fit: true,
+        paddingX: 40,
+      }, content);
+      setTimeout(() => mm.fit(), 500);
+    }
+  };
+</script>
+
+</body>
+</html>
